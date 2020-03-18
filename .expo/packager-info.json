@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 51616,
-  "expoServerNgrokUrl": "https://4u-3kn.anonymous.tripdiary.exp.direct",
-  "packagerNgrokUrl": "https://packager.4u-3kn.anonymous.tripdiary.exp.direct",
-  "ngrokPid": 51628,
+  "packagerPid": 53387,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": 19006
 }

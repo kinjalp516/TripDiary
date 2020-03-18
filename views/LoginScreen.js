@@ -29,17 +29,11 @@ export default class LoginScreen extends React.Component {
                         }} 
                     />
                 </View>
-                <Button 
-                    title="Go to Photos" 
+                <Button
+                    title="Submit"
                     onPress={() => {
-                        this.props.navigation.navigate('Photos');
-                    }} 
-                />
-                <Button 
-                    title="Go to Map" 
-                    onPress={() => {
-                        this.props.navigation.navigate('Map');
-                    }} 
+                        this.props.navigation.navigate('Basic');
+                    }}
                 />
             </View>
         );

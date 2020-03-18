@@ -1,14 +1,20 @@
 import {createStackNavigator} from 'react-navigation-stack';
-import {createAppContainer} from 'react-navigation';
+import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 
 import MapScreen from '../views/MapScreen';
 import PhotosScreen from '../views/PhotosScreen';
 import LoginScreen from '../views/LoginScreen';
+import SummaryScreen from '../views/SummaryScreen';
 
 const BasicNavigator = createStackNavigator({
-    Login: LoginScreen,
+    Summary: SummaryScreen,
     Photos: PhotosScreen,
     Map: MapScreen
 });
 
-export default createAppContainer(BasicNavigator);
+const MainNavigator = createSwitchNavigator({
+    Login: LoginScreen,
+    Basic: BasicNavigator
+})
+
+export default createAppContainer(MainNavigator);
