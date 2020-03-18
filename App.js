@@ -15,15 +15,19 @@ const firebaseConfig = {
   measurementId: "G-2F6C1GQ2EL"
 };
 
-export default function App() {
+export default class App extends React.Component {
 
-  firebase.initializeApp(firebaseConfig);  
+  componentDidMount() {
+    firebase.initializeApp(firebaseConfig);  
+  }
 
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text>Open up App.js to start working on your app!</Text>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
