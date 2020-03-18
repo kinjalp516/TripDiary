@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import PhotosScreen from './views/PhotosScreen';
-import MapScreen from './views/MapScreen';
+
+import LoginScreen from './views/LoginScreen';
+import BasicNavigator from './navigation/BasicNavigator';
 
 import * as firebase from 'firebase';
 
@@ -25,10 +26,7 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <PhotosScreen />
-        <MapScreen />
-      </View>
+      <BasicNavigator />
     );
   }
 }
