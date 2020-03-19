@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, Button, ScrollView } from 'react-native';
 import {navigate, navigation} from 'react-navigation';
 export default class HomeScreen extends React.Component{
- 
+
   constructor(props){
     super(props);
     //hardcoded for now
@@ -12,7 +12,7 @@ export default class HomeScreen extends React.Component{
   }
 
     render(){
-      
+
       return (
       <View style={styles.container}>
       <ScrollView>
@@ -28,13 +28,13 @@ export default class HomeScreen extends React.Component{
         )
       })}
       </ScrollView>
-      
+
         </View>
       )
-      
+
     }
   }
-  
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -59,5 +59,5 @@ export default class HomeScreen extends React.Component{
       alignItems: 'center',
 
     }
-  
+
   });
