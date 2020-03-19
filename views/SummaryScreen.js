@@ -17,6 +17,12 @@ export default class SummaryScreen extends React.Component {
                         this.props.navigation.navigate('Map');
                     }} 
                 />
+                <Button 
+                    title="Go to Home" 
+                    onPress={() => {
+                        this.props.navigation.navigate('Home');
+                    }} 
+                />
             </View>
         );
     }

@@ -16,7 +16,7 @@ export default class LoginScreen extends React.Component {
                     <TextInput
                         style={styles.border} 
                         onChangeText={(text) => {
-                            his.setState({username: text});
+                            this.setState({username: text});
                         }} 
                     />
                 </View>
