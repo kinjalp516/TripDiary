@@ -6,14 +6,14 @@ import firebase from './Firebase.js';
 LoadingPage is the first page loaded at the start of our application.
 It is responsible for any initialization and checking for an existing
 logged in user to determine if user should be directed to the Login Page
-or directly to the Dashboard Page.
+or directly to My Trips Page.
  */
 
 export default class LoadingPage extends React.Component {
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
             console.log("Auth State Changed, User =", user);
-            this.props.navigation.navigate(user ? 'dashboard' : 'login')
+            this.props.navigation.navigate(user ? 'trips' : 'login')
         });
     }
 
