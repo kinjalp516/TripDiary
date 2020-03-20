@@ -1,30 +1,26 @@
-import React, {useState} from "react";
+import React from 'react';
 import { StyleSheet, View, Text, Button, ScrollView } from 'react-native';
-//import { createStackNavigator } from '@react-navigation/stack';
-//import { NavigationContainer } from '@react-navigation/native';
+import {navigate, navigation} from 'react-navigation';
+export default class HomeScreen extends React.Component{
 
-export default function HomeScreen({navigation}) {
+  constructor(props){
+    super(props);
+    //hardcoded for now
+    //pass in current trips
+    //this.state = { name: null, key: null };
+  this.tripArray = [{name: 'Cali', key: 1}, {name: 'Spain', key: 2}];
+  }
 
-    const pressHandler = () => {
-        navigation.navigate('CreateTrip');
-    }
-    //these are hardcoded for now 
-    //ideally input array of current trips
-    const [trip, setTrip] = useState([
-      { name: 'Spain', key: 1 },
-      { name: 'Greece', key: 2 },
-      { name: 'Beach Vacation', key: 3},
-      { name: 'California', key: 4},
-      { name: 'Thailand', key: 5},
-      { name: 'Spring Break', key: 6 },
-    ])
-  
-    return (
+    render(){
+
+      return (
       <View style={styles.container}>
       <ScrollView>
       <Text style={styles.header}>Your Trips</Text>
-      <Button title = 'Create Trip + ' onPress={pressHandler} />
-      { trip.map((item) => {
+      <Button title = 'Create Trip + ' onPress={() => {
+                        this.props.navigation.navigate('CreateTrip');
+                    }} />
+      { this.tripArray.map((item) => {
         return(
           <View key ={item.key}>
             <Text style={styles.item}>{item.name}</Text>
@@ -32,19 +28,17 @@ export default function HomeScreen({navigation}) {
         )
       })}
       </ScrollView>
-      
+
         </View>
-    );
+      )
+
+    }
   }
-  
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#fff',
-     // paddingTop: 40,
-     // paddingHorizontal: 20
-      //alignItems: 'center',
-     // justifyContent: 'center',
     },
     item: {
       marginTop: 24,
@@ -65,5 +59,5 @@ export default function HomeScreen({navigation}) {
       alignItems: 'center',
 
     }
-  
+
   });

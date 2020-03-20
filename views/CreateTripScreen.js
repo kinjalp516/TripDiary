@@ -1,22 +1,30 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text, Button } from 'react-native';
-import { TextInput } from "react-native-gesture-handler";
+import React from "react";
+import { StyleSheet, View, Text, Button ,TextInput} from 'react-native';
 
-export default function CreateTripScreen(){
-    const [ name, setName ] = useState();
-    return(
+
+export default class CreateTripScreen extends React.Component(){
+    constructor(props){
+        super(props);
+        this.attributes = {tripName: null, location: null, start: null, end: null};
+    }
+
+    render(){
+        return(
         //location?
         //also set dates - limit of how long a trip they can set?
-        <View style={styles.container}>
+       <View style={styles.container}>
             <Text style={styles.header}>Enter Name of Trip: </Text>
-            <TextInput style={styles.input}
-            placeholder = 'e.g. Beach Vacation'
-             onChangeText={(val) => setName(val)}/>
-             <Text>Updated name: {name} </Text>
-            
+            <TextInput
+                        style={styles.input}
+                        onChangeText={(text) => {
+                            this.attributes({tripName: text});
+                        }} />
+
+
         </View>
 
-    )
+        )
+    }
 }
 
 const styles = StyleSheet.create({
@@ -27,6 +35,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'pink',
         fontSize: 30,
         fontWeight: 'bold',
-        
+
     }
 });
