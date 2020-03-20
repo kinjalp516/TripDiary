@@ -1,41 +1,34 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {createAppContainer, createSwitchNavigator} from 'react-navigation'; 
+import { Provider as PaperProvider } from 'react-native-paper';
 
-import LoginScreen from './views/LoginScreen';
-import MainNavigator from './navigation/BasicNavigator';
+import LoadingPage from './LoadingPage';
+import LoginPage from './LoginPage';
+import DashboardController from './dashboard/DashboardController';
 
-import * as firebase from 'firebase';
-
-// Initialize Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyCVmVSCvYnzgPi53eo4992qHoivH1qrrWo",
-  authDomain: "trip-diary-696f8.firebaseapp.com",
-  databaseURL: "https://trip-diary-696f8.firebaseio.com",
-  projectId: "trip-diary-696f8",
-  storageBucket: "trip-diary-696f8.appspot.com",
-  messagingSenderId: "640672912982",
-  appId: "1:640672912982:web:52eb070764d04128900df7",
-  measurementId: "G-2F6C1GQ2EL"
-};
-
-export default class App extends React.Component {
-
-  componentDidMount() {
-    firebase.initializeApp(firebaseConfig);  
-  }
-
-  render() {
-    return (
-      <MainNavigator />
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+/*
+This is the entrypoint into our application, and this controller designates
+the possible root-view components. These include (1) the loading page,
+(2) the login page, and (3) the dashboard page.  These pages are navigated 
+to based on changes in the authentication state. 
+*/
+const AppController = createAppContainer(createSwitchNavigator(
+  {
+    loading: LoadingPage,
+    login: LoginPage,
+    dashboard: DashboardController
   },
-});
+  {
+    // We begin our application at the loading screen, which initializes 
+    // Firebase connections, and checks for login from a previous user. 
+    initialRouteName: 'loading'
+  }
+));
+
+export default function App() {
+  return (
+    <PaperProvider>
+      <AppController />
+    </PaperProvider>
+  );
+}

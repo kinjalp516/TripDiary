@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>640672912982-bpjtb8nbdt9jihjst4gebq9q30ai4p3b.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.640672912982-bpjtb8nbdt9jihjst4gebq9q30ai4p3b</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDlwdjujCtNi29GYAlj2euK_oZZs33hdNg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>640672912982</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>edu.rutgers.tripdiary</string>
+	<key>PROJECT_ID</key>
+	<string>trip-diary-696f8</string>
+	<key>STORAGE_BUCKET</key>
+	<string>trip-diary-696f8.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:640672912982:ios:a79dae3ca4da83ac900df7</string>
+	<key>DATABASE_URL</key>
+	<string>https://trip-diary-696f8.firebaseio.com</string>
+</dict>
+</plist>

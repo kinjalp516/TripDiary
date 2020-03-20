@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "640672912982",
+    "firebase_url": "https://trip-diary-696f8.firebaseio.com",
+    "project_id": "trip-diary-696f8",
+    "storage_bucket": "trip-diary-696f8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:640672912982:android:8f850d15434aca6a900df7",
+        "android_client_info": {
+          "package_name": "edu.rutgers.tripdiary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "640672912982-d64pgql0ut8comuctu334htvjfc08et0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhmsGKTAFcIDW6qSz4EjEn32BiGy7Eauo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "640672912982-d64pgql0ut8comuctu334htvjfc08et0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "640672912982-sjkd3s2luptsfrcm8ss344el2igp11ei.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "host.exp.exponent"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:640672912982:android:d5bc4c186a570e8e900df7",
+        "android_client_info": {
+          "package_name": "host.exp.exponent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "640672912982-d64pgql0ut8comuctu334htvjfc08et0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhmsGKTAFcIDW6qSz4EjEn32BiGy7Eauo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "640672912982-d64pgql0ut8comuctu334htvjfc08et0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "640672912982-sjkd3s2luptsfrcm8ss344el2igp11ei.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "host.exp.exponent"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

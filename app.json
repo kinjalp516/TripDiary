@@ -24,7 +24,17 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "edu.rutgers.tripdiary",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.640672912982-bpjtb8nbdt9jihjst4gebq9q30ai4p3b"
+        }
+      },
+      "googleServicesFile": "./GoogleService-Info.plist"
+    },
+    "android": {
+      "package": "edu.rutgers.tripdiary",
+      "googleServicesFile": "./google-services.json"
     }
   }
 }
