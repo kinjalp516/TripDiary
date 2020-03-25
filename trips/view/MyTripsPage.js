@@ -1,24 +1,25 @@
 import React from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
-import { Appbar, Menu, Card, FAB } from 'react-native-paper';
+import { Appbar, Menu, Card, FAB, Paragraph, ActivityIndicator } from 'react-native-paper';
 import firebase from '../../Firebase.js';
+import moment from 'moment';
 
-import { Trip } from '../model/Trip.js';
+import { fetchTrips } from '../model/Trip.js';
 
 export default class MyTripsPage extends React.Component{
 
   state = {
     showAppBarMenu: false,
-    trips: [
-      new Trip("Spring Break", "Miami, Florida", Date.now(), Date.now()),
-      new Trip("Europe Trip", "Madrid, Spain", Date.now(), Date.now())
-    ]
+    trips: []
   }
 
   componentDidMount() {
-    // TODO: Add Firestore logic here to fetch trips from user id
     let user = firebase.auth().currentUser;
     let userId = user.uid;
+    
+    this.props.navigation.addListener(
+      'willFocus', () => fetchTrips(userId).then((trips) => this.setState({ trips }))
+    );
   }
 
   render() {
@@ -27,13 +28,13 @@ export default class MyTripsPage extends React.Component{
         <Appbar.Header>
           <Appbar.Content title="My Trips" />
           <Menu
-            onDismiss={() => this.setState({showAppBarMenu: false})}
+            onDismiss={() => this.setState({ showAppBarMenu: false })}
             visible={this.state.showAppBarMenu}
             anchor={
               <Appbar.Action
                   color="white"
                   icon="dots-vertical"
-                  onPress={() => this.setState({showAppBarMenu: true})}
+                  onPress={() => this.setState({ showAppBarMenu: true })}
               />
             }
           >
@@ -41,17 +42,20 @@ export default class MyTripsPage extends React.Component{
           </Menu>
         </Appbar.Header>
         <ScrollView>
-          { this.state.trips.map((item, index) => (
-              <Card 
+          { this.state.trips.map((item, index) => {
+              return (<Card 
                 key={`trip-${index}`} style={styles.tripCard}
-                onPress={() => this.props.navigation.navigate("trip")}
+                onPress={() => this.props.navigation.navigate("trip", {trip: item})}
               >
                 <Card.Title 
                   title={item.name}
                   subtitle={item.location}
                 />
-              </Card>
-          )) }
+                <Card.Content>
+                  <Paragraph>From {moment(item.startDate).format('MMMM Do')} to {moment(item.endDate).format('MMMM Do')}</Paragraph>
+                </Card.Content>
+              </Card>);
+          }) }
         </ScrollView>
         <FAB
           style={styles.fab}
@@ -64,20 +68,20 @@ export default class MyTripsPage extends React.Component{
   }
 }
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1
-    },
-    fab: {
-      position: 'absolute',
-      margin: 35,
-      right: 0,
-      bottom: 0,
-    },
-    tripCard: {
-      marginTop: 24,
-      marginLeft: 24,
-      marginRight: 24,
-      backgroundColor: 'pink',
-    }
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  fab: {
+    position: 'absolute',
+    margin: 35,
+    right: 0,
+    bottom: 0,
+  },
+  tripCard: {
+    marginTop: 24,
+    marginLeft: 24,
+    marginRight: 24,
+    backgroundColor: 'pink',
+  }
+});

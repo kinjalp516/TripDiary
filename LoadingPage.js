@@ -12,7 +12,6 @@ or directly to My Trips Page.
 export default class LoadingPage extends React.Component {
     componentDidMount() {
         firebase.auth().onAuthStateChanged(user => {
-            console.log("Auth State Changed, User =", user);
             this.props.navigation.navigate(user ? 'trips' : 'login')
         });
     }

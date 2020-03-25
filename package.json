@@ -8,10 +8,15 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "^2.3.0",
     "@react-native-community/masked-view": "0.1.5",
+    "base-64": "^0.1.0",
     "expo": "~36.0.0",
     "expo-google-app-auth": "^8.0.1",
+    "expo-image-picker": "~8.0.1",
+    "expo-image-picker-multiple": "^1.1.5",
     "firebase": "^7.9.3",
+    "moment": "^2.24.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",

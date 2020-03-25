@@ -6,6 +6,14 @@ import LoadingPage from './LoadingPage';
 import LoginPage from './LoginPage';
 import TripsController from './trips/TripsController';
 
+// START: Hacky Fix for Firebase Utils (dont worry about it)
+import {decode, encode} from 'base-64'
+
+if (!global.btoa) {  global.btoa = encode }
+
+if (!global.atob) { global.atob = decode }
+// END: Hacky Fix for Firebase Utils
+
 /*
 This is the entrypoint into our application, and this controller designates
 the possible root-view components. These include (1) the loading page,
