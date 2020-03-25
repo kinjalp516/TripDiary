@@ -42,7 +42,10 @@ export default class MyTripsPage extends React.Component{
         </Appbar.Header>
         <ScrollView>
           { this.state.trips.map((item, index) => (
-              <Card key={`trip-${index}`} style={styles.tripCard}>
+              <Card 
+                key={`trip-${index}`} style={styles.tripCard}
+                onPress={() => this.props.navigation.navigate("trip")}
+              >
                 <Card.Title 
                   title={item.name}
                   subtitle={item.location}

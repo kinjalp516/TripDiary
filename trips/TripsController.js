@@ -4,11 +4,13 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 import CreateTripPage from './view/CreateTripPage';
 import MyTripsPage from './view/MyTripsPage';
+import TripDetailController from './trip_detail/TripDetailController'
 
 const TripsController = createStackNavigator(
     {
         home: MyTripsPage,
-        create: CreateTripPage
+        create: CreateTripPage,
+        trip: TripDetailController
     },
     {
         initialRouteName: 'home',
