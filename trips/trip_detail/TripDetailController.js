@@ -12,7 +12,7 @@ export default class TripDetailController extends React.Component {
         routes: [
             { key: 'photos', title: 'Photos', icon: 'camera-burst' }
         ]
-    }
+    };
 
     _handleIndexChange = index => this.setState({ index });
 
