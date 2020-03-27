@@ -6,11 +6,13 @@ import CreateTripPage from './view/CreateTripPage';
 import MyTripsPage from './view/MyTripsPage';
 import TripDetailController from './trip_detail/TripDetailController'
 import AddPhotosPage from '../photos/AddPhotosPage';
+import CalendarPage from '../trips/view/CalendarPage'
 
 const TripsController = createStackNavigator(
     {
         home: MyTripsPage,
         create: CreateTripPage,
+        calendar: CalendarPage,
         trip: TripDetailController,
         addPhotos: AddPhotosPage
     },
