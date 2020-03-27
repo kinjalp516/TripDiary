@@ -2,6 +2,7 @@ import * as React from 'react';
 import { BottomNavigation, Text } from 'react-native-paper';
 
 import PhotosPage from '../../photos/PhotosPage';
+import MapPage from '../../map/MapPage';
 
 export default class TripDetailController extends React.Component {
 
@@ -10,14 +11,16 @@ export default class TripDetailController extends React.Component {
     state = {
         index: 0,
         routes: [
-            { key: 'photos', title: 'Photos', icon: 'camera-burst' }
+            { key: 'photos', title: 'Photos', icon: 'camera-burst' },
+            { key: 'map', title: 'Map', icon: 'map'}
         ]
     };
 
     _handleIndexChange = index => this.setState({ index });
 
     _renderScene = BottomNavigation.SceneMap({
-        photos: () => <PhotosPage trip={this.trip} navigation={this.props.navigation} />
+        photos: () => <PhotosPage trip={this.trip} navigation={this.props.navigation} />,
+        map: () => <MapPage trip={this.trip} navigation={this.props.navigation} />
     });
 
     render() {
