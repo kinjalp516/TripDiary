@@ -1,5 +1,6 @@
 import React from 'react';
 import MapView from 'react-native-maps';
+import { Marker } from 'react-native-maps';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { Appbar, Menu, Card, FAB, Text } from 'react-native-paper';
 
@@ -54,7 +55,13 @@ export default class MapPage extends React.Component {
                         <MapView
                             style={styles.mapStyle}
                             region={this.state.mapRegion}
-                        />
+                        >
+                            <Marker
+                                coordinate={{latitude: this.state.mapRegion.latitude, longitude: this.state.mapRegion.longitude}}
+                                title={'Home'}
+                                description={'Me at home, self-quarantining'}
+                            />
+                        </MapView>
                 }
                 <MapView style={styles.mapStyle} />
             </View>
