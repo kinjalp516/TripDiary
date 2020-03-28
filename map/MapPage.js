@@ -7,19 +7,26 @@ import firebase from '../Firebase.js';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
+import { Pin, fetchPins } from './model/Pin';
+
 export default class MapPage extends React.Component {
 
     state = {
         pins: [], 
-        mapRegion: null, 
+        mapRegion: null,
+        initialRegion: null, 
         hasLocationPermissions: false, 
         locationResult: null
     };
 
     componentDidMount() {
         this.getLocationAsync();
-
+    
         // fetch the pins from the database
+        fetchPins(this.props.trip.id).then((pins) => this.setState({ pins }));
+        this.props.navigation.addListener(
+            'didFocus', () => fetchPins(this.props.trip.id).then((pins) => this.setState({ pins }))
+        );
     }
 
     async getLocationAsync() {
@@ -29,15 +36,17 @@ export default class MapPage extends React.Component {
         else this.setState({hasLocationPermissions: true});
 
         let location = await Location.getCurrentPositionAsync({});
-        this.setState({ locationResult: JSON.stringify(location)});
-
-        // center the map on the location that we just received
-        this.setState({mapRegion: {
+        let initialRegion = {
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421
-        }});
+        };
+        this.setState({ initialRegion });
+        this.setState({ locationResult: JSON.stringify(location) });
+
+        // center the map on the location that we just received
+        this.setState({mapRegion: initialRegion});
     }
 
     render() {
@@ -48,34 +57,44 @@ export default class MapPage extends React.Component {
                     <Appbar.Content title="Map" />
                 </Appbar.Header>
                 {
-                    this.state.locationResult === null ?
-                    <View style={styles.loading}>
-                        <ActivityIndicator size="large" />
-                    </View> :
-                    this.state.hasLocationPermissions === false ?
-                        <Text>Location permissions are not granted.</Text> :
-                        this.state.mapRegion === null ?
-                        <Text>Map region doesn't exist</Text> :
+                    this.state.mapRegion === null ?
+                        <View style={styles.loading}>
+                            <ActivityIndicator size="large" />
+                        </View> :
                         <MapView
                             style={styles.mapStyle}
                             region={this.state.mapRegion}
+                            onPress={(coords) => this.setState({ mapRegion: {
+                                latitude: coords.nativeEvent.coordinate.latitude,
+                                longitude: coords.nativeEvent.coordinate.longitude,
+                                latitudeDelta: 0.0922,
+                                longitudeDelta: 0.0421
+                            } })}
                         >
-                            <Marker
-                                coordinate={{latitude: this.state.mapRegion.latitude, longitude: this.state.mapRegion.longitude}}
-                                title={'Home'}
-                                description={'Me at home, self-quarantining'}
-                            />
+                            {this.state.pins.map(pin => (
+                                <Marker
+                                    coordinate={pin.coords}
+                                    title={pin.title}
+                                    description={pin.description}
+                                />
+                            ))}
                         </MapView>
                 }
-                {
-                    this.state.mapRegion === null ? null :
-                        <FAB
-                            style={styles.fab}
-                            icon="plus"
-                            label="Add Pin"
-                            onPress={() => this.props.navigation.navigate("addPin")}
-                        />
-                }
+
+                <FAB
+                    style={styles.fab}
+                    icon="plus"
+                    label="Add Pin"
+                    onPress={() => this.props.navigation.navigate("addPin", {
+                        coords: {
+                            latitude: this.state.mapRegion.latitude,
+                            longitude: this.state.mapRegion.longitude
+                        },
+                        trip: this.props.trip,
+                        pins: this.state.pins
+                    })}
+                /> 
+
             </View>
         );
     }

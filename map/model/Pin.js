@@ -1,5 +1,4 @@
 import firebase from '../../Firebase.js';
-import { PinchGestureHandler } from 'react-native-gesture-handler';
 
 export async function fetchPins(tripId) {
     let query = firebase.firestore().collection("pins").where("tripId", "==", tripId);
@@ -9,7 +8,7 @@ export async function fetchPins(tripId) {
     );
 }
 
-class Pin {
+export class Pin {
     constructor({id, tripId, userId, coords, title, description}) {
         this.id = id;
         this.tripId = tripId;
