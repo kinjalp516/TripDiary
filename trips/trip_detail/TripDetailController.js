@@ -3,7 +3,7 @@ import { BottomNavigation, Text } from 'react-native-paper';
 
 import PhotosPage from '../../photos/PhotosPage';
 import CalendarPage from '../view/CalendarPage';
-import JournalPage from '../view/JournalPage';
+import JournalPage from '../../journal/view/JournalPage';
 
 export default class TripDetailController extends React.Component {
 

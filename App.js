@@ -5,8 +5,8 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import LoadingPage from './LoadingPage';
 import LoginPage from './LoginPage';
 import TripsController from './trips/TripsController';
-import JournalPage from './trips/view/JournalPage';
-import addJournalPage from './trips/view/AddJournalPage';
+import JournalPage from './journal/view/JournalPage';
+import addJournalPage from './journal/view/AddJournalPage';
 
 // START: Hacky Fix for Firebase Utils (dont worry about it)
 import {decode, encode} from 'base-64'

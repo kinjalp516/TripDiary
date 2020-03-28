@@ -3,7 +3,6 @@ import {View, Text, StyleSheet} from 'react-native';
 import {Appbar, TextInput} from 'react-native-paper';
 
 import firebase from "../../Firebase.js";
-import  Trip  from '../model/Trip.js';
 
 export default class AddJournalPage extends Component{
     
