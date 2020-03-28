@@ -1,6 +1,6 @@
 import React from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View, Dimensions, ActivityIndicator } from 'react-native';
 import { Appbar, Menu, Card, FAB, Text } from 'react-native-paper';
 
 import firebase from '../Firebase.js'; 
@@ -44,12 +44,14 @@ export default class MapPage extends React.Component {
         return (
             <View style={styles.container}>
                 <Appbar.Header>
-                <Appbar.BackAction onPress={() => this.props.navigation.navigate("home")} />
-                <Appbar.Content title="Map" />
+                    <Appbar.BackAction onPress={() => this.props.navigation.navigate("home")} />
+                    <Appbar.Content title="Map" />
                 </Appbar.Header>
                 {
                     this.state.locationResult === null ?
-                    <Text>Finding your current location...</Text> :
+                    <View style={styles.loading}>
+                        <ActivityIndicator size="large" />
+                    </View> :
                     this.state.hasLocationPermissions === false ?
                         <Text>Location permissions are not granted.</Text> :
                         this.state.mapRegion === null ?
@@ -65,7 +67,15 @@ export default class MapPage extends React.Component {
                             />
                         </MapView>
                 }
-                <MapView style={styles.mapStyle} />
+                {
+                    this.state.mapRegion === null ? null :
+                        <FAB
+                            style={styles.fab}
+                            icon="plus"
+                            label="Add Pin"
+                            onPress={() => this.props.navigation.navigate("addPin")}
+                        />
+                }
             </View>
         );
     }
@@ -75,8 +85,19 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
+    loading: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     mapStyle: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height
+    },
+    fab: {
+        position: 'absolute',
+        margin: 25,
+        right: 0,
+        bottom: 0
     }
 });
