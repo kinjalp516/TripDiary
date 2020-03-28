@@ -1,36 +1,95 @@
-import React, {useState} from 'react';
+import React, {Component} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Appbar, TextInput} from 'react-native-paper';
 
 import firebase from "../../Firebase.js";
+import  Trip  from '../model/Trip.js';
 
-const AddJournalPage = ({navigation}) => {
+export default class AddJournalPage extends Component{
     
-    const [title, setTitle] = useState('');
-    const [entry, setEntry] = useState('');
+    componentDidMount() {
+        let user = firebase.auth().currentUser;
+        let userId = user.uid;
+        let trip = this.props.trip;
+    }
 
-    return <View style={styles.container}>
-        <Appbar.Header>
-            <Appbar.BackAction onPress={() => navigation.navigate('viewJournals')} />
-            <Appbar.Content title="Add Journal Entry"/>
-            <Appbar.Action icon="check" onPress = {() => {}} />
-        </Appbar.Header>
+    constructor (props) {
+        super(props);
+        this.state = {
+            title: '',
+            note: ''
+        }
+        
+        this.createNote = this.createNote.bind (this);
+    }
 
-        <TextInput
-            placeholder = 'Title'
-            value = {title}
-            onChangeText = {titleVal => setTitle(titleVal)}
-        />
+    createNote = () => {
 
-        <TextInput
-            placeholder = 'Journal Entry'
-            value = {entry}
-            onChangeText = {entryVal => setEntry(entryVal)}
-            multiline = {true}
-            blurOnSubmit = {true}
-        />
+        const {title, note} = this.state;
 
-    </View>
+        if (title === '' && note === '') {
+            alert ('Please Add a Title and Entry');
+            return;
+        } else if (title === '') {
+            alert ('Please Add a Title');
+            return;
+        } else if (note === '') {
+            alert  ('Please add an Entry');
+            return;
+        }
+
+        
+        firebase.firestore().collection('notes').add ({
+            title: title,
+            note: note
+        });
+
+        this.setState ({
+            title: '',
+            note: ''
+        })
+
+        this.props.navigation.navigate('viewJournals');
+        
+    }
+
+    backToJournal = () => {
+
+        this.setState ({
+            title: '',
+            note: ''
+        })
+        this.props.navigation.navigate('viewJournals')
+    }
+
+    render() {
+
+        return (
+            
+            <View style={styles.container}>
+                <Appbar.Header>
+                    <Appbar.BackAction onPress ={this.backToJournal} />
+                    <Appbar.Content title="Add Journal Entry"/>
+                    <Appbar.Action icon="check" onPress = {this.createNote} />
+                </Appbar.Header>
+
+                <TextInput
+                    placeholder = 'Title'
+                    onChangeText={(title) => this.setState({title})}
+                    value={this.state.title}
+                />
+                
+                <TextInput
+                    placeholder = 'Journal Entry'
+                    onChangeText={(text) => this.setState({note:text})}
+                    value={this.state.note}
+                    multiline = {true}
+                    blurOnSubmit = {true}
+                />
+
+            </View>
+        );
+    };
 };
 
 const styles = StyleSheet.create({
@@ -38,6 +97,3 @@ const styles = StyleSheet.create({
         flex: 1
     }
 });
-
-export default AddJournalPage;
-

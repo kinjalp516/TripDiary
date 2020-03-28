@@ -2,24 +2,35 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Appbar, FAB} from 'react-native-paper';
 
-const JournalPage = ({navigation}) => {
-    return <View style={styles.container}>
-        <Appbar.Header>
-            <Appbar.BackAction onPress={() => navigation.navigate('home')} />
-            <Appbar.Content title="Journal" />
-        </Appbar.Header>
+export default class JournalPage extends React.Component{
 
-        <Text>Journal Page</Text>
+    constructor () {
+        super();
 
-        <FAB
-            style={styles.fab}
-            icon="plus"
-            label="Add Entry"
-            onPress={() => navigation.navigate('addJournal')}
-        />
+        this.state = {
+            entries: []
+        }
+    }
 
-    </View>
-};
+    render() {
+        return (
+            <View style={styles.container}>
+                <Appbar.Header>
+                    <Appbar.BackAction onPress={() => this.props.navigation.navigate('home')} />
+                    <Appbar.Content title="Journal" />
+                </Appbar.Header>
+
+                <FAB
+                    style={styles.fab}
+                    icon="plus"
+                    label="Add Entry"
+                    onPress={() => this.props.navigation.navigate('addJournal')}
+                />
+
+            </View>
+        );
+    };
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -33,5 +44,3 @@ const styles = StyleSheet.create({
         bottom: 0,
       }
 });
-
-export default JournalPage;
