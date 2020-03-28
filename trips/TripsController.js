@@ -6,7 +6,8 @@ import CreateTripPage from './view/CreateTripPage';
 import MyTripsPage from './view/MyTripsPage';
 import TripDetailController from './trip_detail/TripDetailController'
 import AddPhotosPage from '../photos/AddPhotosPage';
-import CalendarPage from '../trips/view/CalendarPage'
+import CalendarPage from '../trips/view/CalendarPage';
+import JournalPage from '../trips/view/JournalPage';
 
 const TripsController = createStackNavigator(
     {
@@ -14,7 +15,8 @@ const TripsController = createStackNavigator(
         create: CreateTripPage,
         trip: TripDetailController,
         calendar: CalendarPage,
-        addPhotos: AddPhotosPage
+        addPhotos: AddPhotosPage,
+        journals: JournalPage
     },
     {
         initialRouteName: 'home',
