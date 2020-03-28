@@ -1,6 +1,5 @@
 import React from 'react';
-import MapView from 'react-native-maps';
-import { Marker } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { Appbar, Menu, Card, FAB, Text } from 'react-native-paper';
 
@@ -10,7 +9,8 @@ import * as Permissions from 'expo-permissions';
 
 export default class MapPage extends React.Component {
 
-    state = { 
+    state = {
+        pins: [], 
         mapRegion: null, 
         hasLocationPermissions: false, 
         locationResult: null
@@ -18,6 +18,8 @@ export default class MapPage extends React.Component {
 
     componentDidMount() {
         this.getLocationAsync();
+
+        // fetch the pins from the database
     }
 
     async getLocationAsync() {
