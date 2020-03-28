@@ -1,33 +1,49 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import CalendarList from 'react-native-calendars';
+import { StyleSheet, View, Text } from 'react-native';
+import { Appbar, Menu, Card, FAB } from 'react-native-paper';
+import { Calendar,CalendarList,Agenda } from 'react-native-calendars';
 
 import firebase from "../../Firebase.js";
-import { Trip } from '../model/Trip.js';
+import  Trip  from '../model/Trip.js';
 
 export default class CalendarPage extends React.Component{
     state ={
-        trip: null,
         days: []
     }
+
+    componentDidMount() {
+        let user = firebase.auth().currentUser;
+        let userId = user.uid;
+        let trip = this.props.trip;
+    
+      }
 
   /*  dayHandler(){
         //route each Daily Summary page
     }*/
     render(){
         return(
-            <View>
-                  <CalendarList 
-                     minDate = {'2020-03-27'}
-                     maxDate = {'2020-03-30'}
-                     horizontal = {true}
-                     pagingEnabled = {true}
-                     calendarWidth = {320}
-                     // onPress = {this.dayHandler} 
-                      />
+            <View style={styles.container}>
+            <Appbar.Header>
+            <Appbar.BackAction onPress={() => this.props.navigation.navigate("home")} />
+            <Appbar.Content title="Calendar" />
+            </Appbar.Header>
+            <Calendar
+                minDate={this.props.trip.startDate}
+                maxDate={this.props.trip.endDate}
+                current={this.props.trip.startDate}
+                hideExtraDays={true}
+                //onDayPress={dayHandler()}
+            />
             </View>
+            
        
 
          );
     }
 }
+const styles = StyleSheet.create({
+    container: {
+      flex: 1
+    }
+  });

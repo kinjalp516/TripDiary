@@ -12,8 +12,8 @@ const TripsController = createStackNavigator(
     {
         home: MyTripsPage,
         create: CreateTripPage,
-        calendar: CalendarPage,
         trip: TripDetailController,
+        calendar: CalendarPage,
         addPhotos: AddPhotosPage
     },
     {
