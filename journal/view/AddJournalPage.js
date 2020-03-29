@@ -3,15 +3,10 @@ import {View, Text, StyleSheet} from 'react-native';
 import {Appbar, TextInput} from 'react-native-paper';
 
 import firebase from "../../Firebase.js";
+import {Journal} from '../model/Journal.js';
 
 export default class AddJournalPage extends Component{
     
-    componentDidMount() {
-        let user = firebase.auth().currentUser;
-        let userId = user.uid;
-        let trip = this.props.trip;
-    }
-
     constructor (props) {
         super(props);
         this.state = {
@@ -22,9 +17,14 @@ export default class AddJournalPage extends Component{
         this.createNote = this.createNote.bind (this);
     }
 
-    createNote = () => {
+    componentDidMount() {
+        let user = firebase.auth().currentUser;
+        this.setState({userId: user.uid});
+    }
 
-        const {title, note} = this.state;
+    async createNote () {
+
+        const {title, note, userId} = this.state;
 
         if (title === '' && note === '') {
             alert ('Please Add a Title and Entry');
@@ -37,18 +37,23 @@ export default class AddJournalPage extends Component{
             return;
         }
 
-        
-        firebase.firestore().collection('notes').add ({
-            title: title,
-            note: note
-        });
+        if  (this.state.userId != null) {
+            let journal = new Journal ({
+                id: "",
+                userId: userId,
+                title: title,
+                note: note
+            });
 
+            await journal.storeJournal();
+        }
+        
         this.setState ({
             title: '',
             note: ''
         })
 
-        this.props.navigation.navigate('viewJournals');
+        this.props.navigation.goBack(null);
         
     }
 
@@ -58,7 +63,7 @@ export default class AddJournalPage extends Component{
             title: '',
             note: ''
         })
-        this.props.navigation.navigate('viewJournals')
+        this.props.navigation.goBack(null);
     }
 
     render() {
