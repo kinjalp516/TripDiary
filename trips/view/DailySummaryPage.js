@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { Avatar, Icon, Button, Paragraph, Appbar, Menu, Card, FAB } from 'react-native-paper';
 
 import firebase from "../../Firebase.js";
 import  Trip  from '../model/Trip.js';
-import {fetchJournals} from '../model/Journal.js';
-import {fetchPhotos} from './../photos/model/Photo.js';
+import {fetchJournals} from '../../journal/model/Journal.js';
+import {fetchPhotos} from '../../photos/model/Photo';
 
 export default class DailySummary extends React.Component{
     state ={
@@ -28,7 +28,7 @@ export default class DailySummary extends React.Component{
 
     render(){
         return(
-            <View style={styles.container}>
+            <View>
             <Appbar.Header>
             <Appbar.BackAction onPress={() => this.props.navigation.navigate("calendar")} />
             <Appbar.Content title="Daily Summary" />
@@ -36,9 +36,10 @@ export default class DailySummary extends React.Component{
             <ScrollView>
             <Card>
                 <Card.Title
-                title="Photos"
-                subtitle="[# of photos]"
-                left={(props) => <Avatar rounded reverse size="small" icon= "md-photos" onPress={() => console.log("This will bring you to all photos for this day!")}/>} />
+                    title = "Photos"
+                    subtitle = "[# of photos]"
+                    //left={(props) => <Avatar rounded reverse size="small" icon= "md-photos" onPress={() => console.log("This will bring you to all photos for this day!")}/>} 
+                />
                 <Card.Content>
                     <View style={{flex: 1, flexDirection: 'row'}}>
                         <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
