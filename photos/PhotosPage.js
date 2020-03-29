@@ -66,7 +66,7 @@ export default class PhotosPage extends React.Component {
         <Appbar.Header>
           <Appbar.BackAction onPress={() => this.props.navigation.navigate("home")} />
           <Appbar.Content title="Photos" />
-          <Appbar.Action icon="cloud-upload" onPress={
+          <Appbar.Action icon="image-plus" onPress={
             () => this.pickImage()
           } />
         </Appbar.Header>

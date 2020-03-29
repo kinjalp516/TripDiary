@@ -8,11 +8,13 @@ import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
 import { Pin, fetchPins } from './model/Pin';
+import { fetchPhotos } from '../photos/model/Photo';
 
 export default class MapPage extends React.Component {
 
     state = {
         pins: [], 
+        photos: [],
         mapRegion: null,
         initialRegion: null, 
         hasLocationPermissions: false, 
@@ -25,7 +27,13 @@ export default class MapPage extends React.Component {
         // fetch the pins from the database
         fetchPins(this.props.trip.id).then((pins) => this.setState({ pins }));
         this.props.navigation.addListener(
-            'didFocus', () => fetchPins(this.props.trip.id).then((pins) => this.setState({ pins }))
+            'didFocus', () => {
+                fetchPins(this.props.trip.id).then((pins) => this.setState({ pins }));
+                fetchPhotos(this.props.trip.id).then((photos) => {
+                    this.setState({ photos });
+                    console.log("photos", photos);
+                });
+            }
         );
     }
 
@@ -71,11 +79,22 @@ export default class MapPage extends React.Component {
                                 longitudeDelta: 0.0421
                             } })}
                         >
-                            {this.state.pins.map(pin => (
+                            {this.state.pins.map((pin, index) => (
                                 <Marker
+                                    key={index}
                                     coordinate={pin.coords}
                                     title={pin.title}
+                                    pinColor="green"
                                     description={pin.description}
+                                />
+                            ))}
+                            {this.state.photos.map((photo, index) => (
+                                <Marker
+                                    key={index}
+                                    coordinate={{latitude: photo.location.latitude, longitude: photo.location.longitude}}
+                                    title="Photo"
+                                    pinColor="blue"
+                                    description="Picture taken at this location"
                                 />
                             ))}
                         </MapView>
