@@ -1,0 +1,124 @@
+import React from 'react';
+import MapView, { Marker } from 'react-native-maps';
+import { StyleSheet, View, Dimensions, ActivityIndicator } from 'react-native';
+import { Appbar, Menu, Card, FAB, Text } from 'react-native-paper';
+
+import firebase from '../Firebase.js'; 
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
+
+import { Pin, fetchPins } from './model/Pin';
+
+export default class MapPage extends React.Component {
+
+    state = {
+        pins: [], 
+        mapRegion: null,
+        initialRegion: null, 
+        hasLocationPermissions: false, 
+        locationResult: null
+    };
+
+    componentDidMount() {
+        this.getLocationAsync();
+    
+        // fetch the pins from the database
+        fetchPins(this.props.trip.id).then((pins) => this.setState({ pins }));
+        this.props.navigation.addListener(
+            'didFocus', () => fetchPins(this.props.trip.id).then((pins) => this.setState({ pins }))
+        );
+    }
+
+    async getLocationAsync() {
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+
+        if (status !== 'granted') this.setState({locationResult: 'Permission to access location was denied'});
+        else this.setState({hasLocationPermissions: true});
+
+        let location = await Location.getCurrentPositionAsync({});
+        let initialRegion = {
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421
+        };
+        this.setState({ initialRegion });
+        this.setState({ locationResult: JSON.stringify(location) });
+
+        // center the map on the location that we just received
+        this.setState({mapRegion: initialRegion});
+    }
+
+    render() {
+        return (
+            <View style={styles.container}>
+                <Appbar.Header>
+                    <Appbar.BackAction onPress={() => this.props.navigation.navigate("home")} />
+                    <Appbar.Content title="Map" />
+                </Appbar.Header>
+                {
+                    this.state.mapRegion === null ?
+                        <View style={styles.loading}>
+                            <ActivityIndicator size="large" />
+                        </View> :
+                        <MapView
+                            style={styles.mapStyle}
+                            region={this.state.mapRegion}
+                            onPress={(coords) => this.setState({ mapRegion: {
+                                latitude: coords.nativeEvent.coordinate.latitude,
+                                longitude: coords.nativeEvent.coordinate.longitude,
+                                latitudeDelta: 0.0922,
+                                longitudeDelta: 0.0421
+                            } })}
+                        >
+                            {this.state.pins.map(pin => (
+                                <Marker
+                                    coordinate={pin.coords}
+                                    title={pin.title}
+                                    description={pin.description}
+                                />
+                            ))}
+                        </MapView>
+                }
+                {
+                    this.state.mapRegion === null ? null :
+                    <FAB
+                        style={styles.fab}
+                        icon="plus"
+                        label="Add Pin"
+                        onPress={() => this.props.navigation.navigate("addPin", {
+                            coords: {
+                                latitude: this.state.mapRegion.latitude,
+                                longitude: this.state.mapRegion.longitude
+                            },
+                            trip: this.props.trip,
+                            pins: this.state.pins
+                        })}
+                    />
+                }
+
+            </View>
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    loading: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    mapStyle: {
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height
+    },
+    fab: {
+        position: 'absolute',
+        margin: 25,
+        right: 0,
+        bottom: 0
+    }
+});

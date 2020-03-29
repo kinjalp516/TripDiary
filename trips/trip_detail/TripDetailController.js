@@ -5,6 +5,7 @@ import PhotosPage from '../../photos/PhotosPage';
 import CalendarPage from '../view/CalendarPage';
 import JournalPage from '../../journal/view/JournalPage';
 import BudgetPage from '../../budget/view/BudgetPage';
+import MapPage from '../../map/MapPage';
 
 export default class TripDetailController extends React.Component {
 
@@ -16,10 +17,10 @@ export default class TripDetailController extends React.Component {
             { key: 'photos', title: 'Photos', icon: 'camera-burst' },
             { key: 'calendar', title: 'Calendar', icon: 'calendar'},
             { key: 'journal', title: 'Journal', icon: 'book'},
-            { key: 'budget', title: 'Budget', icon: 'bank'}
-
+            { key: 'budget', title: 'Budget', icon: 'bank'},
+            { key: 'map', title: 'Map', icon: 'map'}
         ]
-    }
+    };
 
     _handleIndexChange = index => this.setState({ index });
 
@@ -27,7 +28,8 @@ export default class TripDetailController extends React.Component {
         photos: () => <PhotosPage trip={this.trip} navigation={this.props.navigation} />,
         calendar: () => <CalendarPage trip={this.trip} navigation={this.props.navigation}/>,
         journal: () => <JournalPage trip={this.trip} navigation={this.props.navigation}/>,
-        budget: () => <BudgetPage trip={this.trip} navigation={this.props.navigation}/>
+        budget: () => <BudgetPage trip={this.trip} navigation={this.props.navigation}/>,
+        map: () => <MapPage trip={this.trip} navigation={this.props.navigation} />
     });
 
     render() {
