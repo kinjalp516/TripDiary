@@ -1,6 +1,6 @@
 import React from 'react';
 import MapView, { Marker, Circle } from 'react-native-maps';
-import { StyleSheet, View, Dimensions, ActivityIndicator, Alert } from 'react-native';
+import { StyleSheet, View, Dimensions, ActivityIndicator, Alert, Image } from 'react-native';
 import { Appbar, Menu, Card, FAB, Text } from 'react-native-paper';
 
 import firebase from '../Firebase.js'; 
@@ -110,7 +110,9 @@ export default class MapPage extends React.Component {
                                             this.doDelete();
                                         }
                                     }}
-                                />
+                                >
+                                    {pin.photoUrl === null ? null : <Image style={styles.photo} source={{uri: pin.photoUrl}} />}
+                                </Marker>
                             ))}
                         </MapView>
                 }
@@ -154,5 +156,9 @@ const styles = StyleSheet.create({
         margin: 25,
         right: 0,
         bottom: 0
+    },
+    photo: {
+        height: 35,
+        width: 35
     }
 });

@@ -9,13 +9,14 @@ export async function fetchPins(tripId) {
 }
 
 export class Pin {
-    constructor({id, tripId, userId, coords, title, description}) {
+    constructor({id, tripId, userId, coords, title, description, photoUrl}) {
         this.id = id;
         this.tripId = tripId;
         this.userId = userId;
         this.coords = coords;
         this.title = title;
         this.description = description;
+        this.photoUrl = photoUrl;
     }
 
     toJSON() {
@@ -25,7 +26,8 @@ export class Pin {
             userId: this.userId,
             coords: this.coords,
             title: this.title,
-            description: this.description
+            description: this.description,
+            photoUrl: this.photoUrl
         }
     }
 

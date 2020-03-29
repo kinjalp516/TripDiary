@@ -26,8 +26,6 @@ export default class PhotosPage extends React.Component {
       exif: true
     });
 
-    console.log(result);
-
     if(result && !result.cancelled && result.type=="image") {
       this.setState({loading: true});
       const response = await fetch(result.uri);
