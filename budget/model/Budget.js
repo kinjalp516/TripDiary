@@ -10,10 +10,9 @@ export async function fetchBudget(tripId) {
 
 class Budget{
 
-    constructor({id, tripId, userId, amount}) {
+    constructor({id, tripId, amount}) {
         this.id = id;
         this.tripId = tripId;
-        this.userId = userId;
         this.amount = amount;
     }
 
@@ -21,7 +20,6 @@ class Budget{
         return {
             id: this.id,
             tripId: this.tripId,
-            userId: this.userId,
             amount: this.amount
         };
     }

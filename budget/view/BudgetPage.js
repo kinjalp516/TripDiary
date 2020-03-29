@@ -16,8 +16,10 @@ export default class BudgetPage extends React.Component{
                 <FAB
                     style={styles.fab}
                     //icon="bar-graph"
-                    label="View Budget Statistics"
-                    onPress={() => this.props.navigation.navigate('viewBudgetStatistics')}
+                    //label="View Budget Statistics"
+                    label = "Create New Budget"
+                    onPress={() => this.props.navigation.navigate('addBudget')}
+                    //onPress={() => this.props.navigation.navigate('viewBudgetStatistics')}
                 />
 
             </View>
