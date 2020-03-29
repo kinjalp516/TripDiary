@@ -26,7 +26,7 @@ export default class AddJournalPage extends Component{
 
     async editNote (dbId, title, note) {
         //editing the journal entry
-        updateJournal(this.state.dbId, this.state.title, this.state.note);
+        updateJournal(dbId, title, note);
         this.props.navigation.goBack(null);
     }
 
