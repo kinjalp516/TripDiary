@@ -72,7 +72,7 @@ export default class AddJournalPage extends Component{
             
             <View style={styles.container}>
                 <Appbar.Header>
-                    <Appbar.BackAction onPress ={this.backToJournal} />
+                    <Appbar.BackAction onPress ={() => this.props.navigation.goBack()} />
                     <Appbar.Content title="Add Journal Entry"/>
                     <Appbar.Action icon="check" onPress = {this.createNote} />
                 </Appbar.Header>
