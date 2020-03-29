@@ -21,9 +21,9 @@ export default class ViewJournal extends Component {
         return (
             <View style={styles.container}>
                 <Appbar.Header>
-                        <Appbar.BackAction onPress={() => this.props.navigation.navigate('viewJournals')} />
-                        <Appbar.Content title = {title} />
-                        <Appbar.Action icon = "delete" onPress = {() => this.delete(id)} />
+                    <Appbar.BackAction onPress={() => this.props.navigation.goBack()} />
+                    <Appbar.Content title={title} />
+                    <Appbar.Action icon = "delete" onPress = {() => this.delete(id)} />
                 </Appbar.Header>
 
             
