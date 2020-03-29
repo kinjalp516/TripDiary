@@ -1,14 +1,15 @@
 import firebase from '../../Firebase.js';
 
 export async function fetchPhotos(tripId) {
-    let query = firebase.firestore().collection("photos").where("tripId", "==", tripId);
+    let query = firebase.firestore().collection("photos").where("tripId", "==", tripId)
+        .orderBy("dateTaken", "asc");   // Returns the result from earliest date to latest date. 
     let result = await query.get();
     return result.docs.map(
         (snapshot) => new Photo(snapshot.data())
     );
 }
 
-class Photo {
+export class Photo {
     constructor({id, photoUrl, tripId, userId, location, dateTaken}) {
         this.id = id;
         this.photoUrl = photoUrl;
@@ -30,8 +31,13 @@ class Photo {
     }
 
     async storePhoto() {
-        let ref = firebase.firestore().collection("photos").doc();
-        this.id = ref.id;
+        let ref;
+        if(this.id.length < 1) {
+            ref = firebase.firestore().collection("photos").doc();
+            this.id = ref.id;
+        } else {
+            ref = firebase.firestore().collection("photos").doc(this.id);
+        }
         return ref.set(this.toJSON());
     }
 }
