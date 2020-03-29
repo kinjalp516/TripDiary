@@ -4,7 +4,7 @@ import { Avatar, Icon, Button, Paragraph, Appbar, Menu, Card, FAB } from 'react-
 
 import firebase from "../../Firebase.js";
 import  Trip  from '../model/Trip.js';
-import {fetchJournals} from '../../journal/model/Journal.js';
+//import {fetchJournals} from '../../journal/model/Journal.js';
 import {fetchPhotos} from '../../photos/model/Photo';
 
 export default class DailySummary extends React.Component{
