@@ -22,6 +22,14 @@ export async function deleteJournal(docId) {
     firebase.firestore().collection("journals").doc(docId).delete();
 }
 
+export async function updateJournal(docId, newTitle, newNote) {
+    firebase.firestore().collection("journals").doc(docId).update ({
+        title: newTitle,
+        note: newNote
+    })
+    //firebase.firestore().collection("journals").doc(docId).delete();
+}
+
 export class Journal {
     constructor({id, userId, title, note}, fromFirestore=false) {
         this.id = id;

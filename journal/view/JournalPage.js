@@ -39,12 +39,20 @@ export default class JournalPage extends Component{
                             <Card 
                                 key = {`journals-${index}`} 
                                 style = {styles.journalCard}
-                                onPress = {() => {
+                                /*onPress = {() => {
                                     this.props.navigation.navigate('viewJournal', {
                                         title: item.title,
                                         note: item.note,
                                         itemId: item.id
-                                })}}
+                                })}}*/
+                                onPress = {() => {
+                                    this.props.navigation.navigate('addJournal', {
+                                        itemId: item.id,
+                                        title: item.title,
+                                        note: item.note,
+                                        editJournal: true
+                                    })
+                                }}
                             >
 
                             <Card.Title 
@@ -59,7 +67,11 @@ export default class JournalPage extends Component{
                     style={styles.fab}
                     icon="plus"
                     label="Add Entry"
-                    onPress={() => this.props.navigation.navigate('addJournal')}
+                    onPress={() => this.props.navigation.navigate('addJournal', {
+                        title: '',
+                        note: '',
+                        editJournal: false
+                    })}
                 />
 
             </View>
