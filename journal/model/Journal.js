@@ -18,6 +18,10 @@ export async function fetchJournals(userId) {
     );
 }
 
+export async function deleteJournal(docId) {
+    firebase.firestore().collection("journals").doc(docId).delete();
+}
+
 export class Journal {
     constructor({id, userId, title, note}, fromFirestore=false) {
         this.id = id;
