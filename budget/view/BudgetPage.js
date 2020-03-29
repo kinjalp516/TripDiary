@@ -47,6 +47,13 @@ const styles = StyleSheet.create({
         flex: 1
     },
 
+    budgetCard: {
+        marginTop: 24,
+        marginLeft: 24,
+        marginRight: 24,
+        backgroundColor: '#A4D7DF',
+    },
+
     fab: {
         position: 'absolute',
         margin: 16,
