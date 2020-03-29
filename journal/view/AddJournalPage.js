@@ -3,15 +3,17 @@ import {View, Text, StyleSheet} from 'react-native';
 import {Appbar, TextInput} from 'react-native-paper';
 
 import firebase from "../../Firebase.js";
-import {Journal} from '../model/Journal.js';
+import {Journal, updateJournal} from '../model/Journal.js';
 
 export default class AddJournalPage extends Component{
     
     constructor (props) {
         super(props);
         this.state = {
-            title: '',
-            note: ''
+            dbId: this.props.navigation.getParam('itemId', 'NO-id'),
+            title: this.props.navigation.getParam('title', 'NO-title'),
+            note: this.props.navigation.getParam('note', 'NO-note'),
+            editJournal: this.props.navigation.getParam('editJournal', 'NO-note')
         }
         
         this.createNote = this.createNote.bind (this);
@@ -22,20 +24,13 @@ export default class AddJournalPage extends Component{
         this.setState({userId: user.uid});
     }
 
-    async createNote () {
+    async editNote (dbId, title, note) {
+        //editing the journal entry
+        updateJournal(this.state.dbId, this.state.title, this.state.note);
+        this.props.navigation.goBack(null);
+    }
 
-        const {title, note, userId} = this.state;
-
-        if (title === '' && note === '') {
-            alert ('Please Add a Title and Entry');
-            return;
-        } else if (title === '') {
-            alert ('Please Add a Title');
-            return;
-        } else if (note === '') {
-            alert  ('Please add an Entry');
-            return;
-        }
+    async createNote (userId, title, note) {
 
         if  (this.state.userId != null) {
             let journal = new Journal ({
@@ -73,8 +68,28 @@ export default class AddJournalPage extends Component{
             <View style={styles.container}>
                 <Appbar.Header>
                     <Appbar.BackAction onPress ={() => this.props.navigation.goBack()} />
-                    <Appbar.Content title="Add Journal Entry"/>
-                    <Appbar.Action icon="check" onPress = {this.createNote} />
+                    <Appbar.Content title="Journal Entry"/>
+                    <Appbar.Action icon="check" onPress = {() => {
+
+                        const {dbId, userId, title, note} = this.state;
+
+                        if (title === '' && note === '') {
+                            alert ('Please Add a Title and Entry');
+                            return;
+                        } else if (title === '') {
+                            alert ('Please Add a Title');
+                            return;
+                        } else if (note === '') {
+                            alert  ('Please add an Entry');
+                            return;
+                        }
+
+                        if (this.state.editJournal) {
+                            this.editNote(dbId, title, note);
+                        } else {
+                            this.createNote(userId, title, note);
+                        }
+                    }} />
                 </Appbar.Header>
 
                 <TextInput
