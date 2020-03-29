@@ -3,7 +3,6 @@ import {View, StyleSheet, Text} from 'react-native';
 import {Appbar} from 'react-native-paper';
 
 import {deleteJournal} from '../model/Journal.js';
-import firebase from "../../Firebase.js";
 
 export default class ViewJournal extends Component {
 
