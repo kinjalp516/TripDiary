@@ -80,20 +80,22 @@ export default class MapPage extends React.Component {
                             ))}
                         </MapView>
                 }
-
-                <FAB
-                    style={styles.fab}
-                    icon="plus"
-                    label="Add Pin"
-                    onPress={() => this.props.navigation.navigate("addPin", {
-                        coords: {
-                            latitude: this.state.mapRegion.latitude,
-                            longitude: this.state.mapRegion.longitude
-                        },
-                        trip: this.props.trip,
-                        pins: this.state.pins
-                    })}
-                /> 
+                {
+                    this.state.mapRegion === null ? null :
+                    <FAB
+                        style={styles.fab}
+                        icon="plus"
+                        label="Add Pin"
+                        onPress={() => this.props.navigation.navigate("addPin", {
+                            coords: {
+                                latitude: this.state.mapRegion.latitude,
+                                longitude: this.state.mapRegion.longitude
+                            },
+                            trip: this.props.trip,
+                            pins: this.state.pins
+                        })}
+                    />
+                }
 
             </View>
         );
