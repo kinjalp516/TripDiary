@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, Image, FlatList } from 'react-native';
-import { Appbar, Menu, Card, FAB, Text } from 'react-native-paper';
+import { Appbar, Menu, Card, FAB, Text, ActivityIndicator } from 'react-native-paper';
+import * as ImagePicker from 'expo-image-picker';
+import moment from 'moment';
 
 import firebase from '../Firebase.js'; 
 import { Photo, fetchPhotos } from './model/Photo.js';
@@ -8,127 +10,53 @@ import { Photo, fetchPhotos } from './model/Photo.js';
 export default class PhotosPage extends React.Component {
 
   state = {
-    photos: [
-    {
-      id: 1,
-      photoUrl: 'https://picsum.photos/698',
-      tripId: 1,
-      userId: 1,
-      location: 'Hawaii',
-      dateTaken: new Date(2020, 3, 23, 4, 50, 7, 12)
-    },
-    {
-      id: 2,
-      photoUrl: 'https://picsum.photos/699',
-      tripId: 2,
-      userId: 2,
-      location: 'Hawaii',
-      dateTaken: new Date(2020, 3, 23, 5, 50, 7, 12),
-    },
-    {
-      id: 3,
-      photoUrl: 'https://picsum.photos/700',
-      tripId: 3,
-      userId: 3,
-      location: 'Hawaii',
-      dateTaken: new Date(2020, 3, 23, 4, 49, 7, 12)
-    },
-    {
-      id: 4,
-      photoUrl: 'https://picsum.photos/701',
-      tripId: 4,
-      userId: 4,
-      location: 'Hawaii',
-      dateTaken: new Date(2020, 3, 23, 4, 50, 6, 12)
-    },
-    {
-      id: 5,
-      photoUrl: 'https://picsum.photos/702',
-      tripId: 5,
-      userId: 5,
-      location: 'Hawaii',
-      dateTaken: new Date(2020, 3, 23, 4, 50, 7, 14)
-    },
-    {
-      id: 6,
-      photoUrl: 'https://picsum.photos/703',
-      tripId: 6,
-      userId: 6,
-      location: 'Hawaii',
-      dateTaken: new Date(2020, 3, 23, 4, 50, 7, 8)
-    },
-    {
-      id: 7,
-      photoUrl: 'https://picsum.photos/704',
-      tripId: 7,
-      userId: 7,
-      location: 'Hawaii',
-      dateTaken: new Date(2020, 3, 23, 4, 51, 7, 14)
-    },
-    {
-      id: 8,
-      photoUrl: 'https://picsum.photos/705',
-      tripId: 8,
-      userId: 8,
-      location: 'Hawaii',
-      dateTaken: new Date(2020, 3, 23, 4, 46, 7, 14)
-    },
-    {
-      id: 9,
-      photoUrl: 'https://picsum.photos/706',
-      tripId: 9,
-      userId: 9,
-      location: 'Hawaii',
-      dateTaken: new Date(2020, 3, 23, 4, 32, 7, 14)
-    },
-    {
-      id: 10,
-      photoUrl: 'https://picsum.photos/707',
-      tripId: 10,
-      userId: 10,
-      location: 'Hawaii',
-      dateTaken: new Date(2020, 3, 23, 4, 50, 7, 45)
-    },
-    {
-      id: 11,
-      photoUrl: 'https://picsum.photos/708',
-      tripId: 11,
-      userId: 11,
-      location: 'Hawaii',
-      dateTaken: new Date(2020, 3, 23, 4, 50, 8, 14)
-    },
-    {
-      id: 12,
-      photoUrl: 'https://picsum.photos/709',
-      tripId: 12,
-      userId: 12,
-      location: 'Hawaii',
-      dateTaken: new Date(2020, 3, 23, 4, 50, 3, 14)
-    }
-  ]
+    loading: true,
+    photos: []
   };
 
-  sortByDate() {
-    let arr = this.state.photos.slice();
-    arr.sort((a, b) => {
-      let dateOne = a.dateTaken, dateTwo = b.dateTaken;
-      if (dateOne.getHours() != dateTwo.getHours()) return dateOne.getHours() - dateTwo.getHours();
-      else if (dateOne.getMinutes() != dateTwo.getMinutes()) return dateOne.getMinutes() - dateTwo.getMinutes();
-      else if (dateOne.getSeconds() != dateTwo.getSeconds()) return dateOne.getSeconds() - dateTwo.getSeconds();
-      else if (dateOne.getMilliseconds() != dateOne.getMilliseconds()) dateOne.getMilliseconds() - dateTwo.getMilliseconds();
-      return 1;
-    });
-    this.setState({photos: arr})
+  componentDidMount() {
+    this.props.navigation.addListener(
+      'willFocus', () => fetchPhotos(this.props.trip.id).then((photos) => this.setState({ photos: photos, loading: false }))
+    );
   }
 
-  componentDidMount() {
-    let user = firebase.auth().currentUser;
-    let userId = user.uid;
-    let trip = this.props.trip;
+  async pickImage() {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      exif: true
+    });
 
-    this.sortByDate();
+    if(result && !result.cancelled && result.type=="image") {
+      this.setState({loading: true});
+      const response = await fetch(result.uri);
+      const blob = await response.blob();
 
-    // use fetchPhotos to get all photos and store it in state
+      let userId = firebase.auth().currentUser?.uid ?? "";
+
+      var ref = firebase.storage().ref(userId).child(this.props.trip.id).child(Date.now().toString());
+      const uploadTask = ref.put(blob);
+
+      uploadTask.then(async (snapshot) => {
+        let photoUrl = await snapshot.ref.getDownloadURL()
+        let dateTaken = moment(result.exif["DateTimeOriginal"], 'YYYY:MM:DD hh:mm:ss').unix();
+        let latitude = result.exif["GPSLatitude"] * (result.exif["GPSLatitudeRef"] == "N" ? 1 : -1);
+        let longitude = result.exif["GPSLongitude"] * (result.exif["GPSLongitudeRef"] == "E" ? 1 : -1);
+        let location = new firebase.firestore.GeoPoint(latitude, longitude);
+
+        let newPhoto = new Photo({
+          id: "", 
+          photoUrl: photoUrl, 
+          tripId: this.props.trip.id, 
+          userId: userId, 
+          location: location, 
+          dateTaken: dateTaken
+        });
+
+        await newPhoto.storePhoto();
+        
+        fetchPhotos(this.props.trip.id).then((photos) => this.setState({ photos: photos, loading: false }));       
+      }).catch((error) => console.error("Error uploading image", error));
+    }
   }
 
   render() {
@@ -139,10 +67,15 @@ export default class PhotosPage extends React.Component {
           <Appbar.BackAction onPress={() => this.props.navigation.navigate("home")} />
           <Appbar.Content title="Photos" />
           <Appbar.Action icon="cloud-upload" onPress={
-            () => this.props.navigation.navigate("addPhotos")
+            () => this.pickImage()
           } />
         </Appbar.Header>
-        <FlatList
+        {this.state.loading && (
+          <View style={styles.loading}>
+              <ActivityIndicator size="large" />
+          </View>
+        )}
+        {!this.state.loading && <FlatList
           data={this.state.photos}
           renderItem={({item}) => {
               return (
@@ -154,7 +87,7 @@ export default class PhotosPage extends React.Component {
           }
           keyExtractor={item => item.id}
           numColumns={2}
-        />
+        />}
       </View>
     );
   }
@@ -163,6 +96,11 @@ export default class PhotosPage extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   photo: {
     width: 195,
