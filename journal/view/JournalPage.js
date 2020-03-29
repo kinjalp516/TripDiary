@@ -1,11 +1,12 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
 import {Appbar, FAB, Card} from 'react-native-paper';
+import {StackActions} from 'react-navigation';
 
 import firebase from "../../Firebase.js";
 import {fetchJournals} from '../model/Journal.js';
 
-export default class JournalPage extends React.Component{
+export default class JournalPage extends Component{
 
     state = {
         journals: []
@@ -22,7 +23,7 @@ export default class JournalPage extends React.Component{
             'willFocus', 
             () => fetchJournals(userId).then((journals) => this.setState({journals}))
         );
-    }    
+    }
 
     render() {
         return (
@@ -38,7 +39,11 @@ export default class JournalPage extends React.Component{
                             <Card 
                                 key = {`journals-${index}`} 
                                 style = {styles.journalCard}
-                                //onPress = {() => {}}
+                                onPress = {() => {
+                                    this.props.navigation.navigate('viewJournal', {
+                                        title: item.title,
+                                        note: item.note
+                                })}}
                             >
 
                             <Card.Title 

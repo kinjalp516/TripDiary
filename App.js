@@ -7,8 +7,9 @@ import LoginPage from './LoginPage';
 import TripsController from './trips/TripsController';
 import JournalPage from './journal/view/JournalPage';
 import BudgetPage from './budget/view/BudgetPage';
-import addJournalPage from './journal/view/AddJournalPage';
-import AddBudget from './budget/view/AddBudget'
+import AddJournalPage from './journal/view/AddJournalPage';
+import AddBudget from './budget/view/AddBudget';
+import ViewJournal from './journal/view/ViewJournal';
 
 // START: Hacky Fix for Firebase Utils (dont worry about it)
 import {decode, encode} from 'base-64'
@@ -30,9 +31,10 @@ const AppController = createAppContainer(createSwitchNavigator(
     login: LoginPage,
     trips: TripsController,
     viewJournals: JournalPage,
-    addJournal: addJournalPage,
+    addJournal: AddJournalPage,
     viewBudget: BudgetPage,
-    addBudget: AddBudget
+    addBudget: AddBudget,
+    viewJournal: ViewJournal
   },
   {
     // We begin our application at the loading screen, which initializes 
