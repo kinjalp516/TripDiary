@@ -4,6 +4,7 @@ import { BottomNavigation, Text } from 'react-native-paper';
 import PhotosPage from '../../photos/PhotosPage';
 import CalendarPage from '../view/CalendarPage';
 import JournalPage from '../../journal/view/JournalPage';
+import BudgetPage from '../../budget/view/BudgetPage';
 
 export default class TripDetailController extends React.Component {
 
@@ -14,7 +15,8 @@ export default class TripDetailController extends React.Component {
         routes: [
             { key: 'photos', title: 'Photos', icon: 'camera-burst' },
             { key: 'calendar', title: 'Calendar', icon: 'calendar'},
-            { key: 'journal', title: 'Journal', icon: 'book'}
+            { key: 'journal', title: 'Journal', icon: 'book'},
+            { key: 'budget', title: 'Budget', icon: 'bank'}
 
         ]
     }
@@ -24,7 +26,8 @@ export default class TripDetailController extends React.Component {
     _renderScene = BottomNavigation.SceneMap({
         photos: () => <PhotosPage trip={this.trip} navigation={this.props.navigation} />,
         calendar: () => <CalendarPage trip={this.trip} navigation={this.props.navigation}/>,
-        journal: () => <JournalPage trip={this.trip} navigation={this.props.navigation}/>
+        journal: () => <JournalPage trip={this.trip} navigation={this.props.navigation}/>,
+        budget: () => <BudgetPage trip={this.trip} navigation={this.props.navigation}/>
     });
 
     render() {
