@@ -10,7 +10,7 @@ export default class ViewJournal extends Component {
     //deletes journal entry & navigates back to journal page
     delete = (itemId) => {
         deleteJournal(itemId);
-        this.props.navigation.navigate('viewJournals')
+        this.props.navigation.goBack();
     }
 
     render() {
