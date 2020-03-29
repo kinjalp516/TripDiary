@@ -17,8 +17,8 @@ export default class AddBudget extends React.Component{
     }
 
     componentDidMount() {
-        let user = firebase.auth().currentUser;
-        this.setState({tripId: user.tripId});
+        let trip = firebase.auth().trip;
+        this.setState({tripId: trip});
     }
 
     async createBudget () {
@@ -33,9 +33,9 @@ export default class AddBudget extends React.Component{
             return;
         }
 
-        if  (this.state.userId != null) {
+        if  (this.state.tripId != null) {
             let budget = new Budget ({
-                id: "",
+                id: '',
                 tripId: tripId,
                 amount: budget
             });
@@ -63,7 +63,7 @@ export default class AddBudget extends React.Component{
         return(
             <View style={styles.container}>
                 <Appbar.Header>
-                <Appbar.BackAction onPress ={this.viewBudgetl} />
+                    <Appbar.BackAction onPress ={this.viewBudget} />
                     <Appbar.Content title="Add New Budget"/>
                     <Appbar.Action icon="check" onPress = {this.createBudget} />
                 </Appbar.Header>
@@ -77,7 +77,7 @@ export default class AddBudget extends React.Component{
             </View>
         );
     };
-}
+};
 
 const styles = StyleSheet.create({
     container: {

@@ -2,8 +2,23 @@ import React from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import { Appbar, Menu, Card, FAB, Paragraph, ActivityIndicator } from 'react-native-paper';
 import firebase from '../../Firebase.js';
+import {fetchBudget} from '../model/Budget.js';
 
 export default class BudgetPage extends React.Component{
+    state = {
+        budget: ''
+    }
+
+    componentDidMount() {
+        let tripId = firebase.auth().tripId;
+
+        fetchBudget(tripId).then((budget) => this.setState({budget}));
+
+        this.props.navigation.addListener(
+            'willFocus', 
+            () => fetchBudget(tripId).then((budget) => this.setState({budget}))
+        );
+    } 
 
     render(){
         return(
