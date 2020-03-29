@@ -1,7 +1,7 @@
 export async function getInformation() {
 
     //fetch and process information from api
-      return fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise&key=AIzaSyAP2_Jk8VO4jaCp4mxFSHJ4awxwWhH6ZfM')
+      return fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise&key=YOUR_API_KEY')
             .then((response) => {
              
                 return response.json();
