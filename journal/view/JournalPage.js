@@ -1,31 +1,28 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {Appbar, FAB} from 'react-native-paper';
+import {View, StyleSheet, ScrollView} from 'react-native';
+import {Appbar, FAB, Card} from 'react-native-paper';
+
 import firebase from "../../Firebase.js";
+import {fetchJournals} from '../model/Journal.js';
 
 export default class JournalPage extends React.Component{
 
-    constructor () {
-        super();
-
-        this.state = {
-            entries: []
-        }
+    state = {
+        journals: []
     }
 
     componentDidMount() {
-        //this.listenForChange();
-    }
+        let user = firebase.auth().currentUser;
+        let userId = user.uid;
 
-    fetchJournals(userId) {
-        let query = firebase.firestore().collection("notes").where("userId", "==", userId);
-        let result = query.get(); // This returns a result of type QuerySnapshot
-        return result.docs.map(
-            (snapshot) => new Trip(snapshot.data(), true)
+        //for initial load
+        fetchJournals(userId).then((journals) => this.setState({journals}));
+
+        this.props.navigation.addListener(
+            'willFocus', 
+            () => fetchJournals(userId).then((journals) => this.setState({journals}))
         );
-    }
-
-    
+    }    
 
     render() {
         return (
@@ -34,6 +31,23 @@ export default class JournalPage extends React.Component{
                     <Appbar.BackAction onPress={() => this.props.navigation.navigate('home')} />
                     <Appbar.Content title="Journal" />
                 </Appbar.Header>
+
+                <ScrollView>
+                    {this.state.journals.map((item, index) => {
+                        return (
+                            <Card 
+                                key = {`journals-${index}`} 
+                                style = {styles.journalCard}
+                                //onPress = {() => {}}
+                            >
+
+                            <Card.Title 
+                                title = {item.title}
+                                subtitle = {item.note}
+                            />
+                        </Card>);
+                    })}
+                </ScrollView>
 
                 <FAB
                     style={styles.fab}
@@ -50,6 +64,13 @@ export default class JournalPage extends React.Component{
 const styles = StyleSheet.create({
     container: {
         flex: 1
+    },
+
+    journalCard: {
+        marginTop: 24,
+        marginLeft: 24,
+        marginRight: 24,
+        backgroundColor: '#A4D7DF',
     },
 
     fab: {

@@ -28,12 +28,23 @@ export default class CalendarPage extends React.Component{
             <Appbar.BackAction onPress={() => this.props.navigation.navigate("home")} />
             <Appbar.Content title="Calendar" />
             </Appbar.Header>
-            <Calendar
+            <CalendarList
                 minDate={this.props.trip.startDate}
                 maxDate={this.props.trip.endDate}
                 current={this.props.trip.startDate}
                 hideExtraDays={true}
+                horizontal={true}
+                pagingEnabled={true}
+                pastScrollRange={0}
+                futureScrollRange={(this.props.trip.endDate.getMonth()-this.props.trip.startDate.getMonth())}
                 //onDayPress={dayHandler()}
+                onDayPress={(day) => {console.log('selected day', day)}}//just outputs day info to console for now
+                theme={{
+                    textMonthFontSize: 20,
+                    textMonthFontFamily: 'Arial',
+                    textDayFontFamily: 'Arial',
+                    calendarBackground:'aliceblue',
+                }}
             />
             </View>
             
