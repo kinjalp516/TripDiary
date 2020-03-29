@@ -48,6 +48,7 @@ export default class DailySummary extends React.Component{
                 </Card.Content>
             </Card>
             </ScrollView>
+            </View>
         )
     }
 }
