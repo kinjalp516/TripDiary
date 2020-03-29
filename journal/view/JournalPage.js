@@ -42,7 +42,8 @@ export default class JournalPage extends Component{
                                 onPress = {() => {
                                     this.props.navigation.navigate('viewJournal', {
                                         title: item.title,
-                                        note: item.note
+                                        note: item.note,
+                                        itemId: item.id
                                 })}}
                             >
 

@@ -7,7 +7,7 @@ import MyTripsPage from './view/MyTripsPage';
 import TripDetailController from './trip_detail/TripDetailController'
 import CalendarPage from '../trips/view/CalendarPage';
 import JournalPage from '../journal/view/JournalPage';
-import addJournalPage from '../journal/view/AddJournalPage';
+import AddJournalPage from '../journal/view/AddJournalPage';
 import AddPinPage from '../map/AddPinPage';
 
 const TripsController = createStackNavigator(
@@ -17,7 +17,7 @@ const TripsController = createStackNavigator(
         trip: TripDetailController,
         calendar: CalendarPage,
         viewJournals: JournalPage,
-        addJournal: addJournalPage,
+        addJournal: AddJournalPage,
         addPin: AddPinPage
     },
     {
