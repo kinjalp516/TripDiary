@@ -21,7 +21,7 @@ export default class TripDetailController extends React.Component {
             { key: 'journal', title: 'Journal', icon: 'book'},
             { key: 'budget', title: 'Budget', icon: 'bank'},
             { key: 'map', title: 'Map', icon: 'map'},
-            { key: 'attraction', title: 'Attraction, icon:'}
+            { key: 'attraction', title: 'Attraction' , icon:''}
            // { key: 'daily', title: 'DailySummary', icon: 'view-day'}
         ]
     };
