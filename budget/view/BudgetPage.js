@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { Appbar, Menu, Card, FAB, Paragraph, ActivityIndicator } from 'react-native-paper';
 import firebase from '../../Firebase.js';
 import {fetchBudget} from '../model/Budget.js';
@@ -28,13 +28,19 @@ export default class BudgetPage extends React.Component{
                     <Appbar.Content title="Budget" />
                 </Appbar.Header>
 
+                <Card 
+                    style = {styles.budgetCard}
+                >
+
+                    <Card.Title 
+                        title = 'Remaining Budget'
+                        subtitle = {this.state.budget.amount}
+                    />
+                </Card>
                 <FAB
                     style={styles.fab}
-                    //icon="bar-graph"
-                    //label="View Budget Statistics"
                     label = "Create New Budget"
                     onPress={() => this.props.navigation.navigate('addBudget')}
-                    //onPress={() => this.props.navigation.navigate('viewBudgetStatistics')}
                 />
 
             </View>
