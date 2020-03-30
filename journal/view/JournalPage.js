@@ -29,7 +29,7 @@ class PressOptions extends React.Component {
   
     onResponderRelease = () => {
       const now = Date.now();
-      //console.log (this.props.dbId);
+      
       if (this.startPress && now - this.startPress < this.props.delay) {
         this.props.onPress();
       } else {

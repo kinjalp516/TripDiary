@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import {Appbar, TextInput} from 'react-native-paper';
 
 import firebase from "../../Firebase.js";
@@ -64,49 +64,49 @@ export default class AddJournalPage extends Component{
     render() {
 
         return (
-            
-            <View style={styles.container}>
-                <Appbar.Header>
-                    <Appbar.BackAction onPress ={() => this.props.navigation.goBack()} />
-                    <Appbar.Content title="Journal Entry"/>
-                    <Appbar.Action icon="check" onPress = {() => {
+            //will allow keyboard to be dismissed + multiline text to be inputted in entries
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                <View style={styles.container}>
+                    <Appbar.Header>
+                        <Appbar.BackAction onPress ={() => this.props.navigation.goBack()} />
+                        <Appbar.Content title="Journal Entry"/>
+                        <Appbar.Action icon="check" onPress = {() => {
 
-                        const {dbId, userId, title, note} = this.state;
+                            const {dbId, userId, title, note} = this.state;
 
-                        if (title === '' && note === '') {
-                            alert ('Please Add a Title and Entry');
-                            return;
-                        } else if (title === '') {
-                            alert ('Please Add a Title');
-                            return;
-                        } else if (note === '') {
-                            alert  ('Please add an Entry');
-                            return;
-                        }
+                            if (title === '' && note === '') {
+                                alert ('Please Add a Title and Entry');
+                                return;
+                            } else if (title === '') {
+                                alert ('Please Add a Title');
+                                return;
+                            } else if (note === '') {
+                                alert  ('Please add an Entry');
+                                return;
+                            }
 
-                        if (this.state.editJournal) {
-                            this.editNote(dbId, title, note);
-                        } else {
-                            this.createNote(userId, title, note);
-                        }
-                    }} />
-                </Appbar.Header>
-
-                <TextInput
-                    placeholder = 'Title'
-                    onChangeText={(title) => this.setState({title})}
-                    value={this.state.title}
-                />
-                
-                <TextInput
-                    placeholder = 'Journal Entry'
-                    onChangeText={(text) => this.setState({note:text})}
-                    value={this.state.note}
-                    multiline = {true}
-                    blurOnSubmit = {true}
-                />
-
-            </View>
+                            if (this.state.editJournal) {
+                                this.editNote(dbId, title, note);
+                            } else {
+                                this.createNote(userId, title, note);
+                            }
+                        }} />
+                    </Appbar.Header>
+                    
+                        <TextInput
+                            placeholder = 'Title'
+                            onChangeText={(title) => this.setState({title})}
+                            value={this.state.title}
+                        />                    
+                        <TextInput
+                            placeholder = 'Journal Entry'
+                            onChangeText={(text) => this.setState({note:text})}
+                            value={this.state.note}
+                            multiline = {true}
+                            //blurOnSubmit = {true}
+                        />
+                </View>
+            </TouchableWithoutFeedback>
         );
     };
 };
