@@ -1,10 +1,59 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, ScrollView} from 'react-native';
+import {View, StyleSheet, ScrollView, Alert} from 'react-native';
 import {Appbar, FAB, Card} from 'react-native-paper';
-import {StackActions} from 'react-navigation';
 
 import firebase from "../../Firebase.js";
-import {fetchJournals} from '../model/Journal.js';
+import {fetchJournals, deleteJournal} from '../model/Journal.js';
+
+class PressOptions extends React.Component {
+    static defaultProps = {
+      onPress: () => null,
+      numberOfTouches: 1,
+      delay: 500,
+    }
+  
+    startPress = null;
+  
+    onStartShouldSetResponder = (evt) => {
+      if (evt.nativeEvent.touches.length === this.props.numberOfTouches) {
+        this.startPress = Date.now();
+        return true;
+      }
+
+      return false;
+    }
+  
+    onResponderRelease = () => {
+      const now = Date.now();
+      console.log (this.props.dbId);
+      if (this.startPress && now - this.startPress < this.props.delay) {
+        this.props.onPress();
+      } else {
+          Alert.alert (
+              'Delete Note?',
+              'Changes cannot be undone',
+              [
+                {text: 'Delete', onPress: () => deleteJournal(this.props.dbId)},
+                {text: 'Cancel', onPress: () => null, style: 'cancel'},
+              ]
+          )
+      }
+
+      this.startPress = null;
+
+    }
+  
+    render() {
+      return (
+        <View
+          onStartShouldSetResponder = {this.onStartShouldSetResponder}
+          onResponderRelease = {this.onResponderRelease}
+        >
+          {this.props.children}
+        </View>
+      );
+    }
+  }
 
 export default class JournalPage extends Component{
 
@@ -36,30 +85,27 @@ export default class JournalPage extends Component{
                 <ScrollView>
                     {this.state.journals.map((item, index) => {
                         return (
-                            <Card 
-                                key = {`journals-${index}`} 
-                                style = {styles.journalCard}
-                                /*onPress = {() => {
-                                    this.props.navigation.navigate('viewJournal', {
-                                        title: item.title,
-                                        note: item.note,
-                                        itemId: item.id
-                                })}}*/
+                            <PressOptions 
+                                dbId = {item.id}
                                 onPress = {() => {
                                     this.props.navigation.navigate('addJournal', {
                                         itemId: item.id,
                                         title: item.title,
                                         note: item.note,
                                         editJournal: true
-                                    })
-                                }}
+                                    })}}
                             >
+                                <Card 
+                                    key = {`journals-${index}`} 
+                                    style = {styles.journalCard}
+                                >
 
-                            <Card.Title 
-                                title = {item.title}
-                                subtitle = {item.note}
-                            />
-                        </Card>);
+                                <Card.Title 
+                                    title = {item.title}
+                                    subtitle = {item.note}
+                                />
+                            </Card>
+                        </PressOptions>);
                     })}
                 </ScrollView>
 
