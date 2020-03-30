@@ -13,6 +13,10 @@ class PressOptions extends React.Component {
     }
   
     startPress = null;
+
+    state = {
+        isDeleted: false
+    }
   
     onStartShouldSetResponder = (evt) => {
       if (evt.nativeEvent.touches.length === this.props.numberOfTouches) {
@@ -25,7 +29,7 @@ class PressOptions extends React.Component {
   
     onResponderRelease = () => {
       const now = Date.now();
-      console.log (this.props.dbId);
+      //console.log (this.props.dbId);
       if (this.startPress && now - this.startPress < this.props.delay) {
         this.props.onPress();
       } else {
@@ -33,7 +37,11 @@ class PressOptions extends React.Component {
               'Delete Note?',
               'Changes cannot be undone',
               [
-                {text: 'Delete', onPress: () => deleteJournal(this.props.dbId)},
+                {text: 'Delete', onPress: () => {
+                        deleteJournal(this.props.dbId);
+                        this.setState({isDeleted: true});
+                    }
+                },
                 {text: 'Cancel', onPress: () => null, style: 'cancel'},
               ]
           )
@@ -49,7 +57,7 @@ class PressOptions extends React.Component {
           onStartShouldSetResponder = {this.onStartShouldSetResponder}
           onResponderRelease = {this.onResponderRelease}
         >
-          {this.props.children}
+          {!this.state.isDeleted ? this.props.children : null}
         </View>
       );
     }
@@ -81,7 +89,6 @@ export default class JournalPage extends Component{
                     <Appbar.BackAction onPress={() => this.props.navigation.navigate('home')} />
                     <Appbar.Content title="Journal" />
                 </Appbar.Header>
-
                 <ScrollView>
                     {this.state.journals.map((item, index) => {
                         return (
