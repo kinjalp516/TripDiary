@@ -71,7 +71,6 @@ export default class JournalPage extends Component{
 
         //for initial load
         fetchJournals(userId).then((journals) => this.setState({journals}));
-        console.log("do i get here after returning???");
 
         this.props.navigation.addListener(
             'willFocus', 
@@ -89,7 +88,6 @@ export default class JournalPage extends Component{
                 </Appbar.Header>
                 <ScrollView>
                     {arr.map((item, index) => {
-                        console.log(item);
                         return (
                             <PressOptions 
                                 dbId = {item.id}
