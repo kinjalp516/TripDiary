@@ -17,18 +17,19 @@ export default class AddBudget extends React.Component{
     }
 
     componentDidMount() {
-        let trip = firebase.auth().trip;
-        this.setState({tripId: trip});
+        let user = firebase.auth().currentUser;
+        this.setState({userId: user.uid});
     }
 
+    /*
     async editBudget(docId, amount) {
         updateBudget(docId, amount);
         this.props.navigation.goBack(null);
-    }
+    }*/
 
     async createBudget () {
 
-        const {budgetval, tripId} = this.state;
+        const {budgetval, userId} = this.state;
 
         if (budgetval == '') {
             alert ('Please Add New Budget');
@@ -38,11 +39,11 @@ export default class AddBudget extends React.Component{
             return;
         }
 
-        if  (this.state.tripId != null) {
-            let budget = new Budget ({
-                id: '',
-                tripId: tripId,
-                amount: budget
+        if(this.state.userId != null) {
+            let budget = new Budget({
+                id: "",
+                userId: this.state.userId,
+                amount: budgetval
             });
 
             await budget.storeBudget();

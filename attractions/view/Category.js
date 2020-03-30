@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native';
 import CategoryCard from './CategoryCard';
+import {getInformation} from '../model/Retrieve'
 export default class Category extends React.Component{
 
   constructor(props){

@@ -24,10 +24,14 @@ var savedItemsWrapper = {
 }
 
 
-export function setSavedItems(state){
+export function addSavedItems(state){
 
     savedItemsWrapper.savedItems.push(state);
 
+}
+
+export function setSavedItems(state){
+    savedItemsWrapper.savedItems = state;
 }
 
 export function getSavedItems(){
@@ -44,7 +48,7 @@ export class Retrieve{
         this.saved = saved;
         this.buttonText = buttonText;
 
-        if(opening_hours == undefined){
+        if(opening_hours == undefined || (Object.keys(opening_hours).length === 0)){
             var opening = {
                 open_now: 'N/A'
             }
