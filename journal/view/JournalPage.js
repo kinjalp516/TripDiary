@@ -13,10 +13,6 @@ class PressOptions extends React.Component {
     }
   
     startPress = null;
-
-    // state = {
-    //     isDeleted: false
-    // }
   
     onStartShouldSetResponder = (evt) => {
       if (evt.nativeEvent.touches.length === this.props.numberOfTouches) {
@@ -52,7 +48,6 @@ class PressOptions extends React.Component {
     }
   
     render() {
-        //console.log(this.state.isDeleted);
         return (
             <View
                 onStartShouldSetResponder = {this.onStartShouldSetResponder}
