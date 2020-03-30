@@ -1,8 +1,10 @@
 import React from 'react';
-import { StyleSheet, View, Image, FlatList } from 'react-native';
+import { StyleSheet, Image, View, FlatList, Alert, TouchableHighlight } from 'react-native';
 import { Appbar, Menu, Card, FAB, Text, ActivityIndicator } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import moment from 'moment';
+import CachedImage from './CachedImage';
+// import CachedImage from 'react-native-expo-cached-image';
 
 import firebase from '../Firebase.js'; 
 import { Photo, fetchPhotos } from './model/Photo.js';
@@ -10,17 +12,32 @@ import { Photo, fetchPhotos } from './model/Photo.js';
 export default class PhotosPage extends React.Component {
 
   state = {
-    loading: true,
+    loading: false,
     photos: []
   };
 
   componentDidMount() {
-    this.props.navigation.addListener(
-      'willFocus', () => fetchPhotos(this.props.trip.id).then((photos) => this.setState({ photos: photos, loading: false }))
+    console.log("component did mount", this.state.photos);
+    fetchPhotos(this.props.trip.id).then(
+      (photos) => {
+        console.log("fetch photos", photos);
+        this.setState({ photos: photos, loading: false })
+      }
+    ).catch(
+      (error) => console.error("Fetching Photos Error", error)
     );
   }
 
   async pickImage() {
+    let permission = await ImagePicker.requestCameraRollPermissionsAsync();
+    if(!permission.granted) {
+      Alert.alert(
+        "Permission Denied", 
+        "Unable to open camera roll because permission was denied.",
+      );
+      return;
+    }
+
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       exif: true
@@ -54,13 +71,16 @@ export default class PhotosPage extends React.Component {
 
         await newPhoto.storePhoto();
         
-        fetchPhotos(this.props.trip.id).then((photos) => this.setState({ photos: photos, loading: false }));       
+        fetchPhotos(this.props.trip.id).then((photos) => {
+          this.setState({ photos: photos, loading: false });
+          console.log("photos response", photos);
+        });       
       }).catch((error) => console.error("Error uploading image", error));
     }
   }
 
   render() {
-
+    console.log("current state", this.state.photos);
     return (
       <View style={styles.container}>
         <Appbar.Header>
@@ -75,19 +95,30 @@ export default class PhotosPage extends React.Component {
               <ActivityIndicator size="large" />
           </View>
         )}
-        {!this.state.loading && <FlatList
-          data={this.state.photos}
-          renderItem={({item}) => {
-              return (
-                <View style={styles.photoComp}>
-                  <Image style={styles.photo} source={{uri: item.photoUrl}} />
-                </View>
-              );
-            }
-          }
-          keyExtractor={item => item.id}
-          numColumns={2}
-        />}
+        {!this.state.loading && (this.state.photos.length > 0 
+          ? (<FlatList
+              data={this.state.photos}
+              renderItem={({item}) => {
+                console.log("item", item);
+                  return (
+                    <View style={styles.photoComp}>
+                      <TouchableHighlight onPress={() => this.props.navigation.navigate("viewPhoto", {photo: item})}>
+                        <CachedImage
+                          style={styles.photo} 
+                          source={{ uri: item.photoUrl }} 
+                        />
+                      </TouchableHighlight>
+                    </View>
+                  );
+                }
+              }
+              keyExtractor={item => item.id}
+              numColumns={2}
+            />) 
+          : (<View style={styles.loading}>
+              <Text>Press the (+) button to add photos.</Text>
+            </View>)
+        )}
       </View>
     );
   }
@@ -103,10 +134,10 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   photo: {
-    width: 195,
+    width: 185,
     height: 150
   },
   photoComp: {
-    padding: 5
+    padding: 1
   },
 });

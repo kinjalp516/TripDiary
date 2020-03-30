@@ -1,8 +1,8 @@
 import firebase from '../../Firebase.js';
 
 export async function fetchPhotos(tripId) {
-    let query = firebase.firestore().collection("photos").where("tripId", "==", tripId)
-        .orderBy("dateTaken", "asc");   // Returns the result from earliest date to latest date. 
+    let query = firebase.firestore().collection("photos").where("tripId", "==", tripId);
+        // .orderBy("dateTaken", "asc");   // Returns the result from earliest date to latest date. 
     let result = await query.get();
     return result.docs.map(
         (snapshot) => new Photo(snapshot.data())

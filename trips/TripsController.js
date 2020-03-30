@@ -5,6 +5,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import CreateTripPage from './view/CreateTripPage';
 import MyTripsPage from './view/MyTripsPage';
 import TripDetailController from './trip_detail/TripDetailController'
+import ViewPhotoPage from '../photos/ViewPhoto';
 import CalendarPage from '../trips/view/CalendarPage';
 import ViewJournal from '../journal/view/ViewJournal';
 import addJournalPage from '../journal/view/AddJournalPage';
@@ -17,6 +18,7 @@ const TripsController = createStackNavigator(
         home: MyTripsPage,
         create: CreateTripPage,
         trip: TripDetailController,
+        viewPhoto: ViewPhotoPage,
         calendar: CalendarPage,
         viewJournal: ViewJournal,
         addJournal: addJournalPage,

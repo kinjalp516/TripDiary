@@ -4,9 +4,6 @@ import { Appbar, Menu, Card, FAB, Paragraph } from 'react-native-paper';
 import { Calendar,CalendarList,Agenda } from 'react-native-calendars';
 
 import firebase from "../../Firebase.js";
-import  Trip  from '../model/Trip.js';
-import moment from 'moment';
-import TripsController from '../TripsController.js';
 
 export default class CalendarPage extends React.Component{
     state ={
@@ -20,7 +17,7 @@ export default class CalendarPage extends React.Component{
     
       }
     
-    render(){
+    render() {
         return(
             <View style={styles.container}>
             <Appbar.Header>
