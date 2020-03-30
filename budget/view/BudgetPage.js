@@ -6,9 +6,11 @@ import {fetchBudget} from '../model/Budget.js';
 
 export default class BudgetPage extends React.Component{
     state = {
-        budget: []
+        budget: [],
+        showButton: true
     }
 
+    
     componentDidMount() {
         let user = firebase.auth().currentUser;
         let userId = user.uid;
@@ -21,6 +23,11 @@ export default class BudgetPage extends React.Component{
         );
     }
 
+    async checkBudget(){
+        this.props.navigation.navigate('addBudget')
+        this.setState({showButton: false})
+    }
+
     render(){
         return(
             <View style={styles.container}>
@@ -29,7 +36,7 @@ export default class BudgetPage extends React.Component{
                     <Appbar.Content title="Budget" />
                 </Appbar.Header>
 
-                <ScrollView>
+                
                     { this.state.budget.map((item, index) => {
                         return (<Card 
                             key={`budget-${index}`} style={styles.budgetCard}
@@ -37,19 +44,27 @@ export default class BudgetPage extends React.Component{
                             onPress={() => null}
                         >
                             <Card.Title 
-                                title={item.amount}
+                                title = 'Remaining Budget'
+                                subtitle={item.amount}
                                 //you can add a subtitle if you'd like, but as of now there's only 1 thing to display
                                 //subtitle={item.location}
+                                //{this.state.budget == null? 
+                                //: null }
+
                             />
                         </Card>);
                     }) }
-                </ScrollView>
-
+            
+                { this.state.showButton && 
+  
                 <FAB
                     style={styles.fab}
                     label = "Create New Budget"
-                    onPress={() => this.props.navigation.navigate('addBudget')}
+                    onPress={() => this.checkBudget()}
+                    
                 />
+                
+                }
 
             </View>
         );
