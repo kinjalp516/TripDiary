@@ -2,7 +2,7 @@ import * as React from 'react';
 import { BottomNavigation, Text } from 'react-native-paper';
 
 import PhotosPage from '../../photos/PhotosPage';
-import CalendarPage from '../view/CalendarPage';
+import CalendarPage from '../../calendar/view/CalendarPage';
 import JournalPage from '../../journal/view/JournalPage';
 import BudgetPage from '../../budget/view/BudgetPage';
 import MapPage from '../../map/MapPage';
