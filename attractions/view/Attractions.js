@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
-import {setSavedItems} from '../model/Retrieve'
+import {addSavedItems} from '../model/Retrieve'
 import { Card, Title, Paragraph, Button } from 'react-native-paper'
 
 
@@ -17,7 +17,7 @@ export default class Attractions extends React.Component{
       };
     }
 
-//load api results from model, set the state 
+// 
     componentDidMount(){
 
       this.setState({attractions: this.props.navigation.getParam('attractions')});
@@ -33,7 +33,7 @@ export default class Attractions extends React.Component{
           if(a.id === item.id){
             a.saved = true;
             a.buttonText = 'Saved';
-            setSavedItems(item);
+            addSavedItems(item);
           }
         });
 

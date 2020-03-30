@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
 import { Card, Title, Paragraph, Button } from 'react-native-paper'
 import {getSavedItems} from '../model/Retrieve'
 //quick prototype still needs improvements
@@ -18,6 +18,16 @@ export default class SavedAttractions extends React.Component {
 
       this.setState({attractions: getSavedItems()});
       console.log(getSavedItems());
+    }
+
+    alertHandler = (item) => {
+
+      Alert.alert('Delete this item?', 'This action cannot be undone.', [
+        {text: 'Cancel', onPress: () => console.log('Closed')},
+        {text: 'Delete', onPress: () => this.deleteHandler(item)}
+      
+      ]);
+
     }
 
     deleteHandler = (item) => {
@@ -39,7 +49,7 @@ export default class SavedAttractions extends React.Component {
               showsVerticalScrollIndicator={false}
               data={this.state.attractions}
                 renderItem={ ({item}) => (
-                    <TouchableOpacity onPress={() => console.log(item.id)}>
+                    <TouchableOpacity onLongPress={() => this.alertHandler(item)}>
                         <Card style={styles.cardContainer}>
                           <Card.Title title={item.name}/>
                           <Card.Content>
@@ -52,9 +62,9 @@ export default class SavedAttractions extends React.Component {
                             </Paragraph>
                           </Card.Content>
 
-                          <Card.Actions>
+                          {/* <Card.Actions>
                               <Button onPress={() => this.deleteHandler(item)}>Delete</Button> 
-                          </Card.Actions>
+                          </Card.Actions> */}
                         </Card>
                         
                     </TouchableOpacity>
