@@ -21,6 +21,11 @@ export default class AddBudget extends React.Component{
         this.setState({tripId: trip});
     }
 
+    async editBudget(docId, amount) {
+        updateBudget(docId, amount);
+        this.props.navigation.goBack(null);
+    }
+
     async createBudget () {
 
         const {budgetval, tripId} = this.state;

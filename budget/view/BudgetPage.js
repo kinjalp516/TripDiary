@@ -34,7 +34,7 @@ export default class BudgetPage extends React.Component{
 
                     <Card.Title 
                         title = 'Remaining Budget'
-                        subtitle = {this.state.budget.amount}
+                        subtitle = {this.state.amount}
                     />
                 </Card>
                 <FAB
