@@ -6,7 +6,7 @@ import CalendarPage from '../view/CalendarPage';
 import JournalPage from '../../journal/view/JournalPage';
 import BudgetPage from '../../budget/view/BudgetPage';
 import MapPage from '../../map/MapPage';
-import DailySummary from '../view/DailySummaryPage'
+//import DailySummary from '../view/DailySummaryPage'
 
 export default class TripDetailController extends React.Component {
 
@@ -20,7 +20,7 @@ export default class TripDetailController extends React.Component {
             { key: 'journal', title: 'Journal', icon: 'book'},
             { key: 'budget', title: 'Budget', icon: 'bank'},
             { key: 'map', title: 'Map', icon: 'map'},
-            { key: 'daily', title: 'DailySummary', icon: 'view-day'}
+           // { key: 'daily', title: 'DailySummary', icon: 'view-day'}
         ]
     };
 
@@ -32,7 +32,7 @@ export default class TripDetailController extends React.Component {
         journal: () => <JournalPage trip={this.trip} navigation={this.props.navigation}/>,
         budget: () => <BudgetPage trip={this.trip} navigation={this.props.navigation}/>,
         map: () => <MapPage trip={this.trip} navigation={this.props.navigation} />,
-        daily: () => <DailySummary trip={this.trip} navigation={this.props.navigation} />
+        //daily: () => <DailySummary trip={this.trip} navigation={this.props.navigation} />
     });
 
     render() {
