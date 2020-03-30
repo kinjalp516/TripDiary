@@ -52,14 +52,17 @@ class PressOptions extends React.Component {
     }
   
     render() {
-      return (
-        <View
-          onStartShouldSetResponder = {this.onStartShouldSetResponder}
-          onResponderRelease = {this.onResponderRelease}
-        >
-          {!this.state.isDeleted ? this.props.children : null}
-        </View>
-      );
+        console.log(this.state.isDeleted);
+        if (!this.state.isDeleted) {
+            return (
+                <View
+                    onStartShouldSetResponder = {this.onStartShouldSetResponder}
+                    onResponderRelease = {this.onResponderRelease}
+                >
+                    {this.props.children}
+                </View>
+            );
+        } else return null;
     }
   }
 
@@ -75,6 +78,7 @@ export default class JournalPage extends Component{
 
         //for initial load
         fetchJournals(userId).then((journals) => this.setState({journals}));
+        console.log("do i get here after returning???");
 
         this.props.navigation.addListener(
             'willFocus', 
@@ -91,6 +95,7 @@ export default class JournalPage extends Component{
                 </Appbar.Header>
                 <ScrollView>
                     {this.state.journals.map((item, index) => {
+                        console.log(item);
                         return (
                             <PressOptions 
                                 dbId = {item.id}
