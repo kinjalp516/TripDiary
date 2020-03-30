@@ -19,6 +19,21 @@ export async function getInformation() {
 
 }
 
+var savedItemsWrapper = {
+    savedItems: []
+}
+
+
+export function setSavedItems(state){
+
+    savedItemsWrapper.savedItems.push(state);
+
+}
+
+export function getSavedItems(){
+    return savedItemsWrapper.savedItems;
+}
+
 //class for storing different result items
 export class Retrieve{
     constructor(name, price, rating, address, opening_hours, saved, id, buttonText) {

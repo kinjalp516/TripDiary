@@ -10,11 +10,29 @@ export default class Category extends React.Component{
         {name: 'Museums', key: '2'},
         {name: 'Parks', key: '3'},
         {name: 'Bars', key: '4'},
+      ],
+      attractions: [
+
       ]};
   }
 
+  componentDidMount(){
+
+    console.log("dollars burning");
+
+    getInformation().then((item) => {
+
+      this.setState({attractions: item});
+
+  })
+  }
+
   pressHandler = () => {
-    this.props.navigation.navigate('Items');
+    this.props.navigation.navigate('Items', this.state);
+  }
+
+  toSavedAttractions= () => {
+    this.props.navigation.navigate('Saved');
   }
 
   render(){
@@ -38,7 +56,7 @@ export default class Category extends React.Component{
           )}
 
         />
-        
+        <Button title='Saved Items' onPress={this.toSavedAttractions}></Button>
         {/* <CategoryCard/> */}
       </View>
     );

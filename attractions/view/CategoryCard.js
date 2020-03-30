@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Card, Title } from 'react-native-paper'
+import { Card } from 'react-native-paper'
 
 
 export default class CategoryCard extends React.Component{
@@ -9,10 +9,10 @@ export default class CategoryCard extends React.Component{
     render() {
         return(
             <Card style={styles.cardContainer}>
-            <Card.Title title={this.props.title}/>
-            <Card.Content>
-                <Title>Title</Title>
-            </Card.Content>
+            <Card.Title title={this.props.title}
+              subtitle='Near Me'
+            />
+            
           </Card>
         );
     }

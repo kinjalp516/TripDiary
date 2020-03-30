@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Card, Title, Paragraph, Button } from 'react-native-paper'
-
+import {getSavedItems} from '../model/Retrieve'
 //quick prototype still needs improvements
 export default class SavedAttractions extends React.Component {
 
@@ -13,21 +13,20 @@ export default class SavedAttractions extends React.Component {
         ]};
 
     }
-    componentDidMount(){
-        var SavedItem = {
-            name: this.props.navigation.getParam('name'), 
-            rating:this.props.navigation.getParam('rating'), 
-            price: this.props.navigation.getParam('price'), 
-            opening_hours: this.props.navigation.getParam('opening_hours'),
-            address: this.props.navigation.getParam('address'),
-            id: this.props.navigation.getParam('id'),
-        }
 
-        var arr = this.state.attractions;
-        arr.push(SavedItem);
-        this.setState({attractions: arr});
-        
-    
+    componentDidMount(){
+
+      this.setState({attractions: getSavedItems()});
+      console.log(getSavedItems());
+    }
+
+    deleteHandler = (item) => {
+      var currentStateArr = this.state.attractions;
+
+      var filteredArr = currentStateArr.filter(a => a.id != item.id);
+
+      this.setState({attractions: filteredArr});
+
     }
 
    
@@ -54,7 +53,7 @@ export default class SavedAttractions extends React.Component {
                           </Card.Content>
 
                           <Card.Actions>
-                              <Button onPress={() => this.saveItem(item)}>Delete</Button> 
+                              <Button onPress={() => this.deleteHandler(item)}>Delete</Button> 
                           </Card.Actions>
                         </Card>
                         
