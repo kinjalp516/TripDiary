@@ -1,17 +1,19 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import {Appbar, TextInput} from 'react-native-paper';
 
 import firebase from "../../Firebase.js";
-import {Journal} from '../model/Journal.js';
+import {Journal, updateJournal} from '../model/Journal.js';
 
 export default class AddJournalPage extends Component{
     
     constructor (props) {
         super(props);
         this.state = {
-            title: '',
-            note: ''
+            dbId: this.props.navigation.getParam('itemId', 'NO-id'),
+            title: this.props.navigation.getParam('title', 'NO-title'),
+            note: this.props.navigation.getParam('note', 'NO-note'),
+            editJournal: this.props.navigation.getParam('editJournal', 'NO-note')
         }
         
         this.createNote = this.createNote.bind (this);
@@ -22,20 +24,13 @@ export default class AddJournalPage extends Component{
         this.setState({userId: user.uid});
     }
 
-    async createNote () {
+    async editNote (dbId, title, note) {
+        //editing the journal entry
+        updateJournal(dbId, title, note);
+        this.props.navigation.goBack(null);
+    }
 
-        const {title, note, userId} = this.state;
-
-        if (title === '' && note === '') {
-            alert ('Please Add a Title and Entry');
-            return;
-        } else if (title === '') {
-            alert ('Please Add a Title');
-            return;
-        } else if (note === '') {
-            alert  ('Please add an Entry');
-            return;
-        }
+    async createNote (userId, title, note) {
 
         if  (this.state.userId != null) {
             let journal = new Journal ({
@@ -69,29 +64,49 @@ export default class AddJournalPage extends Component{
     render() {
 
         return (
-            
-            <View style={styles.container}>
-                <Appbar.Header>
-                    <Appbar.BackAction onPress ={this.backToJournal} />
-                    <Appbar.Content title="Add Journal Entry"/>
-                    <Appbar.Action icon="check" onPress = {this.createNote} />
-                </Appbar.Header>
+            //will allow keyboard to be dismissed + multiline text to be inputted in entries
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                <View style={styles.container}>
+                    <Appbar.Header>
+                        <Appbar.BackAction onPress ={() => this.props.navigation.goBack()} />
+                        <Appbar.Content title="Journal Entry"/>
+                        <Appbar.Action icon="check" onPress = {() => {
 
-                <TextInput
-                    placeholder = 'Title'
-                    onChangeText={(title) => this.setState({title})}
-                    value={this.state.title}
-                />
-                
-                <TextInput
-                    placeholder = 'Journal Entry'
-                    onChangeText={(text) => this.setState({note:text})}
-                    value={this.state.note}
-                    multiline = {true}
-                    blurOnSubmit = {true}
-                />
+                            const {dbId, userId, title, note} = this.state;
 
-            </View>
+                            if (title === '' && note === '') {
+                                alert ('Please Add a Title and Entry');
+                                return;
+                            } else if (title === '') {
+                                alert ('Please Add a Title');
+                                return;
+                            } else if (note === '') {
+                                alert  ('Please add an Entry');
+                                return;
+                            }
+
+                            if (this.state.editJournal) {
+                                this.editNote(dbId, title, note);
+                            } else {
+                                this.createNote(userId, title, note);
+                            }
+                        }} />
+                    </Appbar.Header>
+                    
+                        <TextInput
+                            placeholder = 'Title'
+                            onChangeText={(title) => this.setState({title})}
+                            value={this.state.title}
+                        />                    
+                        <TextInput
+                            placeholder = 'Journal Entry'
+                            onChangeText={(text) => this.setState({note:text})}
+                            value={this.state.note}
+                            multiline = {true}
+                            //blurOnSubmit = {true}
+                        />
+                </View>
+            </TouchableWithoutFeedback>
         );
     };
 };

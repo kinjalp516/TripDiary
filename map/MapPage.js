@@ -1,6 +1,6 @@
 import React from 'react';
-import MapView, { Marker } from 'react-native-maps';
-import { StyleSheet, View, Dimensions, ActivityIndicator } from 'react-native';
+import MapView, { Marker, Circle } from 'react-native-maps';
+import { StyleSheet, View, Dimensions, ActivityIndicator, Alert, Image } from 'react-native';
 import { Appbar, Menu, Card, FAB, Text } from 'react-native-paper';
 
 import firebase from '../Firebase.js'; 
@@ -18,7 +18,9 @@ export default class MapPage extends React.Component {
         mapRegion: null,
         initialRegion: null, 
         hasLocationPermissions: false, 
-        locationResult: null
+        locationResult: null,
+        deleteMode: false,
+        selectedMarker: null
     };
 
     componentDidMount() {
@@ -40,7 +42,10 @@ export default class MapPage extends React.Component {
     async getLocationAsync() {
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
 
-        if (status !== 'granted') this.setState({locationResult: 'Permission to access location was denied'});
+        if (status !== 'granted') {
+            this.setState({locationResult: 'Permission to access location was denied'});
+            return;
+        }
         else this.setState({hasLocationPermissions: true});
 
         let location = await Location.getCurrentPositionAsync({});
@@ -57,12 +62,35 @@ export default class MapPage extends React.Component {
         this.setState({mapRegion: initialRegion});
     }
 
+    doDelete() {
+        Alert.alert(
+            'Delete Pin',
+            'Would you like to delete this pin?',
+            [
+                {text: 'Yes', onPress: () => {
+                    let pins = this.state.pins;
+                    let coords = this.state.selectedMarker;
+                    this.setState({pins: pins.filter((currVal, index) => {
+                        let isPinToDelete = currVal.coords.latitude === coords.latitude && 
+                            currVal.coords.longitude === coords.longitude;
+                        if (isPinToDelete) firebase.firestore().collection("pins").doc(pins[index].id).delete();
+                        return !isPinToDelete;
+                    })});
+                }},
+                {text: 'Cancel'}
+            ]
+        );
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <Appbar.Header>
                     <Appbar.BackAction onPress={() => this.props.navigation.navigate("home")} />
-                    <Appbar.Content title="Map" />
+                    <Appbar.Content title={this.state.deleteMode ? "Delete Pins" : "Map"} />
+                    <Appbar.Action icon="delete" onPress={
+                        () => this.setState({deleteMode: !this.state.deleteMode})
+                    } />
                 </Appbar.Header>
                 {
                     this.state.mapRegion === null ?
@@ -86,7 +114,15 @@ export default class MapPage extends React.Component {
                                     title={pin.title}
                                     pinColor="green"
                                     description={pin.description}
-                                />
+                                    onPress={(e) => {
+                                        if (this.state.deleteMode) {
+                                            this.setState({selectedMarker: e.nativeEvent.coordinate});
+                                            this.doDelete();
+                                        }
+                                    }}
+                                >
+                                    {pin.photoUrl === null ? null : <Image style={styles.photo} source={{uri: pin.photoUrl}} />}
+                                </Marker>
                             ))}
                             {this.state.photos.map((photo, index) => (
                                 <Marker
@@ -139,5 +175,9 @@ const styles = StyleSheet.create({
         margin: 25,
         right: 0,
         bottom: 0
+    },
+    photo: {
+        height: 35,
+        width: 35
     }
 });

@@ -5,10 +5,6 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import LoadingPage from './LoadingPage';
 import LoginPage from './LoginPage';
 import TripsController from './trips/TripsController';
-import JournalPage from './journal/view/JournalPage';
-import BudgetPage from './budget/view/BudgetPage';
-import addJournalPage from './journal/view/AddJournalPage';
-import AddBudget from './budget/view/AddBudget'
 
 // START: Hacky Fix for Firebase Utils (dont worry about it)
 import {decode, encode} from 'base-64'
@@ -28,11 +24,7 @@ const AppController = createAppContainer(createSwitchNavigator(
   {
     loading: LoadingPage,
     login: LoginPage,
-    trips: TripsController,
-    viewJournals: JournalPage,
-    addJournal: addJournalPage,
-    viewBudget: BudgetPage,
-    addBudget: AddBudget
+    trips: TripsController
   },
   {
     // We begin our application at the loading screen, which initializes 
