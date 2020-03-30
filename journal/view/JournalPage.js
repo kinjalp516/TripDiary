@@ -14,9 +14,9 @@ class PressOptions extends React.Component {
   
     startPress = null;
 
-    state = {
-        isDeleted: false
-    }
+    // state = {
+    //     isDeleted: false
+    // }
   
     onStartShouldSetResponder = (evt) => {
       if (evt.nativeEvent.touches.length === this.props.numberOfTouches) {
@@ -39,7 +39,7 @@ class PressOptions extends React.Component {
               [
                 {text: 'Delete', onPress: () => {
                         deleteJournal(this.props.dbId);
-                        this.setState({isDeleted: true});
+                        this.props.onDelete();
                     }
                 },
                 {text: 'Cancel', onPress: () => null, style: 'cancel'},
@@ -52,17 +52,15 @@ class PressOptions extends React.Component {
     }
   
     render() {
-        console.log(this.state.isDeleted);
-        if (!this.state.isDeleted) {
-            return (
-                <View
-                    onStartShouldSetResponder = {this.onStartShouldSetResponder}
-                    onResponderRelease = {this.onResponderRelease}
-                >
-                    {this.props.children}
-                </View>
-            );
-        } else return null;
+        //console.log(this.state.isDeleted);
+        return (
+            <View
+                onStartShouldSetResponder = {this.onStartShouldSetResponder}
+                onResponderRelease = {this.onResponderRelease}
+            >
+                {this.props.children}
+            </View>
+        );
     }
   }
 
@@ -87,6 +85,7 @@ export default class JournalPage extends Component{
     }
 
     render() {
+        let arr = this.state.journals;
         return (
             <View style={styles.container}>
                 <Appbar.Header>
@@ -94,7 +93,7 @@ export default class JournalPage extends Component{
                     <Appbar.Content title="Journal" />
                 </Appbar.Header>
                 <ScrollView>
-                    {this.state.journals.map((item, index) => {
+                    {arr.map((item, index) => {
                         console.log(item);
                         return (
                             <PressOptions 
@@ -106,6 +105,11 @@ export default class JournalPage extends Component{
                                         note: item.note,
                                         editJournal: true
                                     })}}
+                                onDelete={() => this.setState({journals: this.state.journals.filter((val, index) => {
+                                    if (item.id === val.id) return false;
+                                    return true;
+                                })
+                                })}
                             >
                                 <Card 
                                     key = {`journals-${index}`} 
