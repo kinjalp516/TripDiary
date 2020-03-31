@@ -1,8 +1,8 @@
 Trip Diary (SE Group 5)
 
----------------
+----------------------------------------------------------------------------------
 BUILDING:
----------------
+----------------------------------------------------------------------------------
 In order to run our application, you should start by installing all
 of the required dependencies listed in package.json. You can do this
 by running the following command in terminal:
@@ -25,9 +25,13 @@ If you'd like to run this application on your physical device, simply
 download the expo client from the Google Play Store or the Apple App store
 and scan the barcode that's present on the expo web portal.
 
-----------------
+Additionally, in order to execute any backend operations, our firebase project
+configuration files are included as part of this repo, and this allows you to
+run the application yourself without having to create a new firebase project.
+
+----------------------------------------------------------------------------------
 CODE STRUCTURE:
-----------------
+----------------------------------------------------------------------------------
 The business logic for our application is built entirely into the
 front-end piece of our application. We make use of react-native and
 expo's tools (https://expo.io) to ease packaging of our application.
