@@ -5,7 +5,11 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "react-native"
   },
   "dependencies": {
     "@react-native-community/datetimepicker": "2.1.0",
@@ -41,8 +45,10 @@
     "react-navigation-tabs": "^2.8.4"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
     "babel-preset-expo": "~8.0.0",
-    "@babel/core": "^7.0.0"
+    "jest-expo": "^37.0.0",
+    "react-test-renderer": "^16.13.1"
   },
   "private": true
 }

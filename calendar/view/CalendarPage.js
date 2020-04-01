@@ -15,8 +15,8 @@ export default class CalendarPage extends React.Component{
 
     componentDidMount() {
         let user = firebase.auth().currentUser;
-        let userId = user.uid;
-        let trip = this.props.trip;
+       // let userId = user.uid;
+       // let trip = this.props.trip;
     
       }
     

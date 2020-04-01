@@ -6,7 +6,7 @@ import CreateTripPage from './view/CreateTripPage';
 import MyTripsPage from './view/MyTripsPage';
 import TripDetailController from './trip_detail/TripDetailController'
 import ViewPhotoPage from '../photos/ViewPhoto';
-import CalendarPage from '../trips/view/CalendarPage';
+import CalendarPage from '../calendar/view/CalendarPage';
 import ViewJournal from '../journal/view/ViewJournal';
 import addJournalPage from '../journal/view/AddJournalPage';
 import AddPinPage from '../map/AddPinPage';
