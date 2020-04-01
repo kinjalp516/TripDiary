@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import { Appbar, TextInput, Subheading, Button, Divider } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -16,6 +16,8 @@ export default class CreateTripPage extends React.Component {
         end: new Date(Date.now()),
         nameError: false,
         locationError: false,
+        showStart: false,
+        showEnd: false
     };
 
     componentDidMount() {
@@ -78,22 +80,36 @@ export default class CreateTripPage extends React.Component {
                         error={this.state.locationError}
                         onChangeText={location => this.setState({ location })}
                     />
-                    <Subheading>Select Start Date</Subheading>
+                    <Button onPress={() => this.setState({ showStart: true })}>
+                        Select Start Date
+                    </Button>
                     <Divider />
-                    <DateTimePicker
-                        value={this.state.start}
-                        mode="date"
-                        minimumDate={Date.now()}
-                        onChange={(event, selectedDate) => this.setState({ start: new Date(selectedDate) })}
-                    />
-                    <Subheading>Select End Date</Subheading>
+                    {this.state.showStart && (
+                        <DateTimePicker
+                            value={this.state.start}
+                            mode="date"
+                            minimumDate={Date.now()}
+                            onChange={(event, selectedDate) => {
+                                this.setState({ showStart: Platform.OS === 'ios'}); 
+                                this.setState({ start: new Date(selectedDate) });
+                            }}
+                        />
+                    )}
+                    <Button onPress={() => this.setState({ showEnd: true})}>
+                        Select End Date
+                    </Button>
                     <Divider />
-                    <DateTimePicker
-                        value={this.state.end}
-                        mode="date"
-                        minimumDate={this.state.start}
-                        onChange={(event, selectedDate) => this.setState({ end: new Date(selectedDate) })}
-                    />
+                    {this.state.showEnd && (
+                        <DateTimePicker
+                            value={this.state.end}
+                            mode="date"
+                            minimumDate={this.state.start}
+                            onChange={(event, selectedDate) => {
+                                this.setState({ showEnd: Platform.OS === 'ios'});
+                                this.setState({ end: new Date(selectedDate) });
+                            }}
+                        />
+                    )}
                     <Button mode="contained" onPress={() => this.submitTrip()}>
                         Save Trip
                     </Button>
