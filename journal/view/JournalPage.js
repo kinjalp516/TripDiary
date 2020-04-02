@@ -1,3 +1,4 @@
+
 import React, {Component} from 'react';
 import {View, StyleSheet, ScrollView, Alert} from 'react-native';
 import {Appbar, FAB, Card} from 'react-native-paper';
@@ -67,15 +68,17 @@ export default class JournalPage extends Component{
 
     componentDidMount() {
         let user = firebase.auth().currentUser;
-        let userId = user.uid;
+        if (user != null){
+            let userId = user.uid;
 
-        //for initial load
-        fetchJournals(userId).then((journals) => this.setState({journals}));
-
-        this.props.navigation.addListener(
-            'willFocus', 
-            () => fetchJournals(userId).then((journals) => this.setState({journals}))
-        );
+            //for initial load
+            fetchJournals(userId).then((journals) => this.setState({journals}));
+    
+            this.props.navigation.addListener(
+                'willFocus', 
+                () => fetchJournals(userId).then((journals) => this.setState({journals}))
+            );
+        }
     }
 
     render() {
