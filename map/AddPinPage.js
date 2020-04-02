@@ -7,32 +7,46 @@ import firebase from '../Firebase.js';
 import { Pin } from './model/Pin';
 import { fetchPhotos } from '../photos/model/Photo';
 
+export function getDistance(c1, c2) {
+    let R = 3958.8;
+    let rlat1 = c1.latitude * (Math.PI/180);
+    let rlat2 = c2.latitude * (Math.PI/180);
+    let difflat = rlat2-rlat1;
+    let difflon = (c1.longitude - c2.longitude) * (Math.PI/180);
+
+    let d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
+    return d;
+}
+
 export default class AddPinPage extends React.Component {
 
     state = {
         userId: null,
-        tripdId: this.props.navigation.getParam('trip').id,
-        coords: this.props.navigation.getParam('coords'),
+        coords: null,
         title: null,
         description: null,
         photoUrl: null, 
         titleError: false,
         descriptionError: false,
-        pins: this.props.navigation.getParam('pins'),
+        pins: [],
         photos: []
     }
 
     componentDidMount() {
         let user = firebase.auth().currentUser;
-        this.setState({userId: user.uid});
-        fetchPhotos(this.state.tripdId).then((photos) => this.setState({ photos }));
+        if (user != null) {
+            this.setState({userId: user.uid});
+            this.setState({coords: this.props.navigation.getParam('coords')});
+            this.setState({pins: this.props.navigation.getParam('pins')});
+            fetchPhotos(this.props.navigation.getParam('trip').id).then((photos) => this.setState({ photos }));
+        }
     }
 
     getImage() {
         let photos = this.state.photos;
         for (let i = 0; i < photos.length; i++) {
             let coords = photos[i].location;
-            let distance = this.getDistance(this.state.coords, coords);
+            let distance = getDistance(this.state.coords, coords);
             let photoUrl = photos[i].photoUrl;
             if (distance < 5) {
                 return photoUrl;
@@ -41,23 +55,13 @@ export default class AddPinPage extends React.Component {
         return null;
     }
 
-    getDistance(c1, c2) {
-        let R = 3958.8;
-        let rlat1 = c1.latitude * (Math.PI/180);
-        let rlat2 = c2.latitude * (Math.PI/180);
-        let difflat = rlat2-rlat1;
-        let difflon = (c1.longitude - c2.longitude) * (Math.PI/180);
-
-        let d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
-        return d;
-    }
-
     async submitPin() {
         let numErrors = 0;
 
-        if (this.state.title == null) {
+        if (this.state.title === null) {
             this.setState({titleError: true});
             numErrors++;
+            return numErrors;
         } else {
             this.setState({nameError: false});
         }
@@ -65,24 +69,26 @@ export default class AddPinPage extends React.Component {
         if (this.state.description == null) {
             this.setState({descriptionError: true});
             numErrors++;
+            return numErrors;
         } else {
             this.setState({descriptionError: false});
         }
 
         for (let i = 0; i < this.state.pins.length; i++) {
             let pinCoords = this.state.pins[i].coords;
-            if (pinCoords.latitude == this.state.coords.latitude && pinCoords.longitude == this.state.coords.longitude) {
-               this.props.navigation.goBack();
+            if (getDistance(pinCoords, this.state.coords) < 5) {
+                this.props.navigation.goBack();
             }
         }
 
         let photoUrl = this.getImage();
-        console.log(photoUrl);
+        console.log("do i get here???");
+        console.log(this.state.userId);
 
         if (numErrors == 0 && this.state.userId != null) {
             let pin = new Pin({
                 id: "",
-                tripId: this.state.tripdId,
+                tripId: this.props.navigation.getParam('trip').id,
                 userId: this.state.userId,
                 coords: this.state.coords,
                 title: this.state.title,
@@ -95,8 +101,7 @@ export default class AddPinPage extends React.Component {
             this.props.navigation.goBack();
         }
 
-        // Display Error
- 
+        return 0;
     }
 
     render() {

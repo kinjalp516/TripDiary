@@ -112,7 +112,6 @@ export default class MapPage extends React.Component {
                                     key={index}
                                     coordinate={pin.coords}
                                     title={pin.title}
-                                    pinColor="green"
                                     description={pin.description}
                                     onPress={(e) => {
                                         if (this.state.deleteMode) {
@@ -123,15 +122,6 @@ export default class MapPage extends React.Component {
                                 >
                                     {pin.photoUrl === null ? null : <Image style={styles.photo} source={{uri: pin.photoUrl}} />}
                                 </Marker>
-                            ))}
-                            {this.state.photos.map((photo, index) => (
-                                <Marker
-                                    key={index}
-                                    coordinate={{latitude: photo.location.latitude, longitude: photo.location.longitude}}
-                                    title="Photo"
-                                    pinColor="blue"
-                                    description="Picture taken at this location"
-                                />
                             ))}
                         </MapView>
                 }
