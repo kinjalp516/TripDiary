@@ -21,9 +21,30 @@ test('test if there are no images', () => {
 
 test('test numErrors equals 1 when title is null', () => {
     let pinInstance = renderer.create(<AddPinPage />).getInstance();
+    pinInstance.state.description = 'test';
 
     return pinInstance.submitPin().then(numErrors => {
         expect(numErrors).toBe(1);
+        expect(pinInstance.state.titleError).toBe(true);
+    });
+});
+
+test('test numErrors equals 1 when description is null', () => {
+    let pinInstance = renderer.create(<AddPinPage />).getInstance();
+    pinInstance.state.title = 'test';
+
+    return pinInstance.submitPin().then(numErrors => {
+        expect(numErrors).toBe(1);
+        expect(pinInstance.state.descriptionError).toBe(true);
+    });
+});
+
+test('test numErrors equals 2 when description and title are null', () => {
+    let pinInstance = renderer.create(<AddPinPage />).getInstance();
+
+    return pinInstance.submitPin().then(numErrors => {
+        expect(numErrors).toBe(2);
+        expect(pinInstance.state.descriptionError).toBe(true);
         expect(pinInstance.state.titleError).toBe(true);
     });
 });

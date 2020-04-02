@@ -61,7 +61,6 @@ export default class AddPinPage extends React.Component {
         if (this.state.title === null) {
             this.setState({titleError: true});
             numErrors++;
-            return numErrors;
         } else {
             this.setState({nameError: false});
         }
@@ -69,7 +68,6 @@ export default class AddPinPage extends React.Component {
         if (this.state.description == null) {
             this.setState({descriptionError: true});
             numErrors++;
-            return numErrors;
         } else {
             this.setState({descriptionError: false});
         }
@@ -82,8 +80,6 @@ export default class AddPinPage extends React.Component {
         }
 
         let photoUrl = this.getImage();
-        console.log("do i get here???");
-        console.log(this.state.userId);
 
         if (numErrors == 0 && this.state.userId != null) {
             let pin = new Pin({
@@ -101,7 +97,7 @@ export default class AddPinPage extends React.Component {
             this.props.navigation.goBack();
         }
 
-        return 0;
+        return numErrors;
     }
 
     render() {
