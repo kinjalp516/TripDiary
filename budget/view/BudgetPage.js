@@ -13,14 +13,18 @@ export default class BudgetPage extends React.Component{
     
     componentDidMount() {
         let user = firebase.auth().currentUser;
-        let userId = user.uid;
+        if(user != null){
+            let userId = user.uid;
 
-        //for initial load
-        fetchBudget(userId).then((budget) => this.setState({budget}));
+            //for initial load
+            fetchBudget(userId).then((budget) => this.setState({budget}));
+            
+            this.props.navigation.addListener(
+              'willFocus', () => fetchBudget(userId).then((budget) => this.setState({ budget }))
+            );
+        } 
         
-        this.props.navigation.addListener(
-          'willFocus', () => fetchBudget(userId).then((budget) => this.setState({ budget }))
-        );
+        
     }
 
     async checkBudget(){
