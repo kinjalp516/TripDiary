@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, FlatList, TouchableOpacity, Button } from 'react-native';
+import { Appbar } from 'react-native-paper';
 import CategoryCard from './CategoryCard';
-import {getInformation} from '../model/Retrieve'
+import {getInformation, setSavedState} from '../Model/Retrieve';
 export default class Category extends React.Component{
 
   constructor(props){
@@ -11,9 +12,6 @@ export default class Category extends React.Component{
         {name: 'Museums', key: '2'},
         {name: 'Parks', key: '3'},
         {name: 'Bars', key: '4'},
-      ],
-      attractions: [
-
       ]};
   }
 
@@ -23,13 +21,14 @@ export default class Category extends React.Component{
 
     getInformation().then((item) => {
 
-      this.setState({attractions: item});
-
+      setSavedState(item);
+      
   })
   }
 
   pressHandler = () => {
-    this.props.navigation.navigate('Items', this.state);
+
+    this.props.navigation.navigate('Items');
   }
 
   toSavedAttractions= () => {
@@ -40,6 +39,7 @@ export default class Category extends React.Component{
 
     return (
       <View style={styles.viewContainer}>
+        
         <FlatList style={styles.listContainer}
           vertical
           showsVerticalScrollIndicator={false}

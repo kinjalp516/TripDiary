@@ -1,7 +1,7 @@
 export async function getInformation() {
 
     //fetch and process information from api
-      return fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise&key=YOUR_API_KEY')
+      return fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise&key=AIzaSyB4f8HruyOxAlhEP6-FK6vGoJ9Qu643M9w')
             .then((response) => {
              
                 return response.json();
@@ -20,7 +20,8 @@ export async function getInformation() {
 }
 
 var savedItemsWrapper = {
-    savedItems: []
+    savedItems: [],
+    savedState: []
 }
 
 
@@ -37,6 +38,16 @@ export function setSavedItems(state){
 export function getSavedItems(){
     return savedItemsWrapper.savedItems;
 }
+
+export function setSavedState(state){
+    savedItemsWrapper.savedState = state;
+}
+
+export function getSavedState(){
+    return savedItemsWrapper.savedState;
+}
+
+
 
 //class for storing different result items
 export class Retrieve{

@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
-import {addSavedItems} from '../model/Retrieve'
+import {addSavedItems, getSavedItems} from '../Model/Retrieve'
 import { Card, Title, Paragraph, Button } from 'react-native-paper'
-
+import {getSavedState} from '../Model/Retrieve';
 
 export default class Attractions extends React.Component{
 
@@ -16,11 +16,10 @@ export default class Attractions extends React.Component{
           
       };
     }
-
-// 
     componentDidMount(){
 
-      this.setState({attractions: this.props.navigation.getParam('attractions')});
+      this.setState({attractions: getSavedState()});
+     
     }
 
     //change 'saved' field upon clicking 'save', send item to SavedAttractions
@@ -44,8 +43,9 @@ export default class Attractions extends React.Component{
 
         
     } 
-  }
 
+    return getSavedItems();
+  }
 
     render(){ 
         

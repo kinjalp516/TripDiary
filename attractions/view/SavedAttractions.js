@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
-import { Card, Title, Paragraph, Button } from 'react-native-paper'
-import {getSavedItems} from '../model/Retrieve'
+import { Card, Title, Paragraph, Button } from 'react-native-paper';
+import {getSavedItems, setSavedItems, setSavedState, getSavedState} from '../Model/Retrieve';
+
 //quick prototype still needs improvements
 export default class SavedAttractions extends React.Component {
 
@@ -14,12 +15,14 @@ export default class SavedAttractions extends React.Component {
 
     }
 
+    //Load in saved items from retrieve model
     componentDidMount(){
 
       this.setState({attractions: getSavedItems()});
-      console.log(getSavedItems());
+      
     }
 
+    //Warn user item is being deleted
     alertHandler = (item) => {
 
       Alert.alert('Delete this item?', 'This action cannot be undone.', [
@@ -30,12 +33,26 @@ export default class SavedAttractions extends React.Component {
 
     }
 
+    //Filter pressed item, change saved and button text attributes in retrieve model to false and 'save'
     deleteHandler = (item) => {
-      var currentStateArr = this.state.attractions;
+      var currentItemsArr = this.state.attractions;
 
-      var filteredArr = currentStateArr.filter(a => a.id != item.id);
+      var filteredArr = currentItemsArr.filter(a => a.id != item.id);
+
+      var currentStateArr = getSavedState();
+
+      currentStateArr.map((a) => {
+
+        if(a.id === item.id){
+          a.saved = false;
+          a.buttonText = 'Save';
+        }
+
+      });
 
       this.setState({attractions: filteredArr});
+      setSavedState(currentStateArr);
+      setSavedItems(filteredArr);
 
     }
 
@@ -58,7 +75,6 @@ export default class SavedAttractions extends React.Component {
                               Price: {item.price} | {' '} 
                               Open: {item.opening_hours.open_now.toString()} | {' '}
                               Address: {item.address}
-                            {console.log(this.state.attractions)}
                             </Paragraph>
                           </Card.Content>
 

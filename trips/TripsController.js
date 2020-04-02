@@ -12,6 +12,7 @@ import addJournalPage from '../journal/view/AddJournalPage';
 import AddPinPage from '../map/AddPinPage';
 import AddBudget from '../budget/view/AddBudget';
 import BudgetPage from '../budget/view/BudgetPage';
+import Category from '../attractions/view/Category';
 
 const TripsController = createStackNavigator(
     {
@@ -24,7 +25,8 @@ const TripsController = createStackNavigator(
         addJournal: addJournalPage,
         addPin: AddPinPage,
         viewBudget: BudgetPage,
-        addBudget: AddBudget
+        addBudget: AddBudget,
+        category: Category
     },
     {
         initialRouteName: 'home',
