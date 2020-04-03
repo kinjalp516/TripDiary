@@ -1,32 +1,49 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-test('Making a trip with dates and viewing them in the Calendar' , async() => {
-    const { getByText, getByTestId, getByTestId} = render(<App />);
-     
-    //click add trip
-    Simulate.click(getByText('Add Trip'));
 
-    //start date
-    Simulate.click(getByText('Select Start Date'));
-    getByTestId('Date start test').value = 'Date input start';
+import { Trip } from '../trips/model/Trip';
+import { Journal } from '../journal/model/Journal';
+import JournalPage from '../journal/view/JournalPage';
+import AddJournalPage from '../journal/view/AddJournalPage';
 
-    //end date
-    Simulate.click(getByText('Select End Date'));
-    getByTestId('Date end test').value = 'Date input end';
-
-    //click save trip
-    Simulate.click(getByText('Save Trip'));
-
-    //select trip
-    Simulate.click(getByTestId('Trip ID'));
-
-    //select calendar page
-    Simulate.click(getByTestId('Calendar Test'));
-
-    //expect the dates to be the ones input
-    expect(getByTestId('Calendar Date').minDate.toEqual(getByText('Date input start')));
-    expect(getByTestId('Calendar Date').maxDate.toEqual(getByText('Date input end')));
-
-
+//trip constant used for testing
+const trip = new Trip({
+    id: "",
+    name: "",
+    userId: "",
+    location: "",
+    startDate: new Date(2020, 3, 17),
+    endDate: new Date(2020, 3, 25)
 });
+
+//journal constant used for testing
+const journal = new Journal({
+    id: "",
+    userId: "",
+    title: "",
+    note: ""
+});
+
+test('Integration test: Checks journal entry made shows up correctly on Journal Page', () => {
+
+    const navigation = { navigate: jest.fn() };
+
+    //render add journal page and add journal entry
+    let tree = renderer.create(<AddJournalPage navigation = {navigation}/>).getInstance();
+    tree.state.title = 'Testing Title';
+    tree.state.note = 'Testing Note';
+
+    //pass the journal entry to the journal page from add journal page
+    let tree2 = renderer.create(<JournalPage journal = {new Journal({
+        id: "",
+        userId: "",
+        title: tree.state.title,
+        note: tree.state.note
+    })} />).getInstance();
+
+
+    //test if journal on journal page is correct
+    expect(tree2.state.journals[0].title).toBe('Testing Title');
+    expect(tree2.state.journals[0].note).toBe('Testing Note');
+})
