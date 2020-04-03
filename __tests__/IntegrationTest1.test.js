@@ -30,17 +30,20 @@ test('Integration test: Checks journal entry made shows up correctly on Journal 
     const navigation = { navigate: jest.fn() };
 
     //render add journal page and add journal entry
-    let tree = renderer.create(<AddJournalPage navigation = {navigation}/>).getInstance();
+    let tree = renderer.create(<AddJournalPage />).getInstance();
     tree.state.title = 'Testing Title';
     tree.state.note = 'Testing Note';
 
     //pass the journal entry to the journal page from add journal page
-    let tree2 = renderer.create(<JournalPage journal = {new Journal({
-        id: "",
+    let tree2 = renderer.create(<JournalPage />).getInstance();
+        tree2.state.journals[0] = new Journal({
+            id: "",
         userId: "",
         title: tree.state.title,
         note: tree.state.note
-    })} />).getInstance();
+        });
+    
+
 
 
     //test if journal on journal page is correct

@@ -9,19 +9,32 @@ export default class AddJournalPage extends Component{
     
     constructor (props) {
         super(props);
+        if(this.props.navigation != null){
         this.state = {
-            dbId: this.props.navigation.getParam('itemId', 'NO-id'),
-            title: this.props.navigation.getParam('title', 'NO-title'),
-            note: this.props.navigation.getParam('note', 'NO-note'),
-            editJournal: this.props.navigation.getParam('editJournal', 'NO-note')
-        }
+                dbId: this.props.navigation.getParam('itemId', 'NO-id'),
+                title: this.props.navigation.getParam('title', 'NO-title'),
+                note: this.props.navigation.getParam('note', 'NO-note'),
+                editJournal: this.props.navigation.getParam('editJournal', 'NO-note') 
+            }
+
         
         this.createNote = this.createNote.bind (this);
+        }
+        else{
+             this.state ={
+                 dbId: null,
+                 title: null,
+                 note: null,
+                 editJournal: null
+             }
+        }
     }
 
     componentDidMount() {
         let user = firebase.auth().currentUser;
-        this.setState({userId: user.uid});
+        if (user != null){
+            this.setState({userId: user.uid});
+        }
     }
 
     async editNote (dbId, title, note) {
