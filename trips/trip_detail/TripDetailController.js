@@ -18,7 +18,7 @@ export default class TripDetailController extends React.Component {
         index: 0,
         routes: [
             { key: 'photos', title: 'Photos', icon: 'camera-burst' },
-            { key: 'calendar', title: 'Calendar', icon: 'calendar'},
+            { key: 'calendar', title: 'Calendar', icon: 'calendar', testID: 'Calendar Test'},
             { key: 'journal', title: 'Journal', icon: 'book'},
             { key: 'budget', title: 'Budget', icon: 'bank'},
             { key: 'map', title: 'Map', icon: 'map'},

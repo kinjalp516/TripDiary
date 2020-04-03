@@ -28,6 +28,7 @@ export default class CalendarPage extends React.Component{
             <Appbar.Content title="Calendar" />
             </Appbar.Header>
             <CalendarList
+                testID = 'Calendar Date' //integration test
                 minDate={this.props.trip.startDate}
                 maxDate={this.props.trip.endDate}
                 current={this.props.trip.startDate}

@@ -49,6 +49,7 @@ export default class MyTripsPage extends React.Component{
               >
                 <Card.Title 
                   title={item.name}
+                  testID = 'Trip ID' //for integration testing
                   subtitle={item.location}
                 />
                 <Card.Content>

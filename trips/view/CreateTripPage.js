@@ -89,6 +89,7 @@ export default class CreateTripPage extends React.Component {
                             value={this.state.start}
                             mode="date"
                             minimumDate={Date.now()}
+                            testID = 'Date start test'  //for integration testing
                             onChange={(event, selectedDate) => {
                                 this.setState({ showStart: Platform.OS === 'ios'}); 
                                 this.setState({ start: new Date(selectedDate) });
@@ -104,6 +105,7 @@ export default class CreateTripPage extends React.Component {
                             value={this.state.end}
                             mode="date"
                             minimumDate={this.state.start}
+                            testId = 'Date end test' //for integration testing
                             onChange={(event, selectedDate) => {
                                 this.setState({ showEnd: Platform.OS === 'ios'});
                                 this.setState({ end: new Date(selectedDate) });
