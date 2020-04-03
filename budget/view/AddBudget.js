@@ -18,7 +18,7 @@ export default class AddBudget extends React.Component{
 
     componentDidMount() {
         let user = firebase.auth().currentUser;
-        this.setState({userId: user.uid});
+        //this.setState({userId: user.uid});
     }
 
     /*

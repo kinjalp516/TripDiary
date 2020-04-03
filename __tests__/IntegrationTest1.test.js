@@ -33,15 +33,16 @@ test('Integration test: Checks journal entry made shows up correctly on Journal 
     let tree = renderer.create(<AddJournalPage navigation = {navigation}/>).getInstance();
     tree.state.title = 'Testing Title';
     tree.state.note = 'Testing Note';
-
-    //pass the journal entry to the journal page from add journal page
-    let tree2 = renderer.create(<JournalPage journal = {new Journal({
+    journal = new Journal({
         id: "",
         userId: "",
         title: tree.state.title,
         note: tree.state.note
-    })} />).getInstance();
+    })
 
+    //pass the journal entry to the journal page from add journal page
+    let tree2 = renderer.create(<JournalPage trip = {trip} />).getInstance();
+    tree2.state.journals[0] = journal;
 
     //test if journal on journal page is correct
     expect(tree2.state.journals[0].title).toBe('Testing Title');
