@@ -15,11 +15,13 @@ export default class MyTripsPage extends React.Component{
 
   componentDidMount() {
     let user = firebase.auth().currentUser;
-    let userId = user.uid;
+    if(user != null){
+      let userId = user.uid;
     
     this.props.navigation.addListener(
       'willFocus', () => fetchTrips(userId).then((trips) => this.setState({ trips }))
     );
+    }
   }
 
   render() {

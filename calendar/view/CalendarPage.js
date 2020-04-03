@@ -4,19 +4,18 @@ import { Appbar, Menu, Card, FAB, Paragraph } from 'react-native-paper';
 import { Calendar,CalendarList,Agenda } from 'react-native-calendars';
 
 import firebase from "../../Firebase.js";
-//import  Trip  from '../model/Trip.js';
-//import moment from 'moment';
-//import TripsController from '../TripsController.js';
 
 export default class CalendarPage extends React.Component{
+
     state ={
-        days: []
+        days: [],
+        startDay: this.props.trip.startDate,
+        endDay: this.props.trip.endDate
+
     }
 
     componentDidMount() {
         let user = firebase.auth().currentUser;
-       // let userId = user.uid;
-       // let trip = this.props.trip;
     
       }
     
@@ -29,6 +28,7 @@ export default class CalendarPage extends React.Component{
             </Appbar.Header>
             <CalendarList
                 testID = 'Calendar Date' //integration test
+                //recieves start and end date for calendar from trip object
                 minDate={this.props.trip.startDate}
                 maxDate={this.props.trip.endDate}
                 current={this.props.trip.startDate}
@@ -36,6 +36,7 @@ export default class CalendarPage extends React.Component{
                 horizontal={true}
                 pagingEnabled={true}
                 pastScrollRange={0}
+                //sets scroll range to selected months
                 futureScrollRange={(this.props.trip.endDate.getMonth()-this.props.trip.startDate.getMonth())}
                 
                 onDayPress={(day) => console.log('selected day', day)}//just outputs day info to console for now
