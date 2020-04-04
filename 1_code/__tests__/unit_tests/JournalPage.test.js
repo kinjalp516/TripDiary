@@ -1,4 +1,4 @@
-import './Firebase.mock';
+import '../mocks/Firebase.mock';
 
 const mockNavigation = {
     addListener: function(event, callback) {
@@ -8,14 +8,10 @@ const mockNavigation = {
 
 import React from 'react';
 import renderer from 'react-test-renderer';
-import {Appbar, FAB, Card} from 'react-native-paper';
 
-import JournalPage from '../journal/view/JournalPage';
-import { Trip } from '../trips/model/Trip';
-//import firebase from '../Firebase.js';
-//import admin from 'firebase-admin';
-import { Journal } from '../journal/model/Journal';
-//import functions from 'firebase-functions-test';
+import JournalPage from '../../journal/view/JournalPage';
+import { Trip } from '../../trips/model/Trip';
+import { Journal } from '../../journal/model/Journal';
 
 const trip = new Trip({
     id: "",

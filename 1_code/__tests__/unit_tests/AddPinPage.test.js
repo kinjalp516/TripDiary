@@ -1,5 +1,5 @@
-import './Firebase.mock';
-import './model/Photo.mock';
+import '../mocks/Firebase.mock';
+import '../mocks/Photo.mock';
 
 const mockNavigation = {
     getParam: function(param) {
@@ -11,7 +11,7 @@ const mockNavigation = {
 
 import React from 'react';
 import renderer from 'react-test-renderer';
-import  AddPinPage, { getDistance } from '../map/AddPinPage';
+import  AddPinPage, { getDistance } from '../../map/AddPinPage';
 
 test('test distance function', () => {
     let c1 = { latitude: 40.400367983574654, longitude: -74.26662245470531 };

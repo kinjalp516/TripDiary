@@ -1,10 +1,10 @@
-import './Firebase.mock';
+import '../mocks/Firebase.mock';
 
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import CalendarPage from '../calendar/view/CalendarPage';
-import { Trip } from '../trips/model/Trip';
+import CalendarPage from '../../calendar/view/CalendarPage';
+import { Trip } from '../../trips/model/Trip';
 
 //constant used for testing
 const trip = new Trip({

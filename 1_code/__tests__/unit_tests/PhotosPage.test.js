@@ -1,13 +1,9 @@
-import './Firebase.mock';
-import './model/Photo.mock';
-
-jest.mock('expo-image-picker');
-
-import * as ImagePicker from 'expo-image-picker';
+import '../mocks/Firebase.mock';
+import '../mocks/Photo.mock';
 
 import React from 'react';
 import renderer from 'react-test-renderer';
-import PhotosPage from '../photos/PhotosPage';
+import PhotosPage from '../../photos/PhotosPage';
 
 test('Photos page renders help text when no photos exist', () =>{
     const tree = renderer.create(<PhotosPage trip={{id: null}} />).toJSON();

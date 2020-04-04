@@ -1,4 +1,4 @@
-jest.mock('../Firebase', () => {
+jest.mock('../../Firebase', () => {
     return {
         auth: function() {
             return {

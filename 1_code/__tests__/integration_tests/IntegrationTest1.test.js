@@ -1,4 +1,4 @@
-import './Firebase.mock';
+import '../mocks/Firebase.mock';
 
 const mockNavigation = {
     addListener: function(event, callback) {
@@ -9,10 +9,10 @@ const mockNavigation = {
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import { Trip } from '../trips/model/Trip';
-import { Journal } from '../journal/model/Journal';
-import JournalPage from '../journal/view/JournalPage';
-import AddJournalPage from '../journal/view/AddJournalPage';
+import { Trip } from '../../trips/model/Trip';
+import { Journal } from '../../journal/model/Journal';
+import JournalPage from '../../journal/view/JournalPage';
+import AddJournalPage from '../../journal/view/AddJournalPage';
 
 //trip constant used for testing
 const trip = new Trip({

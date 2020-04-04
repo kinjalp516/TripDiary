@@ -1,4 +1,4 @@
-import './Firebase.mock';
+import '../mocks/Firebase.mock';
 
 const mockNavigation = {
   addListener: function(event, callback) {
@@ -9,8 +9,8 @@ const mockNavigation = {
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import BudgetPage from '../budget/view/BudgetPage';
-import { Trip } from '../trips/model/Trip';
+import BudgetPage from '../../budget/view/BudgetPage';
+import { Trip } from '../../trips/model/Trip';
 
 const trip = new Trip({
     id: "",
