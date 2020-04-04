@@ -8,8 +8,7 @@ exports[`Calendar Page renders correctly 1`] = `
     }
   }
 >
-  <RCTSafeAreaView
-    emulateUnlessSupported={true}
+  <View
     style={
       Array [
         Object {
@@ -121,45 +120,7 @@ exports[`Calendar Page renders correctly 1`] = `
                 }
               }
             >
-              <View
-                style={
-                  Array [
-                    Object {
-                      "alignItems": "center",
-                      "justifyContent": "center",
-                    },
-                    Object {
-                      "height": 24,
-                      "transform": Array [
-                        Object {
-                          "scaleX": 1,
-                        },
-                      ],
-                      "width": 24,
-                    },
-                  ]
-                }
-              >
-                <Image
-                  source={
-                    Object {
-                      "testUri": "../../react-native-paper/lib/commonjs/assets/back-chevron.png",
-                    }
-                  }
-                  style={
-                    Array [
-                      Object {
-                        "height": 21,
-                        "resizeMode": "contain",
-                        "width": 21,
-                      },
-                      Object {
-                        "tintColor": "#ffffff",
-                      },
-                    ]
-                  }
-                />
-              </View>
+              <Text />
             </View>
           </View>
         </View>
@@ -184,9 +145,7 @@ exports[`Calendar Page renders correctly 1`] = `
               Object {
                 "marginLeft": 8,
               },
-              Object {
-                "alignItems": "center",
-              },
+              false,
               undefined,
             ],
           ]
@@ -201,18 +160,18 @@ exports[`Calendar Page renders correctly 1`] = `
             Array [
               Object {
                 "color": "#000000",
-                "fontFamily": "System",
-                "fontWeight": "400",
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal",
                 "textAlign": "left",
               },
               Array [
                 Object {
                   "color": "#ffffff",
-                  "fontFamily": "System",
-                  "fontWeight": "400",
+                  "fontFamily": "sans-serif-medium",
+                  "fontWeight": "normal",
                 },
                 Object {
-                  "fontSize": 17,
+                  "fontSize": 20,
                 },
                 undefined,
               ],
@@ -222,15 +181,8 @@ exports[`Calendar Page renders correctly 1`] = `
           Calendar
         </Text>
       </View>
-      <View
-        style={
-          Object {
-            "width": 48,
-          }
-        }
-      />
     </View>
-  </RCTSafeAreaView>
+  </View>
   <View>
     <RCTScrollView
       data={
@@ -259,7 +211,7 @@ exports[`Calendar Page renders correctly 1`] = `
       onViewableItemsChanged={[Function]}
       pageSize={1}
       pagingEnabled={true}
-      removeClippedSubviews={true}
+      removeClippedSubviews={false}
       renderItem={[Function]}
       scrollEnabled={true}
       scrollEventThrottle={50}
@@ -602,7 +554,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                           Object {
                             "color": "#d9e1e8",
@@ -654,7 +606,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                           Object {
                             "color": "#d9e1e8",
@@ -706,7 +658,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                           Object {
                             "color": "#d9e1e8",
@@ -758,7 +710,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                           Object {
                             "color": "#d9e1e8",
@@ -821,7 +773,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                           Object {
                             "color": "#d9e1e8",
@@ -873,7 +825,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                           Object {
                             "color": "#d9e1e8",
@@ -925,7 +877,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                           Object {
                             "color": "#d9e1e8",
@@ -977,7 +929,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                           Object {
                             "color": "#d9e1e8",
@@ -1029,7 +981,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                           Object {
                             "color": "#d9e1e8",
@@ -1081,7 +1033,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                           Object {
                             "color": "#d9e1e8",
@@ -1133,7 +1085,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                           Object {
                             "color": "#d9e1e8",
@@ -1196,7 +1148,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                           Object {
                             "color": "#d9e1e8",
@@ -1248,7 +1200,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                           Object {
                             "color": "#d9e1e8",
@@ -1300,7 +1252,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                           Object {
                             "color": "#d9e1e8",
@@ -1352,7 +1304,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                           Object {
                             "color": "#d9e1e8",
@@ -1404,7 +1356,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                           Object {
                             "color": "#d9e1e8",
@@ -1457,7 +1409,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                         ]
                       }
@@ -1507,7 +1459,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                         ]
                       }
@@ -1568,7 +1520,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                         ]
                       }
@@ -1618,7 +1570,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                         ]
                       }
@@ -1668,7 +1620,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                         ]
                       }
@@ -1718,7 +1670,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                         ]
                       }
@@ -1768,7 +1720,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                         ]
                       }
@@ -1818,7 +1770,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                         ]
                       }
@@ -1868,7 +1820,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                         ]
                       }
@@ -1928,7 +1880,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                           Object {
                             "color": "#d9e1e8",
@@ -1980,7 +1932,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                           Object {
                             "color": "#d9e1e8",
@@ -2032,7 +1984,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                           Object {
                             "color": "#d9e1e8",
@@ -2084,7 +2036,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                           Object {
                             "color": "#d9e1e8",
@@ -2136,7 +2088,7 @@ exports[`Calendar Page renders correctly 1`] = `
                             "fontFamily": "Arial",
                             "fontSize": 16,
                             "fontWeight": "300",
-                            "marginTop": 6,
+                            "marginTop": 4,
                           },
                           Object {
                             "color": "#d9e1e8",
@@ -2235,15 +2187,15 @@ exports[`Calendar Page renders correctly 1`] = `
               Array [
                 Object {
                   "color": "#000000",
-                  "fontFamily": "System",
-                  "fontWeight": "400",
+                  "fontFamily": "sans-serif",
+                  "fontWeight": "normal",
                   "textAlign": "left",
                 },
                 Array [
                   Object {
                     "color": "rgba(0, 0, 0, 0.87)",
-                    "fontFamily": "System",
-                    "fontWeight": "500",
+                    "fontFamily": "sans-serif-medium",
+                    "fontWeight": "normal",
                     "textAlign": "left",
                     "writingDirection": "ltr",
                   },
@@ -2360,15 +2312,15 @@ exports[`Calendar Page renders correctly 1`] = `
                   Array [
                     Object {
                       "color": "#000000",
-                      "fontFamily": "System",
-                      "fontWeight": "400",
+                      "fontFamily": "sans-serif",
+                      "fontWeight": "normal",
                       "textAlign": "left",
                     },
                     Array [
                       Object {
                         "color": "rgba(0, 0, 0, 0.87)",
-                        "fontFamily": "System",
-                        "fontWeight": "500",
+                        "fontFamily": "sans-serif-medium",
+                        "fontWeight": "normal",
                         "textAlign": "left",
                         "writingDirection": "ltr",
                       },
@@ -2418,15 +2370,15 @@ exports[`Calendar Page renders correctly 1`] = `
                   Array [
                     Object {
                       "color": "#000000",
-                      "fontFamily": "System",
-                      "fontWeight": "400",
+                      "fontFamily": "sans-serif",
+                      "fontWeight": "normal",
                       "textAlign": "left",
                     },
                     Array [
                       Object {
                         "color": "rgba(0, 0, 0, 0.54)",
-                        "fontFamily": "System",
-                        "fontWeight": "400",
+                        "fontFamily": "sans-serif",
+                        "fontWeight": "normal",
                         "textAlign": "left",
                         "writingDirection": "ltr",
                       },
@@ -2587,15 +2539,15 @@ exports[`Calendar Page renders correctly 1`] = `
                   Array [
                     Object {
                       "color": "#000000",
-                      "fontFamily": "System",
-                      "fontWeight": "400",
+                      "fontFamily": "sans-serif",
+                      "fontWeight": "normal",
                       "textAlign": "left",
                     },
                     Array [
                       Object {
                         "color": "rgba(0, 0, 0, 0.87)",
-                        "fontFamily": "System",
-                        "fontWeight": "500",
+                        "fontFamily": "sans-serif-medium",
+                        "fontWeight": "normal",
                         "textAlign": "left",
                         "writingDirection": "ltr",
                       },
@@ -2710,15 +2662,15 @@ exports[`Calendar Page renders correctly 1`] = `
                   Array [
                     Object {
                       "color": "#000000",
-                      "fontFamily": "System",
-                      "fontWeight": "400",
+                      "fontFamily": "sans-serif",
+                      "fontWeight": "normal",
                       "textAlign": "left",
                     },
                     Array [
                       Object {
                         "color": "rgba(0, 0, 0, 0.87)",
-                        "fontFamily": "System",
-                        "fontWeight": "500",
+                        "fontFamily": "sans-serif-medium",
+                        "fontWeight": "normal",
                         "textAlign": "left",
                         "writingDirection": "ltr",
                       },
@@ -2833,15 +2785,15 @@ exports[`Calendar Page renders correctly 1`] = `
                   Array [
                     Object {
                       "color": "#000000",
-                      "fontFamily": "System",
-                      "fontWeight": "400",
+                      "fontFamily": "sans-serif",
+                      "fontWeight": "normal",
                       "textAlign": "left",
                     },
                     Array [
                       Object {
                         "color": "rgba(0, 0, 0, 0.87)",
-                        "fontFamily": "System",
-                        "fontWeight": "500",
+                        "fontFamily": "sans-serif-medium",
+                        "fontWeight": "normal",
                         "textAlign": "left",
                         "writingDirection": "ltr",
                       },

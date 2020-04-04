@@ -1,3 +1,10 @@
+import './Firebase.mock';
+
+const mockNavigation = {
+    addListener: function(event, callback) {
+        return;
+    }
+};
 
 import React from 'react';
 import renderer from 'react-test-renderer';
@@ -22,12 +29,12 @@ const trip = new Trip({
 
 test('Journal Page renders correctly', () =>{
     
-        const tree = renderer.create(<JournalPage trip={trip}  />).toJSON();
+        const tree = renderer.create(<JournalPage trip={trip} navigation={mockNavigation} />).toJSON();
         expect(tree).toMatchSnapshot();
       });
 
 test('Added journal has title and note', () => {
-    let tree = renderer.create(<JournalPage trip={trip}  />).getInstance();
+    let tree = renderer.create(<JournalPage trip={trip} navigation={mockNavigation} />).getInstance();
     tree.state.journals[0] = new Journal({
         id: "",
         userId: "",

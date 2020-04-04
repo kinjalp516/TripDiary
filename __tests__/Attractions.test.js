@@ -1,4 +1,3 @@
-
 import {getSavedItems, setSavedItems, setSavedState} from '../attractions/Model/Retrieve';
 import Attractions from '../attractions/view/Attractions';
 import renderer from 'react-test-renderer';

@@ -1,6 +1,13 @@
+import './Firebase.mock';
+
+const mockNavigation = {
+    addListener: function(event, callback) {
+        return;
+    }
+};
+
 import React from 'react';
 import renderer from 'react-test-renderer';
-
 
 import { Trip } from '../trips/model/Trip';
 import { Budget } from '../budget/model/Budget';
@@ -21,7 +28,7 @@ const trip = new Trip({
 test('Integration test: Adds new budget and checks that the budget appears on budget page', () => {
     const props = { prop: jest.fn()};
     //render add budget page and add new budget
-    let tree = renderer.create(<AddBudget props = {props}/>).getInstance();
+    let tree = renderer.create(<AddBudget props={props}/>).getInstance();
     tree.state.budgetval = '1000';
     budget = new Budget({
         id: "",
@@ -30,7 +37,7 @@ test('Integration test: Adds new budget and checks that the budget appears on bu
     })
 
     //pass budget created into budget page
-    let tree2 = renderer.create(<BudgetPage trip = {trip} />).getInstance();
+    let tree2 = renderer.create(<BudgetPage trip={trip} navigation={mockNavigation} />).getInstance();
     tree2.state.budget[0] = budget;
 
 

@@ -1,10 +1,9 @@
 import React from 'react';
-import { StyleSheet, Image, View, FlatList, Alert, TouchableHighlight } from 'react-native';
-import { Appbar, Menu, Card, FAB, Text, ActivityIndicator } from 'react-native-paper';
+import { StyleSheet, View, FlatList, Alert, TouchableHighlight } from 'react-native';
+import { Appbar, Text, ActivityIndicator } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import moment from 'moment';
 import CachedImage from './CachedImage';
-// import CachedImage from 'react-native-expo-cached-image';
 
 import firebase from '../Firebase.js'; 
 import { Photo, fetchPhotos } from './model/Photo.js';
@@ -17,10 +16,8 @@ export default class PhotosPage extends React.Component {
   };
 
   componentDidMount() {
-    console.log("component did mount", this.state.photos);
     fetchPhotos(this.props.trip.id).then(
       (photos) => {
-        console.log("fetch photos", photos);
         this.setState({ photos: photos, loading: false })
       }
     ).catch(
@@ -80,7 +77,6 @@ export default class PhotosPage extends React.Component {
   }
 
   render() {
-    console.log("current state", this.state.photos);
     return (
       <View style={styles.container}>
         <Appbar.Header>

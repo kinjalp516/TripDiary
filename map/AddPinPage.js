@@ -1,6 +1,5 @@
 import React from 'react';
-import MapView, { Marker } from 'react-native-maps';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Appbar, TextInput, Button } from 'react-native-paper';
 
 import firebase from '../Firebase.js'; 

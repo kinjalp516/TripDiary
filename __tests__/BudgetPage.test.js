@@ -1,3 +1,11 @@
+import './Firebase.mock';
+
+const mockNavigation = {
+  addListener: function(event, callback) {
+    return;
+  }
+};
+
 import React from 'react';
 import renderer from 'react-test-renderer';
 
@@ -15,7 +23,6 @@ const trip = new Trip({
 
 
 test('Budget Page renders correctly', () =>{
-    
-        const tree = renderer.create(<BudgetPage trip={trip}  />).toJSON();
-        expect(tree).toMatchSnapshot();
-      });
+  const tree = renderer.create(<BudgetPage trip={trip} navigation={mockNavigation} />).toJSON();
+  expect(tree).toMatchSnapshot();
+});

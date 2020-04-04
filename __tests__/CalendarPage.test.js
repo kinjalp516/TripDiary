@@ -1,3 +1,5 @@
+import './Firebase.mock';
+
 import React from 'react';
 import renderer from 'react-test-renderer';
 
@@ -16,6 +18,6 @@ const trip = new Trip({
 
 //tests if rendered page matches snapshot 
 test('Calendar Page renders correctly', () =>{
-        const tree = renderer.create(<CalendarPage trip={trip}  />).toJSON();
-        expect(tree).toMatchSnapshot();
-      });
+  const tree = renderer.create(<CalendarPage trip={trip}  />).toJSON();
+  expect(tree).toMatchSnapshot();
+});

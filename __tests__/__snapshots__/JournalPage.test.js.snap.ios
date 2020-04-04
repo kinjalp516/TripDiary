@@ -141,11 +141,7 @@ exports[`Journal Page renders correctly 1`] = `
                 }
               >
                 <Image
-                  source={
-                    Object {
-                      "testUri": "../../react-native-paper/lib/commonjs/assets/back-chevron.png",
-                    }
-                  }
+                  source={1}
                   style={
                     Array [
                       Object {
@@ -333,24 +329,7 @@ exports[`Journal Page renders correctly 1`] = `
               }
             }
           >
-            <Text
-              accessibilityElementsHidden={true}
-              importantForAccessibility="no-hide-descendants"
-              pointerEvents="none"
-              style={
-                Array [
-                  Object {
-                    "backgroundColor": "transparent",
-                  },
-                  Object {
-                    "color": "rgba(0, 0, 0, .54)",
-                    "fontSize": 24,
-                  },
-                ]
-              }
-            >
-              □
-            </Text>
+            <Text />
           </View>
         </View>
         <Text

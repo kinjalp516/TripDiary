@@ -1,6 +1,13 @@
+import './Firebase.mock';
+
+const mockNavigation = {
+    addListener: function(event, callback) {
+        return;
+    }
+};
+
 import React from 'react';
 import renderer from 'react-test-renderer';
-
 
 import { Trip } from '../trips/model/Trip';
 import { Journal } from '../journal/model/Journal';
@@ -35,7 +42,7 @@ test('Integration test: Checks journal entry made shows up correctly on Journal 
     tree.state.note = 'Testing Note';
 
     //pass the journal entry to the journal page from add journal page
-    let tree2 = renderer.create(<JournalPage />).getInstance();
+    let tree2 = renderer.create(<JournalPage navigation={mockNavigation} />).getInstance();
         tree2.state.journals[0] = new Journal({
             id: "",
         userId: "",
