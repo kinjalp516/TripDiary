@@ -1,8 +1,8 @@
-import {getSavedItems, setSavedItems, setSavedState} from '../attractions/Model/Retrieve';
-import Attractions from '../attractions/view/Attractions';
+import {getSavedItems, setSavedItems, setSavedState} from '../../attractions/Model/Retrieve';
+import Attractions from '../../attractions/view/Attractions';
 import renderer from 'react-test-renderer';
 import React from 'react';
-import SavedAttractions from '../attractions/view/SavedAttractions';
+import SavedAttractions from '../../attractions/view/SavedAttractions';
 
 
 test('Attraction Displays Information Passed to it', () => {
