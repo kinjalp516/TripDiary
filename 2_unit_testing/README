@@ -1,0 +1,3 @@
+To run the unit tests, first cd into TripDiary\1_code.
+
+In the terminal, execute the command, npm run test, and the unit tests will execute. 
