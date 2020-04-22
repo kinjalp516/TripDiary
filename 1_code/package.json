@@ -40,6 +40,7 @@
     "react-native-gesture-handler": "~1.5.0",
     "react-native-image-grid": "^1.0.0",
     "react-native-maps": "0.26.1",
+    "react-native-maps-directions": "^1.8.0",
     "react-native-minicalendar": "^1.0.5",
     "react-native-paper": "^3.6.0",
     "react-native-reanimated": "~1.4.0",

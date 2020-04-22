@@ -1,5 +1,6 @@
 import React from 'react';
 import MapView, { Marker, Circle } from 'react-native-maps';
+import MapViewDirections from 'react-native-maps-directions';
 import { StyleSheet, View, Dimensions, ActivityIndicator, Alert, Image } from 'react-native';
 import { Appbar, Menu, Card, FAB, Text } from 'react-native-paper';
 
@@ -7,14 +8,17 @@ import firebase from '../Firebase.js';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
-import { Pin, fetchPins } from './model/Pin';
+import { fetchPins, getRoute } from './model/Pin';
 import { fetchPhotos } from '../photos/model/Photo';
+
+const API_KEY = 'AIzaSyAcCFMyoLheBKHhQ5Hj_murJb7tDP1QiPk';
 
 export default class MapPage extends React.Component {
 
     state = {
         pins: [], 
         photos: [],
+        routes: [],
         mapRegion: null,
         initialRegion: null, 
         hasLocationPermissions: false, 
@@ -27,16 +31,19 @@ export default class MapPage extends React.Component {
         this.getLocationAsync();
     
         // fetch the pins from the database
-        fetchPins(this.props.trip.id).then((pins) => this.setState({ pins }));
+        fetchPins(this.props.trip.id).then((pins) => { 
+            this.setState({ pins });
+            //this.getRoutes(); 
+        });
         this.props.navigation.addListener(
             'didFocus', () => {
                 fetchPins(this.props.trip.id).then((pins) => this.setState({ pins }));
                 fetchPhotos(this.props.trip.id).then((photos) => {
                     this.setState({ photos });
-                    console.log("photos", photos);
                 });
             }
         );
+        
     }
 
     async getLocationAsync() {
@@ -60,6 +67,24 @@ export default class MapPage extends React.Component {
 
         // center the map on the location that we just received
         this.setState({mapRegion: initialRegion});
+    }
+
+    async getRoutes() {
+        let routes = [];
+
+        console.log(this.state.pins.length);
+
+        for (let i = 0; i < this.state.pins.length - 1; i++) {
+            let origin = this.state.pins[i].coords;
+            let destination = this.state.pins[i+1].coords;
+            let route = await getRoute(origin, destination);
+
+            //console.log(route);
+
+            routes.push(route);
+        }
+
+        this.setState({ routes });
     }
 
     doDelete() {
@@ -123,6 +148,20 @@ export default class MapPage extends React.Component {
                                     {pin.photoUrl === null ? null : <Image style={styles.photo} source={{uri: pin.photoUrl}} />}
                                 </Marker>
                             ))}
+                            {this.state.pins.map((pin, index) => {
+                                if (index < this.state.pins.length - 1) {
+                                    return (
+                                        <MapViewDirections 
+                                            origin={pin.coords}
+                                            destination={this.state.pins[index+1].coords}
+                                            apikey={API_KEY}
+                                            strokeWidth={4}
+                                            strokeColor="hotpink"
+                                        />
+                                    );  
+                                }
+                            })
+                            }
                         </MapView>
                 }
                 {

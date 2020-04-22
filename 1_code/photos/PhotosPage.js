@@ -70,7 +70,7 @@ export default class PhotosPage extends React.Component {
         
         fetchPhotos(this.props.trip.id).then((photos) => {
           this.setState({ photos: photos, loading: false });
-          console.log("photos response", photos);
+          //console.log("photos response", photos);
         });       
       }).catch((error) => console.error("Error uploading image", error));
     }
@@ -95,7 +95,7 @@ export default class PhotosPage extends React.Component {
           ? (<FlatList
               data={this.state.photos}
               renderItem={({item}) => {
-                console.log("item", item);
+                //console.log("item", item);
                   return (
                     <View style={styles.photoComp}>
                       <TouchableHighlight onPress={() => this.props.navigation.navigate("viewPhoto", {photo: item})}>
