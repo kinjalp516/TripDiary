@@ -1,5 +1,5 @@
 import React from 'react';
-import MapView, { Marker, Circle } from 'react-native-maps';
+import MapView, { Marker, Callout } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { StyleSheet, View, Dimensions, ActivityIndicator, Alert, Image } from 'react-native';
 import { Appbar, Menu, Card, FAB, Text } from 'react-native-paper';
@@ -10,6 +10,7 @@ import * as Permissions from 'expo-permissions';
 
 import { fetchPins, getRoute } from './model/Pin';
 import { fetchPhotos } from '../photos/model/Photo';
+import PinDetailView from './PinDetailView';
 
 const API_KEY = 'AIzaSyAcCFMyoLheBKHhQ5Hj_murJb7tDP1QiPk';
 
@@ -38,6 +39,7 @@ export default class MapPage extends React.Component {
         this.props.navigation.addListener(
             'didFocus', () => {
                 fetchPins(this.props.trip.id).then((pins) => this.setState({ pins }));
+                this.map.fitToElements(false);
                 fetchPhotos(this.props.trip.id).then((photos) => {
                     this.setState({ photos });
                 });
@@ -60,7 +62,7 @@ export default class MapPage extends React.Component {
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
             latitudeDelta: 0.0922,
-            longitudeDelta: 0.0321
+            longitudeDelta: 0.0421
         };
         this.setState({ initialRegion });
         this.setState({ locationResult: JSON.stringify(location) });
@@ -118,10 +120,7 @@ export default class MapPage extends React.Component {
                             {this.state.pins.map((pin, index) => (
                                 <Marker
                                     key={index}
-                                    identifier={'' + index}
                                     coordinate={pin.coords}
-                                    title={pin.title}
-                                    description={pin.description}
                                     onPress={(e) => {
                                         if (this.state.deleteMode) {
                                             this.setState({selectedMarker: e.nativeEvent.coordinate});
@@ -129,7 +128,9 @@ export default class MapPage extends React.Component {
                                         }
                                     }}
                                 >
-                                    {pin.photoUrl === null ? null : <Image style={styles.photo} source={{uri: pin.photoUrl}} />}
+                                    <Callout tooltip>
+                                        <PinDetailView pin={pin} />
+                                    </Callout>
                                 </Marker>
                             ))}
                             {this.state.pins.map((pin, index) => {
