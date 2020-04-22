@@ -33,7 +33,7 @@ export default class MapPage extends React.Component {
         // fetch the pins from the database
         fetchPins(this.props.trip.id).then((pins) => { 
             this.setState({ pins });
-            //this.getRoutes(); 
+            this.map.fitToElements(false);
         });
         this.props.navigation.addListener(
             'didFocus', () => {
@@ -60,31 +60,13 @@ export default class MapPage extends React.Component {
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
             latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421
+            longitudeDelta: 0.0321
         };
         this.setState({ initialRegion });
         this.setState({ locationResult: JSON.stringify(location) });
 
         // center the map on the location that we just received
         this.setState({mapRegion: initialRegion});
-    }
-
-    async getRoutes() {
-        let routes = [];
-
-        console.log(this.state.pins.length);
-
-        for (let i = 0; i < this.state.pins.length - 1; i++) {
-            let origin = this.state.pins[i].coords;
-            let destination = this.state.pins[i+1].coords;
-            let route = await getRoute(origin, destination);
-
-            //console.log(route);
-
-            routes.push(route);
-        }
-
-        this.setState({ routes });
     }
 
     doDelete() {
@@ -125,6 +107,7 @@ export default class MapPage extends React.Component {
                         <MapView
                             style={styles.mapStyle}
                             region={this.state.mapRegion}
+                            ref={ref => this.map = ref}
                             onPress={(coords) => this.setState({ mapRegion: {
                                 latitude: coords.nativeEvent.coordinate.latitude,
                                 longitude: coords.nativeEvent.coordinate.longitude,
@@ -135,6 +118,7 @@ export default class MapPage extends React.Component {
                             {this.state.pins.map((pin, index) => (
                                 <Marker
                                     key={index}
+                                    identifier={'' + index}
                                     coordinate={pin.coords}
                                     title={pin.title}
                                     description={pin.description}
@@ -151,7 +135,8 @@ export default class MapPage extends React.Component {
                             {this.state.pins.map((pin, index) => {
                                 if (index < this.state.pins.length - 1) {
                                     return (
-                                        <MapViewDirections 
+                                        <MapViewDirections
+                                            key={pin.coords.latitude} 
                                             origin={pin.coords}
                                             destination={this.state.pins[index+1].coords}
                                             apikey={API_KEY}
