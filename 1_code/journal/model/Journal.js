@@ -6,8 +6,8 @@ import firebase from "../../Firebase.js";
 // https://firebase.google.com/docs/reference/js/firebase.firestore.QuerySnapshot
 // https://firebase.google.com/docs/reference/js/firebase.firestore.DocumentSnapshot
 
-export async function fetchJournals(userId) {
-    let query = firebase.firestore().collection("journals").where("userId", "==", userId);
+export async function fetchJournals(tripId) {
+    let query = firebase.firestore().collection("journals").where("tripId", "==", tripId);
     let result = await query.get(); // This returns a result of type QuerySnapshot
     return result.docs.map(
         (snapshot) => new Journal(snapshot.data(), true)   // Within each QuerySnapshot, there is an array of
@@ -30,8 +30,9 @@ export async function updateJournal(docId, newTitle, newNote) {
 }
 
 export class Journal {
-    constructor({id, userId, title, note}, fromFirestore=false) {
+    constructor({id, tripId, userId, title, note}, fromFirestore=false) {
         this.id = id;
+        this.tripId = tripId;
         this.userId = userId;
         this.title = title;
         this.note = note;
@@ -40,6 +41,7 @@ export class Journal {
     toJSON() {
         return {
             id: this.id,
+            tripId: this.tripId,
             userId: this.userId,
             title: this.title,
             note: this.note        
@@ -47,15 +49,8 @@ export class Journal {
     }
 
     storeJournal() {
-        // Let's start by creating a DocumentReference for a new journals object
-        // We need to do this to get an automatically generated ID for this new journal
-        // (look at links above for further reference)
         let newJournalReference = firebase.firestore().collection("journals").doc();
-
-        // now we can set the id field for our object
         this.id = newJournalReference.id;
-
-        // now let's store the object in our database
         return newJournalReference.set(this.toJSON());
     }
 }
