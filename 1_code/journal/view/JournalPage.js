@@ -69,14 +69,14 @@ export default class JournalPage extends Component{
     componentDidMount() {
         let user = firebase.auth().currentUser;
         if (user != null){
-            let userId = user.uid;
+            let tripId = this.props.trip.id
 
             //for initial load
-            fetchJournals(userId).then((journals) => this.setState({journals}));
+            fetchJournals(tripId).then((journals) => this.setState({journals}));
     
             this.props.navigation.addListener(
                 'willFocus', 
-                () => fetchJournals(userId).then((journals) => this.setState({journals}))
+                () => fetchJournals(tripId).then((journals) => this.setState({journals}))
             );
         }
     }
@@ -97,6 +97,7 @@ export default class JournalPage extends Component{
                                 onPress = {() => {
                                     this.props.navigation.navigate('addJournal', {
                                         itemId: item.id,
+                                        tripId: item.tripId,
                                         title: item.title,
                                         note: item.note,
                                         editJournal: true
