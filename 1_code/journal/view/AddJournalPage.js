@@ -15,7 +15,7 @@ export default class AddJournalPage extends Component{
         if(this.props.navigation != null){
             this.state = {
                 dbId: this.props.navigation.getParam('itemId', 'NO-id'),
-                tripId: this.props.navigation.getParam('triId', 'NO-trip'),
+                tripId: this.props.navigation.getParam('tripId', 'NO-trip'),
                 title: this.props.navigation.getParam('title', 'NO-title'),
                 note: this.props.navigation.getParam('note', 'NO-note'),
                 editJournal: this.props.navigation.getParam('editJournal', 'NO-note'),
@@ -58,7 +58,7 @@ export default class AddJournalPage extends Component{
 
         //gets pins from database
         /*
-        fetchPins(this.props.trip.id).then((pins) => { 
+        fetchPins(this.props.navigation.getParam('tripId', 'NO-trip')).then((pins) => { 
             this.setState({ pins });
         });*/
     }

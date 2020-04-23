@@ -97,7 +97,7 @@ export default class JournalPage extends Component{
                                 onPress = {() => {
                                     this.props.navigation.navigate('addJournal', {
                                         itemId: item.id,
-                                        tripId: item.tripId,
+                                        tripId: this.props.trip.id,
                                         title: item.title,
                                         note: item.note,
                                         editJournal: true
@@ -129,7 +129,8 @@ export default class JournalPage extends Component{
                     onPress={() => this.props.navigation.navigate('addJournal', {
                         title: '',
                         note: '',
-                        editJournal: false
+                        editJournal: false,
+                        tripId: this.props.trip.id,
                     })}
                 />
 
