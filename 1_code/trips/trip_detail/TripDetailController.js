@@ -6,7 +6,7 @@ import CalendarPage from '../../calendar/view/CalendarPage';
 import JournalPage from '../../journal/view/JournalPage';
 import BudgetPage from '../../budget/view/BudgetPage';
 import MapPage from '../../map/MapPage';
-import Navigator from '../../attractions/SuggestionsController';
+import Category from '../../attractions/view/Category';
 
 //import DailySummary from '../view/DailySummaryPage'
 
@@ -22,7 +22,7 @@ export default class TripDetailController extends React.Component {
             { key: 'journal', title: 'Journal', icon: 'book'},
             { key: 'budget', title: 'Budget', icon: 'bank'},
             { key: 'map', title: 'Map', icon: 'map'},
-            { key: 'attraction', title: 'Attractions' , icon:'glass-cocktail'}
+            { key: 'category', title: 'Category' , icon:'glass-cocktail'}
            // { key: 'daily', title: 'DailySummary', icon: 'view-day'}
         ]
     };
@@ -35,7 +35,7 @@ export default class TripDetailController extends React.Component {
         journal: () => <JournalPage trip={this.trip} navigation={this.props.navigation}/>,
         budget: () => <BudgetPage trip={this.trip} navigation={this.props.navigation}/>,
         map: () => <MapPage trip={this.trip} navigation={this.props.navigation} />, 
-        attraction: () => <Navigator />,
+        category: () => <Category trip={this.trip} navigation={this.props.navigation} />,
         //daily: () => <DailySummary trip={this.trip} navigation={this.props.navigation} />
     });
 

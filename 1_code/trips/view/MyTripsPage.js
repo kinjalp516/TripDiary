@@ -15,6 +15,7 @@ export default class MyTripsPage extends React.Component{
 
   componentDidMount() {
     let user = firebase.auth().currentUser;
+    console.log(user);
     if(user != null){
       let userId = user.uid;
     
