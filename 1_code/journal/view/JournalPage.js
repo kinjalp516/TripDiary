@@ -1,7 +1,8 @@
 
 import React, {Component} from 'react';
 import {View, StyleSheet, ScrollView, Alert} from 'react-native';
-import {Appbar, FAB, Card} from 'react-native-paper';
+import {Appbar, FAB} from 'react-native-paper';
+import { Card } from 'galio-framework';
 
 import firebase from "../../Firebase.js";
 import {fetchJournals, deleteJournal} from '../model/Journal.js';
@@ -81,6 +82,28 @@ export default class JournalPage extends Component{
         }
     }
 
+    arrayToObjects (arr) {
+
+        var locations = [];
+        arr.forEach(function(entry) {
+            var obj = {};
+            obj.name = entry
+            locations.push(obj);
+        });
+
+        return locations;
+    }
+
+    getDate () {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var yyyy = today.getFullYear();
+
+        today = mm + '/' + dd + '/' + yyyy;
+        return(today);
+    }
+
     render() {
         let arr = this.state.journals;
         return (
@@ -88,9 +111,18 @@ export default class JournalPage extends Component{
                 <Appbar.Header>
                     <Appbar.BackAction onPress={() => this.props.navigation.navigate('home')} />
                     <Appbar.Content title="Journal" />
+                    <Appbar.Action icon="plus" onPress={() => this.props.navigation.navigate('addJournal', {
+                            title: '',
+                            note: '',
+                            editJournal: false,
+                            tripId: this.props.trip.id,
+                        })}
+                    />
                 </Appbar.Header>
                 <ScrollView>
-                    {arr.map((item, index) => {
+                    {arr.map((item) => {
+                        
+                        console.log(this.arrayToObjects(item.locations));
                         return (
                             <PressOptions 
                                 dbId = {item.id}
@@ -100,6 +132,7 @@ export default class JournalPage extends Component{
                                         tripId: this.props.trip.id,
                                         title: item.title,
                                         note: item.note,
+                                        locations: this.arrayToObjects(item.locations),
                                         editJournal: true
                                     })}}
                                 onDelete={() => this.setState({journals: this.state.journals.filter((val, index) => {
@@ -109,30 +142,20 @@ export default class JournalPage extends Component{
                                 })}
                             >
                                 <Card 
-                                    key = {`journals-${index}`} 
-                                    style = {styles.journalCard}
+                                    flex
+                                    shadow
+                                    style={styles.card, styles.margin}
+                                    title={item.title}
+                                    caption={this.getDate()}
+                                    location={item.locations[0]}
+                                    avatar="http://i.pravatar.cc/100?id=skater"
+                                    imageStyle={styles.cardImageRadius}
+                                    image="https://images.unsplash.com/photo-1497802176320-541c8e8de98d?&w=1600&h=900&fit=crop&crop=entropy&q=300"
                                 >
-
-                                <Card.Title 
-                                    title = {item.title}
-                                    subtitle = {item.note}
-                                />
                             </Card>
                         </PressOptions>);
                     })}
                 </ScrollView>
-
-                <FAB
-                    style={styles.fab}
-                    icon="plus"
-                    label="Add Entry"
-                    onPress={() => this.props.navigation.navigate('addJournal', {
-                        title: '',
-                        note: '',
-                        editJournal: false,
-                        tripId: this.props.trip.id,
-                    })}
-                />
 
             </View>
         );
@@ -141,16 +164,13 @@ export default class JournalPage extends Component{
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
     },
-
-    journalCard: {
-        marginTop: 24,
-        marginLeft: 24,
-        marginRight: 24,
-        backgroundColor: '#A4D7DF',
+    margin: {
+        marginTop: 20,
+        marginLeft: 20,
+        marginRight: 20
     },
-
     fab: {
         position: 'absolute',
         margin: 16,
