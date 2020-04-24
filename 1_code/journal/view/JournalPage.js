@@ -1,7 +1,8 @@
 
 import React, {Component} from 'react';
 import {View, StyleSheet, ScrollView, Alert} from 'react-native';
-import {Appbar, FAB, Card} from 'react-native-paper';
+import {Appbar, FAB} from 'react-native-paper';
+import { Card } from 'galio-framework';
 
 import firebase from "../../Firebase.js";
 import {fetchJournals, deleteJournal} from '../model/Journal.js';
@@ -90,7 +91,7 @@ export default class JournalPage extends Component{
                     <Appbar.Content title="Journal" />
                 </Appbar.Header>
                 <ScrollView>
-                    {arr.map((item, index) => {
+                    {arr.map((item) => {
                         return (
                             <PressOptions 
                                 dbId = {item.id}
@@ -100,6 +101,7 @@ export default class JournalPage extends Component{
                                         tripId: this.props.trip.id,
                                         title: item.title,
                                         note: item.note,
+                                        locations: item.locations,
                                         editJournal: true
                                     })}}
                                 onDelete={() => this.setState({journals: this.state.journals.filter((val, index) => {
@@ -109,14 +111,16 @@ export default class JournalPage extends Component{
                                 })}
                             >
                                 <Card 
-                                    key = {`journals-${index}`} 
-                                    style = {styles.journalCard}
+                                    flex
+                                    shadow
+                                    style={styles.card, styles.margin}
+                                    title={item.title}
+                                    caption={item.note}
+                                    location="Los Angeles, CA"
+                                    avatar="http://i.pravatar.cc/100?id=skater"
+                                    imageStyle={styles.cardImageRadius}
+                                    image="https://images.unsplash.com/photo-1497802176320-541c8e8de98d?&w=1600&h=900&fit=crop&crop=entropy&q=300"
                                 >
-
-                                <Card.Title 
-                                    title = {item.title}
-                                    subtitle = {item.note}
-                                />
                             </Card>
                         </PressOptions>);
                     })}
@@ -141,16 +145,11 @@ export default class JournalPage extends Component{
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
     },
-
-    journalCard: {
-        marginTop: 24,
-        marginLeft: 24,
-        marginRight: 24,
-        backgroundColor: '#A4D7DF',
+    margin: {
+        margin: 20
     },
-
     fab: {
         position: 'absolute',
         margin: 16,

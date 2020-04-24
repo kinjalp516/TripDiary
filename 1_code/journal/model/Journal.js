@@ -22,20 +22,22 @@ export async function deleteJournal(docId) {
     firebase.firestore().collection("journals").doc(docId).delete();
 }
 
-export async function updateJournal(docId, newTitle, newNote) {
+export async function updateJournal(docId, newTitle, newNote, newLocations) {
     firebase.firestore().collection("journals").doc(docId).update ({
         title: newTitle,
-        note: newNote
+        note: newNote,
+        locations: newLocations
     })
 }
 
 export class Journal {
-    constructor({id, tripId, userId, title, note}, fromFirestore=false) {
+    constructor({id, tripId, userId, title, note, locations}, fromFirestore=false) {
         this.id = id;
         this.tripId = tripId;
         this.userId = userId;
         this.title = title;
         this.note = note;
+        this.locations = locations;
     }
 
     toJSON() {
@@ -44,7 +46,8 @@ export class Journal {
             tripId: this.tripId,
             userId: this.userId,
             title: this.title,
-            note: this.note        
+            note: this.note,
+            locations: this.locations        
         }
     }
 
