@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, TouchableWithoutFeedback, Keyboard, Text, Dimensions} from 'react-native';
+import {View, StyleSheet, TouchableWithoutFeedback, Keyboard, Text, Dimensions, TextComponent} from 'react-native';
 import {Appbar, TextInput} from 'react-native-paper';
 
 import firebase from '../../Firebase.js';
 import {fetchPins} from "../../map/model/Pin"
 import {Journal, updateJournal} from '../model/Journal.js';
+//import SketchCanvas from '@terrylinla/react-native-sketch-canvas';
 import AutoTags from '../AutoComplete.js';
   
 export default class AddJournalPage extends Component{
@@ -19,7 +20,7 @@ export default class AddJournalPage extends Component{
                 title: this.props.navigation.getParam('title', 'NO-title'),
                 note: this.props.navigation.getParam('note', 'NO-note'),
                 editJournal: this.props.navigation.getParam('editJournal', 'NO-note'),
-                tagsSelected: this.props.navigation.getParam('locations', 'NO-location'),
+                tagsSelected: this.props.navigation.getParam('locations', []),
                 pinsObjects: []
             }
         
@@ -63,7 +64,8 @@ export default class AddJournalPage extends Component{
 
     async editNote (dbId, title, note, locations) {
         //editing the journal entry
-        updateJournal(dbId, title, note);
+        console.log(locations);
+        updateJournal(dbId, title, note, locations);
         this.props.navigation.goBack(null);
     }
 
@@ -75,7 +77,8 @@ export default class AddJournalPage extends Component{
                 tripId: tripId,
                 userId: userId,
                 title: title,
-                note: note
+                note: note,
+                locations: locations
             });
 
             await journal.storeJournal();
@@ -128,7 +131,7 @@ export default class AddJournalPage extends Component{
                         <Appbar.Content title="Journal Entry"/>
                         <Appbar.Action icon="check" onPress = {() => {
 
-                            const {dbId, tripId, userId, title, note} = this.state;
+                            const {dbId, tripId, userId, title, note, tagsSelected} = this.state;
 
                             if (title === '' && note === '') {
                                 alert ('Please Add a Title and Entry');
@@ -140,43 +143,49 @@ export default class AddJournalPage extends Component{
                                 alert  ('Please add an Entry');
                                 return;
                             }
-                            
+
+                            const locations = tagsSelected.map(function (obj) {
+                                return obj.name;
+                            });
+
                             if (this.state.editJournal) {
-                                this.editNote(dbId, title, note, this.state.tagsSelected);
+                                this.editNote(dbId, title, note, locations);
                             } else {
-                                console.log(tagsSelected);
-                                this.createNote(userId, tripId, title, note, this.state.tagsSelected);
+                                console.log(locations);
+                                this.createNote(userId, tripId, title, note, locations);
                             }
                         }} />
                     </Appbar.Header>
 
                     <View style={styles.autocompleteContainer}>
                         <Text style={styles.label}>
-                            Recipients
+                            Location Tags
                         </Text>
                     
                         <AutoTags
                             suggestions={this.extractTitle()}
                             tagsSelected={this.state.tagsSelected}
-                            placeholder="Add a Location Tag"
+                            //placeholder="Add a Location Tag"
                             handleAddition={this.handleAddition}
                             handleDelete={this.handleDelete}
                             onCustomTagCreated={this.onCustomTagCreated}
-                            //tagStyles = {styles.custom}
                         />
                     </View>
-                    <TextInput
-                        placeholder = 'Title'
-                        onChangeText={(title) => this.setState({title})}
-                        value={this.state.title}
-                    />                    
-                    <TextInput
-                        placeholder = 'Journal Entry'
-                        onChangeText={(text) => this.setState({note:text})}
-                        value={this.state.note}
-                        multiline = {true}
-                    />
-                
+                        <View style={styles.textInputContainer}>
+                            <TextInput
+                                mode = "outlined"
+                                placeholder = 'Title'
+                                onChangeText={(title) => this.setState({title})}
+                                value={this.state.title}
+                            />                    
+                            <TextInput
+                                mode = "outlined"
+                                placeholder = 'Journal Entry'
+                                onChangeText={(text) => this.setState({note:text})}
+                                value={this.state.note}
+                                multiline = {true}
+                            />
+                        </View>
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -188,10 +197,21 @@ const styles = StyleSheet.create({
         flex: 1,
 
     },
+    label: {
+        marginLeft: 15,
+        marginRight: 15,
+        marginTop: 15,
+        fontSize: 20
+    },
     autocompleteContainer: {
         left: 0,
         right: 0,
+        margin: 5,
         zIndex: 2        
+    },
+    textInputContainer: {
+        marginLeft: 15,
+        marginRight: 15
     },
     test: {
         backgroundColor: 'white',
