@@ -82,6 +82,28 @@ export default class JournalPage extends Component{
         }
     }
 
+    arrayToObjects (arr) {
+
+        var locations = [];
+        arr.forEach(function(entry) {
+            var obj = {};
+            obj.name = entry
+            locations.push(obj);
+        });
+
+        return locations;
+    }
+
+    getDate () {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var yyyy = today.getFullYear();
+
+        today = mm + '/' + dd + '/' + yyyy;
+        return(today);
+    }
+
     render() {
         let arr = this.state.journals;
         return (
@@ -89,9 +111,18 @@ export default class JournalPage extends Component{
                 <Appbar.Header>
                     <Appbar.BackAction onPress={() => this.props.navigation.navigate('home')} />
                     <Appbar.Content title="Journal" />
+                    <Appbar.Action icon="plus" onPress={() => this.props.navigation.navigate('addJournal', {
+                            title: '',
+                            note: '',
+                            editJournal: false,
+                            tripId: this.props.trip.id,
+                        })}
+                    />
                 </Appbar.Header>
                 <ScrollView>
                     {arr.map((item) => {
+                        
+                        console.log(this.arrayToObjects(item.locations));
                         return (
                             <PressOptions 
                                 dbId = {item.id}
@@ -101,7 +132,7 @@ export default class JournalPage extends Component{
                                         tripId: this.props.trip.id,
                                         title: item.title,
                                         note: item.note,
-                                        locations: item.locations,
+                                        locations: this.arrayToObjects(item.locations),
                                         editJournal: true
                                     })}}
                                 onDelete={() => this.setState({journals: this.state.journals.filter((val, index) => {
@@ -115,8 +146,8 @@ export default class JournalPage extends Component{
                                     shadow
                                     style={styles.card, styles.margin}
                                     title={item.title}
-                                    caption={item.note}
-                                    location="Los Angeles, CA"
+                                    caption={this.getDate()}
+                                    location={item.locations[0]}
                                     avatar="http://i.pravatar.cc/100?id=skater"
                                     imageStyle={styles.cardImageRadius}
                                     image="https://images.unsplash.com/photo-1497802176320-541c8e8de98d?&w=1600&h=900&fit=crop&crop=entropy&q=300"
@@ -125,18 +156,6 @@ export default class JournalPage extends Component{
                         </PressOptions>);
                     })}
                 </ScrollView>
-
-                <FAB
-                    style={styles.fab}
-                    icon="plus"
-                    label="Add Entry"
-                    onPress={() => this.props.navigation.navigate('addJournal', {
-                        title: '',
-                        note: '',
-                        editJournal: false,
-                        tripId: this.props.trip.id,
-                    })}
-                />
 
             </View>
         );
@@ -148,7 +167,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     margin: {
-        margin: 20
+        marginTop: 20,
+        marginLeft: 20,
+        marginRight: 20
     },
     fab: {
         position: 'absolute',
