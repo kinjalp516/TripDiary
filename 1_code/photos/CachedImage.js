@@ -5,22 +5,18 @@ import * as Crypto from 'expo-crypto';
 
 export default class CachedImage extends Component {
   state = {
-    imgURI: ''
+    imgURI: this.props.isFilesystemUri ? this.props.source.uri : ''
   }
 
   async componentDidMount() {
-    if(this.props.isFilesystemUri) {
-      this.setState({ imgURI: this.props.source.uri });
-    } else {
+    if(!this.props.isFilesystemUri) {
       const filesystemURI = await this.getImageFilesystemKey(this.props.source.uri);
       await this.loadImage(filesystemURI, this.props.source.uri);
     }
   }
 
   async componentDidUpdate() {
-    if(this.props.isFilesystemUri) {
-      this.setState({ imgURI: this.props.source.uri });
-    } else {
+    if(!this.props.isFilesystemUri) {
       const filesystemURI = await this.getImageFilesystemKey(this.props.source.uri);
       if (this.props.source.uri === this.state.imgURI ||
         filesystemURI === this.state.imgURI) {
