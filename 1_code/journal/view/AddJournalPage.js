@@ -4,8 +4,8 @@ import {Appbar, TextInput} from 'react-native-paper';
 
 import firebase from '../../Firebase.js';
 import {fetchPins} from "../../map/model/Pin"
+import {fetchAttractions} from "../../attractions/Model/Retrieve"
 import {Journal, updateJournal} from '../model/Journal.js';
-//import SketchCanvas from '@terrylinla/react-native-sketch-canvas';
 import AutoTags from '../AutoComplete.js';
   
 export default class AddJournalPage extends Component{
@@ -21,7 +21,8 @@ export default class AddJournalPage extends Component{
                 note: this.props.navigation.getParam('note', 'NO-note'),
                 editJournal: this.props.navigation.getParam('editJournal', 'NO-note'),
                 tagsSelected: this.props.navigation.getParam('locations', []),
-                pinsObjects: []
+                pinsObjects: [],
+                attractionsObjects: []
             }
         
             this.createNote = this.createNote.bind (this);
@@ -34,7 +35,8 @@ export default class AddJournalPage extends Component{
                 note: null,
                 editJournal: null,
                 tagsSelected: [],
-                pinsObjects: []
+                pinsObjects: [],
+                attractionsObjects: []
              }
         }
     }
@@ -60,16 +62,16 @@ export default class AddJournalPage extends Component{
         //gets pins from map
         let tripId = this.props.navigation.getParam('tripId');
         fetchPins(tripId).then((pinsObjects) => this.setState({pinsObjects}));
+        fetchAttractions(tripId).then((attractionsObjects) => this.setState({attractionsObjects}));
     }
 
-    async editNote (dbId, title, note, locations) {
+    async editNote (dbId, title, note, locations, url) {
         //editing the journal entry
-        console.log(locations);
-        updateJournal(dbId, title, note, locations);
+        updateJournal(dbId, title, note, locations, url);
         this.props.navigation.goBack(null);
     }
 
-    async createNote (userId, tripId, title, note, locations) {
+    async createNote (userId, tripId, title, note, locations, url) {
         
         if  (this.state.userId != null) {
             let journal = new Journal ({
@@ -78,7 +80,8 @@ export default class AddJournalPage extends Component{
                 userId: userId,
                 title: title,
                 note: note,
-                locations: locations
+                locations: locations,
+                url: url
             });
 
             await journal.storeJournal();
@@ -107,7 +110,24 @@ export default class AddJournalPage extends Component{
             return {name: value.title}; 
         })
 
-        return pins;
+        var attractions = this.state.attractionsObjects.map(function(value){
+            return {name: value.name}; 
+        })
+
+        return pins.concat(attractions);
+    }
+
+    extractUrl = (locations) => {
+        
+        var url = this.state.pinsObjects.map(function(value){
+                if (locations.includes(value.title)) {
+                    return value.photoUrl;
+                } else {
+                    return 'https://images.unsplash.com/photo-1497802176320-541c8e8de98d?&w=1600&h=900&fit=crop&crop=entropy&q=300'
+                }
+        })
+
+        return url;
     }
 
     onCustomTagCreated = userInput => {
@@ -149,10 +169,9 @@ export default class AddJournalPage extends Component{
                             });
 
                             if (this.state.editJournal) {
-                                this.editNote(dbId, title, note, locations);
+                                this.editNote(dbId, title, note, locations, this.extractUrl(locations));
                             } else {
-                                console.log(locations);
-                                this.createNote(userId, tripId, title, note, locations);
+                                this.createNote(userId, tripId, title, note, locations, this.extractUrl(locations));
                             }
                         }} />
                     </Appbar.Header>
