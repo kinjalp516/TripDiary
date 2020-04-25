@@ -34,7 +34,9 @@ export default class PhotosPage extends React.Component {
     
     let mediaAssets = await MediaLibrary.getAssetsAsync({ 
       first: 500, 
-      mediaType: MediaLibrary.MediaType.photo, 
+      mediaType: MediaLibrary.MediaType.photo,
+      createdAfter: moment(this.props.trip.startDate).unix(),
+      createdBefore: moment(this.props.trip.endDate).unix(),
       sortBy: [[MediaLibrary.SortBy.creationTime, true]] 
     });
 
