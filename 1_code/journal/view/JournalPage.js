@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, StyleSheet, ScrollView, Alert, Platform } from 'react-native';
 import { Appbar, FAB } from 'react-native-paper';
 import { Card } from 'galio-framework';
 import { AppleHeader } from "@freakycoder/react-native-header-view";
@@ -122,28 +122,18 @@ export default class JournalPage extends Component{
         return (
             <View style={styles.container}>
 
-                <AppleHeader
+                {Platform.OS === 'ios' ? <AppleHeader
                     dateTitle= {this.getHeaderDate()}
                     largeTitle="Journal"
                     imageSource= {require('../pin.png')}
                     onPress={()=> this.props.navigation.navigate('home')}
                     borderColor='#D5D8D8'
-                    //backgroundColor='white'
-                />
-
-                {/*
-                <Appbar.Header>
-                    <Appbar.BackAction onPress={() => this.props.navigation.navigate('home')} />
-                    <Appbar.Content title="Journal" />
-                    <Appbar.Action icon="plus" onPress={() => this.props.navigation.navigate('addJournal', {
-                            title: '',
-                            note: '',
-                            editJournal: false,
-                            tripId: this.props.trip.id,
-                        })}
-                    />
-                </Appbar.Header>
-                    */}
+                    backgroundColor='white'
+                /> : <Appbar.Header>
+                        <Appbar.BackAction onPress={() => this.props.navigation.navigate("home")} />
+                        <Appbar.Content title="Journal" />
+                    </Appbar.Header>
+                }
 
                 <ScrollView>
                     {arr.map((item) => {
