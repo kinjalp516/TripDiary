@@ -9,17 +9,25 @@ export default class CachedImage extends Component {
   }
 
   async componentDidMount() {
-    const filesystemURI = await this.getImageFilesystemKey(this.props.source.uri);
-    await this.loadImage(filesystemURI, this.props.source.uri);
+    if(this.props.isFilesystemUri) {
+      this.setState({ imgURI: this.props.source.uri });
+    } else {
+      const filesystemURI = await this.getImageFilesystemKey(this.props.source.uri);
+      await this.loadImage(filesystemURI, this.props.source.uri);
+    }
   }
 
   async componentDidUpdate() {
-    const filesystemURI = await this.getImageFilesystemKey(this.props.source.uri);
-    if (this.props.source.uri === this.state.imgURI ||
-      filesystemURI === this.state.imgURI) {
-      return null;
+    if(this.props.isFilesystemUri) {
+      this.setState({ imgURI: this.props.source.uri });
+    } else {
+      const filesystemURI = await this.getImageFilesystemKey(this.props.source.uri);
+      if (this.props.source.uri === this.state.imgURI ||
+        filesystemURI === this.state.imgURI) {
+        return null;
+      }
+      await this.loadImage(filesystemURI, this.props.source.uri);
     }
-    await this.loadImage(filesystemURI, this.props.source.uri);
   }
 
   async getImageFilesystemKey(remoteURI) {
