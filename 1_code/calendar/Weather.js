@@ -44,9 +44,14 @@ const weatherConditions = {
       color: 'lightblue',
       title: 'Mist',
       icon: 'weather-fog'
+    },
+    Fog: {
+      color: 'lightblue',
+      title: 'Fog',
+      icon: 'weather-fog'
     }
   };
-const Weather = ({ weather, temperature }) => {
+const Weather = ({ weather, temperature, name }) => {
   if (weather != null) {
     return (
       <View
@@ -57,16 +62,19 @@ const Weather = ({ weather, temperature }) => {
       >
         <View style={styles.headerContainer}>
           <MaterialCommunityIcons
-            size={72}
+            size={80}
             name={weatherConditions[weather].icon}
             color={'#fff'}
+
           />
-          <Text style={styles.tempText}>{temperature}˚</Text>
+           <Text style={styles.tempText}>{temperature}˚</Text>
+        </View>
+        <View style={styles.headerContainer}>
+        <Text style={styles.title}>{weatherConditions[weather].title}</Text>
         </View>
         <View style={styles.bodyContainer}>
-          <Text style={styles.title}>{weatherConditions[weather].title}</Text>
           <Text style={styles.subtitle}>
-            {weatherConditions[weather].subtitle}
+            {name}
           </Text>
         </View>
       </View>
@@ -96,15 +104,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   tempText: {
-    fontSize: 72,
+    fontSize: 60,
     color: '#fff'
   },
   bodyContainer: {
     flex: 2,
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'flex-end',
-    paddingLeft: 25,
-    marginBottom: 40
+   // paddingLeft: 25,
+    marginBottom: 20
   },
   title: {
     fontSize: 60,

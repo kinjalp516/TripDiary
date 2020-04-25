@@ -2,17 +2,14 @@ import React from 'react';
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { Appbar, Menu, Card, FAB, Paragraph } from 'react-native-paper';
 import { Calendar,CalendarList,Agenda } from 'react-native-calendars';
-import ReactWeather from 'react-open-weather';
-//Optional include of the default css styles
-//import 'react-open-weather/lib/css/ReactWeather.css';
+
+
 
 import Weather from '../Weather';
-import weatherCondition from '../weatherConditions';
-import getLocationAsync from '../../map/MapPage';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import firebase from "../../Firebase.js";
-import MapPage from '../../map/MapPage';
+
 const API_KEY = "197e39b5b7deb39fe1e512c297a198d9";
 var counter = 0;
 
@@ -27,6 +24,7 @@ export default class CalendarPage extends React.Component{
         error: null,
         weatherCondition: null,
         temperature: 0,
+        city: null,
         latitude: null,
         longitude: null,
         locationResult: null,
@@ -36,7 +34,6 @@ export default class CalendarPage extends React.Component{
       let { status } = await Permissions.askAsync(Permissions.LOCATION);
 
       if (status !== 'granted') {
-          //console.log("error");
           this.setState({locationResult: 'Permission to access location was denied'});
           return;
       }
@@ -53,15 +50,12 @@ export default class CalendarPage extends React.Component{
     componentDidMount() {
         let user = firebase.auth().currentUser;
         this.getLocationAsync();
-        //this.fetchWeather();
-        
-
       }
     
     fetchWeather() {
-       console.log(this.state.latitude);
+      /* console.log(this.state.latitude);
        console.log(this.state.longitude);
-       console.log(counter);
+       console.log(counter);*/
        
     let lat = this.state.latitude;
     let lon = this.state.longitude;
@@ -75,12 +69,11 @@ export default class CalendarPage extends React.Component{
               )
                 .then(res => res.json())
                 .then(json => {
-                  console.log(json);
-                  //const jsonWeather = json[1];
-                  //const jsonMain = json[4];
+                 // console.log(json);
                   this.setState({
                     temperature: json.main.temp,
                     weatherCondition: json.weather[0].main,
+                    city: json.name,
                     isLoading: false
                   });
               });
@@ -131,17 +124,16 @@ export default class CalendarPage extends React.Component{
                 }}
                 showScrollIndicator={true}
             />
-             <Card>
+             <Card style={styles.card}>
                 <Card.Title
                     title = {"Today's Weather"}
-
-                />
+                     />
             </Card>
             
-                <Weather  weather={this.state.weatherCondition} temperature={this.state.temperature} />
+                <Weather  weather={this.state.weatherCondition} temperature={this.state.temperature} name={this.state.city} />
             
-            <Card>
-                <Card.Title
+            <Card style={styles.card}>
+                <Card.Title style={styles.cardText}
                     title = {this.state.selectedDay.toLocaleDateString("en-US", this.state.options)}
 
                 />
@@ -182,8 +174,23 @@ export default class CalendarPage extends React.Component{
          );
     }
 }
+
 const styles = StyleSheet.create({
     container: {
       flex: 1
     },
+    card: {
+        flex: 20,
+        padding: 5,
+        shadowOpacity: 20,
+        shadowRadius: 5,
+        
+    },
+    cardText:{
+        fontSize: 20,
+        fontFamily: 'Arial',
+        fontWeight: 'bold',
+        padding: 5,
+        alignContent: 'center'
+    }
   });
