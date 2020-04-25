@@ -50,6 +50,7 @@ export default class CalendarPage extends React.Component{
     componentDidMount() {
         let user = firebase.auth().currentUser;
         this.getLocationAsync();
+        counter = 0;
       }
     
     fetchWeather() {
