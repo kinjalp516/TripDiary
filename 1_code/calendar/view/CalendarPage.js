@@ -117,7 +117,8 @@ export default class CalendarPage extends React.Component{
       }
 
        async fetchJournals(tripId) {
-        let query = firebase.firestore().collection("journals").where("tripId", "==", tripId);
+        let query = firebase.firestore().collection("journals")
+        .where("tripId", "==", tripId);
         let result = await query.get(); // This returns a result of type QuerySnapshot
         return result.docs.map(
             (snapshot) => new Journal(snapshot.data(), true)   // Within each QuerySnapshot, there is an array of
@@ -132,16 +133,13 @@ export default class CalendarPage extends React.Component{
         let timeStampStart = toTimestamp(day.year,(day.month), day.day, 0, 0, 0);
         let timeStampEnd = toTimestamp(day.year, (day.month), day.day, 23,59,59);
 
-        let Date1 = new Date(day.year, (day.month-1), day.day);
-        let Date2 = new Date(day.year, (day.month-1),(day.day+1));
-
         console.log("Date 1: ", timeStampStart);
         console.log("Date2: ", timeStampEnd);
-        //fetch from database
+        //fetch photos  from database
         let query = firebase.firestore().collection("photos")
         .where('tripId','==', this.props.trip.id)
-        .where('dateTaken', '>', timeStampStart)
-        .where('dateTaken','<', timeStampEnd);
+        .where('creationTime', '>', timeStampStart)
+        .where('creationTime','<', timeStampEnd);
 
         let result = await query.get();
         return result.docs.map(
