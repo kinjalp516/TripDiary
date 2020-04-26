@@ -9,7 +9,7 @@ import ViewPhotoPage from '../photos/ViewPhoto';
 import CalendarPage from '../calendar/view/CalendarPage';
 import addJournalPage from '../journal/view/AddJournalPage';
 import AddPinPage from '../map/AddPinPage';
-import AddBudget from '../budget/view/AddBudget';
+import AddBudgetItem from '../budget/view/AddBudgetItem';
 import BudgetPage from '../budget/view/BudgetPage';
 import Category from '../attractions/view/Category';
 import Attractions from '../attractions/view/Attractions';
@@ -25,7 +25,7 @@ const TripsController = createStackNavigator(
         addJournal: addJournalPage,
         addPin: AddPinPage,
         viewBudget: BudgetPage,
-        addBudget: AddBudget,
+        addBudgetItem: AddBudgetItem,
         category: Category,
         Items: Attractions,
         Saved: SavedAttractions

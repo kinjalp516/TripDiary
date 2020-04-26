@@ -1,7 +1,7 @@
 import firebase from "../../Firebase.js";
 
 export async function fetchBudget(userId) {
-    let query = firebase.firestore().collection("budget").where("userId", "==", userId);
+    let query = firebase.firestore().collection("budget").where("tripId", "==", tripId);
     let result = await query.get();
     return result.docs.map(
         (snapshot) => new Budget(snapshot.data(), true)
@@ -16,10 +16,12 @@ export async function updateBudget(docId, newAmount) {
 
 export class Budget{
 
-    constructor({id, userId, amount}, fromFirestore=false) {
+    constructor({id, userId, tripId, amount}, fromFirestore=false) {
         this.id = id;
         this.userId = userId;
+        this.tripId = tripId;
         this.amount = amount;
+        //this.perDay = tripId
     }
 
     toJSON() {

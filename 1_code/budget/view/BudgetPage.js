@@ -2,11 +2,11 @@ import React from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import { Appbar, Card, FAB } from 'react-native-paper';
 import firebase from '../../Firebase.js';
-import {fetchBudget} from '../model/Budget.js';
+import {fetchBudgetItems} from '../model/BudgetItem.js';
 
 export default class BudgetPage extends React.Component{
     state = {
-        budget: [],
+        budgetitems: [],
         showButton: true
     }
 
@@ -14,22 +14,22 @@ export default class BudgetPage extends React.Component{
     componentDidMount() {
         let user = firebase.auth().currentUser;
         if(user != null){
-            let userId = user.uid;
+            let tripId = user.tripId;
 
             //for initial load
-            fetchBudget(userId).then((budget) => this.setState({budget}));
+            fetchBudgetItems(tripId).then((budgetitems) => this.setState({budgetitems}));
             
             this.props.navigation.addListener(
-              'willFocus', () => fetchBudget(userId).then((budget) => this.setState({ budget }))
+              'willFocus', () => fetchBudgetItems(tripId).then((budgetitems) => this.setState({budgetitems}))
             );
         } 
         
         
     }
 
-    async checkBudget(){
-        this.props.navigation.navigate('addBudget')
-        this.setState({showButton: false})
+    async checkBudgetItem(){
+        this.props.navigation.navigate('addBudgetItem')
+        //this.setState({showButton: false})
     }
 
     render(){
@@ -37,23 +37,20 @@ export default class BudgetPage extends React.Component{
             <View style={styles.container}>
                 <Appbar.Header>
                     <Appbar.BackAction onPress={() => this.props.navigation.navigate('home')} />
-                    <Appbar.Content title="Budget" />
+                    <Appbar.Content title="Budget History" />
                 </Appbar.Header>
 
                 
-                    { this.state.budget.map((item, index) => {
+                    { this.state.budgetitems.map((item, index) => {
                         return (<Card 
-                            key={`budget-${index}`} style={styles.budgetCard}
+                            key={`budgetitems-${index}`} style={styles.budgetCard}
                             //goes to wherever you want after you press on the card, rn its set to null
                             onPress={() => null}
                         >
                             <Card.Title 
-                                title = 'Remaining Budget'
-                                subtitle={item.amount}
+                                title = {item.amount}
+                                subtitle={item.type}
                                 //you can add a subtitle if you'd like, but as of now there's only 1 thing to display
-                                //subtitle={item.location}
-                                //{this.state.budget == null? 
-                                //: null }
 
                             />
                         </Card>);
@@ -63,8 +60,8 @@ export default class BudgetPage extends React.Component{
   
                 <FAB
                     style={styles.fab}
-                    label = "Create New Budget"
-                    onPress={() => this.checkBudget()}
+                    label = "Add New Purchase"
+                    onPress={() => this.checkBudgetItem()}
                     
                 />
                 
