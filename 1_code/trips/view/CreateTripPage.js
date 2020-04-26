@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Platform } from 'react-native';
+import { StyleSheet, View, Platform, ScrollView } from 'react-native';
 import { Appbar, TextInput, Subheading, Button, Divider } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
@@ -81,6 +81,12 @@ export default class CreateTripPage extends React.Component {
                         error={this.state.locationError}
                         onChangeText={location => this.setState({ location })}
                     />
+                    <ScrollView>
+                    <Button onPress={() => this.setState({ showStart: true })}>
+                        Select Start Date
+                    </Button>
+                    <Divider />
+                    {this.state.showStart && (
                     {this.state.showStart && !this.state.showEnd && (
                         <DateTimePicker
                             value={this.state.start ?? Date.now()}
@@ -148,6 +154,7 @@ export default class CreateTripPage extends React.Component {
                     <Button mode="contained" disabled={this.state.showStart || this.state.showEnd} onPress={() => this.submitTrip()}>
                         Save Trip
                     </Button>
+                    </ScrollView>
                 </View>
             </React.Fragment>
         );
