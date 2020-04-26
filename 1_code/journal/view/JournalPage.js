@@ -162,7 +162,7 @@ export default class JournalPage extends Component{
 
         const commitsData = commitsData1.concat(commitsData2)
 
-          console.log(commitsData);
+          //console.log(commitsData);
 
         let arr = this.state.journals;
         
