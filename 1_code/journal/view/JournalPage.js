@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView, Alert, Platform } from 'react-native';
 import { Appbar, FAB } from 'react-native-paper';
 import { Card } from 'galio-framework';
-import { AppleHeader } from "@freakycoder/react-native-header-view";
+//import { AppleHeader } from "@freakycoder/react-native-header-view";
 
 import firebase from "../../Firebase.js";
 import {fetchJournals, deleteJournal} from '../model/Journal.js';
@@ -122,7 +122,7 @@ export default class JournalPage extends Component{
         return (
             <View style={styles.container}>
 
-                {Platform.OS === 'ios' ? <AppleHeader
+                {/* {Platform.OS === 'ios' ? <AppleHeader
                     dateTitle= {this.getHeaderDate()}
                     largeTitle="Journal"
                     imageSource= {require('../pin.png')}
@@ -133,7 +133,7 @@ export default class JournalPage extends Component{
                         <Appbar.BackAction onPress={() => this.props.navigation.navigate("home")} />
                         <Appbar.Content title="Journal" />
                     </Appbar.Header>
-                }
+                } */}
 
                 <ScrollView>
                     {arr.map((item) => {

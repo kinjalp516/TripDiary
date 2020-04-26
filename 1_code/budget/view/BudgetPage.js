@@ -3,10 +3,14 @@ import { StyleSheet, View, ScrollView } from 'react-native';
 import { Appbar, Card, FAB } from 'react-native-paper';
 import firebase from '../../Firebase.js';
 import {fetchBudgetItems} from '../model/BudgetItem.js';
+import trip from '../../trips/model/Trip';
+import { fetchBudget } from '../model/Budget.js';
 
 export default class BudgetPage extends React.Component{
     state = {
         budgetitems: [],
+        budget: 0,
+        perDay: 0,
         showButton: true
     }
 
@@ -18,13 +22,24 @@ export default class BudgetPage extends React.Component{
 
             //for initial load
             fetchBudgetItems(tripId).then((budgetitems) => this.setState({budgetitems}));
+            fetchBudget(tripId).then((budget) => this.setState({budget}));
             
             this.props.navigation.addListener(
-              'willFocus', () => fetchBudgetItems(tripId).then((budgetitems) => this.setState({budgetitems}))
+              'willFocus', () => fetchBudgetItems(tripId).then((budgetitems) => this.setState({budgetitems})),
+              'willFocus', () => fetchBudget(tripId).then((budget) => this.setState({budget}))
             );
         } 
         
         
+    }
+
+    async checkBudgetPerDay(){
+        //startDate = Date.now();
+        //endDate = trip.state.endDate;
+        //diff = endDate.toTime() - startDate.toTime();
+        //days = Math.floor(diff/(1000 * 60 * 60 * 24));
+        //x = this.state.budget/days;
+        //this.setState({perDay: x})
     }
 
     async checkBudgetItem(){
@@ -37,7 +52,10 @@ export default class BudgetPage extends React.Component{
             <View style={styles.container}>
                 <Appbar.Header>
                     <Appbar.BackAction onPress={() => this.props.navigation.navigate('home')} />
-                    <Appbar.Content title="Budget History" />
+                    <Appbar.Content 
+                        title="Budget History"
+                        subtitle= {this.state.budget} 
+                    />
                 </Appbar.Header>
 
                 

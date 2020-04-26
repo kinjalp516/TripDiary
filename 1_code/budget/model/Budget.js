@@ -1,6 +1,6 @@
 import firebase from "../../Firebase.js";
 
-export async function fetchBudget(userId) {
+export async function fetchBudget(tripId) {
     let query = firebase.firestore().collection("budget").where("tripId", "==", tripId);
     let result = await query.get();
     return result.docs.map(
