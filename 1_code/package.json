@@ -43,6 +43,7 @@
     "react-native-autocomplete-select": "^1.0.0",
     "react-native-calendar-strip": "^1.4.1",
     "react-native-calendars": "^1.264.0",
+    "react-native-chart-kit": "^5.5.0",
     "react-native-dynamic-vector-icons": ">= x.x.x",
     "react-native-elements": "^1.2.7",
     "react-native-expo-cached-image": "^1.0.1",
@@ -61,6 +62,9 @@
     "react-navigation": "^4.3.1",
     "react-navigation-drawer": "^2.4.4",
     "react-navigation-stack": "^2.3.1",
+    "react-navigation-tabs": "^2.8.4",
+    "react-open-weather": "^0.6.2",
+    "react-native-svg": "9.13.3"
     "react-navigation-tabs": "^2.8.4"
   },
   "devDependencies": {
