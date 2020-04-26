@@ -1,9 +1,8 @@
 
 import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView, Alert, Platform, Dimensions } from 'react-native';
-import { Appbar, FAB } from 'react-native-paper';
+import { Appbar } from 'react-native-paper';
 import { Card } from 'galio-framework';
-import { AppleHeader } from "@freakycoder/react-native-header-view";
 import {ContributionGraph} from "react-native-chart-kit";
 
 import firebase from "../../Firebase.js";
@@ -68,6 +67,7 @@ export default class JournalPage extends Component{
 
     state = {
         journals: [],
+        journalsOrig: [],
         count: null
     }
 
@@ -78,10 +78,12 @@ export default class JournalPage extends Component{
 
             //for initial load
             fetchJournals(tripId).then((journals) => this.setState({journals}));
-    
+            fetchJournals(tripId).then((journalsOrig) => this.setState({journalsOrig}));
+
             this.props.navigation.addListener(
                 'willFocus', 
-                () => fetchJournals(tripId).then((journals) => this.setState({journals}))
+                () => fetchJournals(tripId).then((journals) => this.setState({journals})),
+                () => fetchJournals(tripId).then((journalsOrig) => this.setState({journalsOrig}))
             );
         }
     }
@@ -121,7 +123,7 @@ export default class JournalPage extends Component{
     }
 
     getChartData () {
-        let arr = this.state.journals;
+        let arr = this.state.journalsOrig;
 
         var data = arr.map((item) => {
             return {date: item.date, count: this.getCount(item.date)}; 
@@ -132,11 +134,10 @@ export default class JournalPage extends Component{
 
     getCount (date) {
 
-        var arr =  this.state.journals.filter(function(item) {
+        var arr =  this.state.journalsOrig.filter(function(item) {
             return item.date == date;
         });
 
-        //console.log('hi' +arr.length);
         return arr.length;
     }
 
@@ -168,17 +169,21 @@ export default class JournalPage extends Component{
         return (
             <View style={styles.container}>
 
-                {Platform.OS === 'ios' ? <AppleHeader
-                    dateTitle= {this.getHeaderDate()}
-                    largeTitle="Journal"
-                    imageSource= {require('../pin.png')}
-                    onPress={()=> this.props.navigation.navigate('home')}
-                    //backgroundColor='white'
-                /> : <Appbar.Header>
+                
+
+                <Appbar.Header>
                         <Appbar.BackAction onPress={() => this.props.navigation.navigate("home")} />
                         <Appbar.Content title="Journal" />
+                        <Appbar.Action icon="plus" 
+                            onPress={() => this.props.navigation.navigate('addJournal', {
+                                title: '',
+                                note: '',
+                                editJournal: false,
+                                tripId: this.props.trip.id,
+                                })}
+                        />
                     </Appbar.Header>
-                }
+                
 
                 <ContributionGraph
                     values={commitsData}
@@ -187,7 +192,15 @@ export default class JournalPage extends Component{
                     width={Dimensions.get("window").width}
                     height={220}
                     chartConfig={chartConfig}
-                    onDayPress =  {(value) => console.log(value)}
+                    onDayPress =  {(value) => {
+                        var arr =  this.state.journalsOrig.filter(function(item) {
+                            return item.date == value.date;
+                        });
+
+                        this.setState({journals: arr});
+                        //console.log(arr);
+                    }
+                    }
                 />
 
                 <ScrollView>
@@ -226,19 +239,6 @@ export default class JournalPage extends Component{
                         </PressOptions>);
                     })}
                 </ScrollView>
-
-                <FAB
-                    style={styles.fab}
-                    small
-                    icon="plus"
-                    onPress={() => this.props.navigation.navigate('addJournal', {
-                        title: '',
-                        note: '',
-                        editJournal: false,
-                        tripId: this.props.trip.id,
-                    })}
-                />
-
             </View>
         );
     };
@@ -247,7 +247,7 @@ export default class JournalPage extends Component{
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 80,
+        //marginTop: 80,
         //backgroundColor: '#dce1e6'
     },
     margin: {
