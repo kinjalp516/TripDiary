@@ -23,20 +23,21 @@ export default class ViewPhotoPage extends React.Component {
                 </Appbar.Header>
                 <CachedImage
                     isBackground
+                    isFilesystemUri={this.photo.uri.includes("assets-library")}
                     resizeMode="contain"
                     style={styles.photo} 
-                    source={{uri: this.photo.photoUrl}}
+                    source={{uri: this.photo.uri}}
                 />
                 <List.Section>
                     <List.Subheader style={styles.label}>Image Properties</List.Subheader>
                     <List.Item
-                        title={moment.unix(this.photo.dateTaken).calendar()}
+                        title={moment(this.photo.creationTime).calendar()}
                         titleStyle={styles.label}
                         style={{padding: 0}}
                         left={() => <List.Icon color="white" icon="clock" />}
                     />
                     <List.Item
-                        title={`${this.photo.location.latitude}, ${this.photo.location.longitude}`}
+                        title={`${this.photo.city}, ${this.photo.state}`}
                         titleStyle={styles.label}
                         style={{padding: 0}}
                         left={() => <List.Icon color="white" icon="map" />}

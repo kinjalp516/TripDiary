@@ -1,7 +1,8 @@
 import React from "react";
-import { StyleSheet, View, Platform } from 'react-native';
+import { StyleSheet, View, Platform, ScrollView } from 'react-native';
 import { Appbar, TextInput, Subheading, Button, Divider } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment';
 
 import firebase from "../../Firebase.js";
 import { Trip } from '../model/Trip.js';
@@ -12,13 +13,15 @@ export default class CreateTripPage extends React.Component {
         userId: null,
         name: null, 
         location: null, 
-        start: new Date(Date.now()), 
-        end: new Date(Date.now()),
+        start: undefined, 
+        end: undefined,
         nameError: false,
         locationError: false,
         showStart: false,
         showEnd: false
     };
+
+    now = new Date(Date.now());
 
     componentDidMount() {
         let user = firebase.auth().currentUser;
@@ -48,12 +51,12 @@ export default class CreateTripPage extends React.Component {
                 name: this.state.name,
                 userId: this.state.userId,
                 location: this.state.location,
-                startDate: this.state.start || new Date(Date.now()),
-                endDate: this.state.end || new Date(Date.now())
+                startDate: this.state.start?.valueOf() ?? this.now.valueOf(),
+                endDate: this.state.end?.valueOf() ?? this.now.valueOf()
             });
 
             await trip.storeTrip();
-            
+            console.log("trip stored", trip.id);
             this.props.navigation.navigate("home");
         }
     }
@@ -80,15 +83,13 @@ export default class CreateTripPage extends React.Component {
                         error={this.state.locationError}
                         onChangeText={location => this.setState({ location })}
                     />
-                    <Button onPress={() => this.setState({ showStart: true })}>
-                        Select Start Date
-                    </Button>
+                    <ScrollView>
                     <Divider />
-                    {this.state.showStart && (
+                    {this.state.showStart && !this.state.showEnd && (
                         <DateTimePicker
-                            value={this.state.start}
+                            value={this.state.start ?? this.now}
                             mode="date"
-                            minimumDate={Date.now()}
+                            minimumDate={this.now}
                             testID = 'Date start test'  //for integration testing
                             onChange={(event, selectedDate) => {
                                 this.setState({ showStart: Platform.OS === 'ios'}); 
@@ -96,15 +97,31 @@ export default class CreateTripPage extends React.Component {
                             }}
                         />
                     )}
-                    <Button onPress={() => this.setState({ showEnd: true})}>
-                        Select End Date
-                    </Button>
+                    {!this.state.showEnd && (    
+                        <Button 
+                            mode={this.state.showStart ? "contained" : "outlined"} 
+                            style={{marginBottom: 20}}
+                            onPress={() => {
+                                if(this.state.showStart) {
+                                    if(!this.state.start) {
+                                        this.setState({ showStart: false, start: this.now })
+                                    } else {
+                                        this.setState({ showStart: false });
+                                    }
+                                } else {
+                                    this.setState({ showStart: true });
+                                }
+                            }} 
+                        >
+                            {this.state.showStart ? "Save Start Date" : this.state.start ? "START: " + moment(this.state.start).format('MMMM Do, YYYY') : "Select Start Date"}
+                        </Button>
+                    )}
                     <Divider />
-                    {this.state.showEnd && (
+                    {this.state.showEnd && !this.state.showStart && (
                         <DateTimePicker
-                            value={this.state.end}
+                            value={this.state.end ?? this.now}
                             mode="date"
-                            minimumDate={this.state.start}
+                            minimumDate={this.state.start ?? this.now}
                             testId = 'Date end test' //for integration testing
                             onChange={(event, selectedDate) => {
                                 this.setState({ showEnd: Platform.OS === 'ios'});
@@ -112,9 +129,30 @@ export default class CreateTripPage extends React.Component {
                             }}
                         />
                     )}
-                    <Button mode="contained" onPress={() => this.submitTrip()}>
+                    {!this.state.showStart && (
+                        <Button 
+                            mode={this.state.showEnd ? "contained" : "outlined"} 
+                            style={{marginBottom: 20}}
+                            onPress={() => {
+                                if(this.state.showEnd) {
+                                    if(!this.state.end) {
+                                        this.setState({ showEnd: false, end: this.state.start ?? this.now })
+                                    } else {
+                                        this.setState({ showEnd: false });
+                                    }
+                                } else {
+                                    this.setState({ showEnd: true });
+                                }
+                            }} 
+                        >
+                            {this.state.showEnd ? "Save End Date" : this.state.end ? "END: " + moment(this.state.end).format('MMMM Do, YYYY') : "Select End Date"}
+                        </Button>
+                    )}
+                    <Divider />
+                    <Button mode="contained" disabled={this.state.showStart || this.state.showEnd} onPress={() => this.submitTrip()}>
                         Save Trip
                     </Button>
+                    </ScrollView>
                 </View>
             </React.Fragment>
         );

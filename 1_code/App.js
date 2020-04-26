@@ -9,9 +9,10 @@ import TripsController from './trips/TripsController';
 // START: Hacky Fix for Firebase Utils (dont worry about it)
 import {decode, encode} from 'base-64'
 
-if (!global.btoa) {  global.btoa = encode }
+if (! global.btoa) {global.btoa = encode}
 
-if (!global.atob) { global.atob = decode }
+if (! global.atob) {global.atob = decode}
+
 // END: Hacky Fix for Firebase Utils
 
 /*

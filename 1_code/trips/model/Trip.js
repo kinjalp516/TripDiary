@@ -24,8 +24,8 @@ export class Trip {
         this.name = name;
         this.userId = userId;
         this.location = location;
-        this.startDate = fromFirestore ? startDate.toDate() : startDate;
-        this.endDate = fromFirestore ? endDate.toDate() : endDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     toJSON() {
@@ -44,7 +44,7 @@ export class Trip {
         // We need to do this to get an automatically generated ID for this new trip
         // (look at links above for further reference)
         let newTripReference = firebase.firestore().collection("trips").doc();
-
+        console.log("new ref", newTripReference)
         // now we can set the id field for our object
         this.id = newTripReference.id;
 

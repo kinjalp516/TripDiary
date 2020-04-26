@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import { Appbar, Menu, Card, FAB, Paragraph, ActivityIndicator } from 'react-native-paper';
-import firebase from '../../Firebase.js';
+import firebase from 'firebase';
 import moment from 'moment';
 
 import { fetchTrips } from '../model/Trip.js';
@@ -14,14 +14,14 @@ export default class MyTripsPage extends React.Component{
   }
 
   componentDidMount() {
+    this.props.navigation.addListener('willFocus', () => this.loadTrips());
+  }
+
+  async loadTrips() {
     let user = firebase.auth().currentUser;
-    console.log(user);
-    if(user != null){
-      let userId = user.uid;
-    
-    this.props.navigation.addListener(
-      'willFocus', () => fetchTrips(userId).then((trips) => this.setState({ trips }))
-    );
+    if(user != null) {
+      let trips = await fetchTrips(user.uid);
+      this.setState({ trips })
     }
   }
 
@@ -56,7 +56,7 @@ export default class MyTripsPage extends React.Component{
                   subtitle={item.location}
                 />
                 <Card.Content>
-                  <Paragraph>From {moment(item.startDate).format('MMMM Do')} to {moment(item.endDate).format('MMMM Do')}</Paragraph>
+                  <Paragraph>From {moment(item.startDate).format('MMMM Do, YYYY')} to {moment(item.endDate).format('MMMM Do, YYYY')}</Paragraph>
                 </Card.Content>
               </Card>);
           }) }
