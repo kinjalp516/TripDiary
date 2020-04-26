@@ -8,8 +8,9 @@ import firebase from '../Firebase.js';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
-import { fetchPins, getRoute } from './model/Pin';
+import { fetchPins, attrToPin } from './model/Pin';
 import { fetchPhotos } from '../photos/model/Photo';
+import { fetchAttractions } from '../attractions/Model/Retrieve';
 import PinDetailView from './PinDetailView';
 
 const API_KEY = 'AIzaSyAcCFMyoLheBKHhQ5Hj_murJb7tDP1QiPk';
@@ -17,7 +18,7 @@ const API_KEY = 'AIzaSyAcCFMyoLheBKHhQ5Hj_murJb7tDP1QiPk';
 export default class MapPage extends React.Component {
 
     state = {
-        pins: [], 
+        pins: [],
         photos: [],
         routes: [],
         mapRegion: null,
@@ -25,26 +26,39 @@ export default class MapPage extends React.Component {
         hasLocationPermissions: false, 
         locationResult: null,
         deleteMode: false,
-        selectedMarker: null
+        selectedMarker: null,
+        numAutoPins: 0
     };
 
     componentDidMount() {
         this.getLocationAsync();
-    
-        // fetch the pins from the database
-        fetchPins(this.props.trip.id).then((pins) => { 
+
+        // fetch attractions from the database
+        fetchAttractions(this.props.trip.id).then((attr) => {
+            let pins = attrToPin(attr);
+            this.setState({numAutoPins: pins.length});
             this.setState({ pins });
             this.map.fitToElements(false);
+
+            // fetch user pins from the database
+            fetchPins(this.props.trip.id).then((userPins) => this.setState({ pins: this.state.pins.concat(userPins) }));
+
+            this.props.navigation.addListener(
+                'didFocus', () => {
+                    fetchAttractions(this.props.trip.id).then((attr1) => {
+                        let autoPins = attrToPin(attr1);
+                        this.setState({numAutoPins: autoPins.length});
+                        this.setState({pins: autoPins});
+                        this.map.fitToElements(false);
+                        
+                        fetchPins(this.props.trip.id).then((userPins) => this.setState({ pins: this.state.pins.concat(userPins) }));
+                        fetchPhotos(this.props.trip.id).then((photos) => this.setState({ photos }));
+                    });
+                }
+            );
         });
-        this.props.navigation.addListener(
-            'didFocus', () => {
-                fetchPins(this.props.trip.id).then((pins) => this.setState({ pins }));
-                this.map.fitToElements(false);
-                fetchPhotos(this.props.trip.id).then((photos) => {
-                    this.setState({ photos });
-                });
-            }
-        );
+    
+
         
     }
 
@@ -77,12 +91,12 @@ export default class MapPage extends React.Component {
             'Would you like to delete this pin?',
             [
                 {text: 'Yes', onPress: () => {
-                    let pins = this.state.pins;
+                    let userPins = this.userPins.pins;
                     let coords = this.state.selectedMarker;
-                    this.setState({pins: pins.filter((currVal, index) => {
+                    this.setState({userPins: userPins.filter((currVal, index) => {
                         let isPinToDelete = currVal.coords.latitude === coords.latitude && 
                             currVal.coords.longitude === coords.longitude;
-                        if (isPinToDelete) firebase.firestore().collection("pins").doc(pins[index].id).delete();
+                        if (isPinToDelete) firebase.firestore().collection("pins").doc(userPins[index].id).delete();
                         return !isPinToDelete;
                     })});
                 }},
@@ -134,7 +148,9 @@ export default class MapPage extends React.Component {
                                 </Marker>
                             ))}
                             {this.state.pins.map((pin, index) => {
-                                if (index < this.state.pins.length - 1) {
+                                if (index < this.state.numAutoPins - 1 &&
+                                    !((pin.coords.latitude == this.state.pins[index+1].coords.latitude) &&
+                                        (pin.coords.longitude == this.state.pins[index+1].coords.longitude))) {
                                     return (
                                         <MapViewDirections
                                             key={pin.coords.latitude} 
@@ -162,7 +178,7 @@ export default class MapPage extends React.Component {
                                 longitude: this.state.mapRegion.longitude
                             },
                             trip: this.props.trip,
-                            pins: this.state.pins
+                            pins: this.state.userPins
                         })}
                     />
                 }

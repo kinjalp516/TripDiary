@@ -6,8 +6,11 @@ export async function getInformation(loc, tripId) {
       return fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${loc.coords.latitude},${loc.coords.longitude}&rankby=distance&type=restaurant&keyword=cruise&key=AIzaSyB4f8HruyOxAlhEP6-FK6vGoJ9Qu643M9w`)
             .then((response) => response.json())
             .then((data) => {
-                return data.results.map(item => new Retrieve(item.name, item.price_level, item.rating, item.vicinity, item.opening_hours, false, 
-                    item.place_id, 'Save', item.photos[0].photo_reference, {latitude: loc.coords.latitude, longitude: loc.coords.longitude}, tripId));
+                return data.results.map(item => {
+                    let photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=300&maxheight=200&photoreference=${item.photos[0].photo_reference}&key=AIzaSyB4f8HruyOxAlhEP6-FK6vGoJ9Qu643M9w`
+                    return new Retrieve(item.name, item.price_level, item.rating, item.vicinity, item.opening_hours, false, 
+                    item.place_id, 'Save', photoUrl, {latitude: item.geometry.location.lat, longitude: item.geometry.location.lng}, tripId);
+                })
             })
             .catch(function(error) {
                 console.log('There has been a problem with your fetch operation: ' + error.message);
