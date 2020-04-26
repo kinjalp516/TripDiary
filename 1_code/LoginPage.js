@@ -17,8 +17,6 @@ export default class LoginPage extends React.Component {
         const config = {
             iosClientId: "640672912982-sjkd3s2luptsfrcm8ss344el2igp11ei.apps.googleusercontent.com",
             androidClientId: "640672912982-e6d9dgbc2dja2pfpev2ogr34etsk6ois.apps.googleusercontent.com",
-            iosStandaloneAppClientId: "640672912982-bpjtb8nbdt9jihjst4gebq9q30ai4p3b.apps.googleusercontent.com",
-            androidStandaloneAppClientId: "640672912982-3ops35e5pkj4sgmgba79pvgdng4aomlk.apps.googleusercontent.com",
         };
         const { type, accessToken, idToken } = await Google.logInAsync(config);
         if (type === 'success') {

@@ -21,6 +21,8 @@ export default class CreateTripPage extends React.Component {
         showEnd: false
     };
 
+    now = new Date(Date.now());
+
     componentDidMount() {
         let user = firebase.auth().currentUser;
         this.setState({userId: user.uid});
@@ -49,12 +51,12 @@ export default class CreateTripPage extends React.Component {
                 name: this.state.name,
                 userId: this.state.userId,
                 location: this.state.location,
-                startDate: this.state.start || new Date(Date.now()),
-                endDate: this.state.end || new Date(Date.now())
+                startDate: this.state.start?.valueOf() ?? this.now.valueOf(),
+                endDate: this.state.end?.valueOf() ?? this.now.valueOf()
             });
 
             await trip.storeTrip();
-            
+            console.log("trip stored", trip.id);
             this.props.navigation.navigate("home");
         }
     }
@@ -82,15 +84,12 @@ export default class CreateTripPage extends React.Component {
                         onChangeText={location => this.setState({ location })}
                     />
                     <ScrollView>
-                    <Button onPress={() => this.setState({ showStart: true })}>
-                        Select Start Date
-                    </Button>
                     <Divider />
                     {this.state.showStart && !this.state.showEnd && (
                         <DateTimePicker
-                            value={this.state.start ?? Date.now()}
+                            value={this.state.start ?? this.now}
                             mode="date"
-                            minimumDate={Date.now()}
+                            minimumDate={this.now}
                             testID = 'Date start test'  //for integration testing
                             onChange={(event, selectedDate) => {
                                 this.setState({ showStart: Platform.OS === 'ios'}); 
@@ -105,7 +104,7 @@ export default class CreateTripPage extends React.Component {
                             onPress={() => {
                                 if(this.state.showStart) {
                                     if(!this.state.start) {
-                                        this.setState({ showStart: false, start: Date.now() })
+                                        this.setState({ showStart: false, start: this.now })
                                     } else {
                                         this.setState({ showStart: false });
                                     }
@@ -120,9 +119,9 @@ export default class CreateTripPage extends React.Component {
                     <Divider />
                     {this.state.showEnd && !this.state.showStart && (
                         <DateTimePicker
-                            value={this.state.end ?? Date.now()}
+                            value={this.state.end ?? this.now}
                             mode="date"
-                            minimumDate={this.state.start ?? Date.now()}
+                            minimumDate={this.state.start ?? this.now}
                             testId = 'Date end test' //for integration testing
                             onChange={(event, selectedDate) => {
                                 this.setState({ showEnd: Platform.OS === 'ios'});
@@ -137,7 +136,7 @@ export default class CreateTripPage extends React.Component {
                             onPress={() => {
                                 if(this.state.showEnd) {
                                     if(!this.state.end) {
-                                        this.setState({ showEnd: false, end: this.state.start ?? Date.now() })
+                                        this.setState({ showEnd: false, end: this.state.start ?? this.now })
                                     } else {
                                         this.setState({ showEnd: false });
                                     }

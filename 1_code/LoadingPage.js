@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native'
-import firebase from './Firebase.js';
+import firebase from 'firebase';
 
 /*
 LoadingPage is the first page loaded at the start of our application.
@@ -11,9 +11,19 @@ or directly to My Trips Page.
 
 export default class LoadingPage extends React.Component {
     componentDidMount() {
-        firebase.auth().onAuthStateChanged(user => {
-            this.props.navigation.navigate(user ? 'trips' : 'login')
-        });
+        this.checkIfLoggedIn()
+    }
+
+    checkIfLoggedIn = () => {
+        firebase.auth().onAuthStateChanged(
+            function(user) {
+                if(user) {
+                    this.props.navigation.navigate('trips');
+                } else {
+                    this.props.navigation.navigate('login');
+                }
+            }.bind(this)
+        );
     }
 
     render() {
