@@ -56,7 +56,7 @@ export default class MyTripsPage extends React.Component{
                   subtitle={item.location}
                 />
                 <Card.Content>
-                  <Paragraph>From {moment(item.startDate).format('MMMM Do')} to {moment(item.endDate).format('MMMM Do')}</Paragraph>
+                  <Paragraph>From {moment(item.startDate).format('MMMM Do, YYYY')} to {moment(item.endDate).format('MMMM Do, YYYY')}</Paragraph>
                 </Card.Content>
               </Card>);
           }) }
