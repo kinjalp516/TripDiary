@@ -2,51 +2,51 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
-//import  {weatherConditions}  from './weatherConditions';
+
 const weatherConditions = {
     Rain: {
-      color: 'darkslateblue',
+      color: 'steelblue',
       title: 'Raining',
       icon: 'weather-rainy'
     },
     Clear: {
-      color: 'deepskyblue',
+      color: 'steelblue',
       title: 'Clear',
       icon: 'weather-sunny'
     },
     Thunderstorm: {
-      color: 'darkslateblue',
+      color: 'steelblue',
       title: 'Thunderstorm',
       icon: 'weather-lightning'
     },
     Clouds: {
-      color: 'dodgerblue',
+      color: 'steelblue',
       title: 'Cloudy',
       icon: 'weather-cloudy'
     },
   
     Snow: {
-      color: 'mintcream',
+      color: 'steelblue',
       title: 'Snow',
       icon: 'weather-snowy'
     },
     Drizzle: {
-      color: 'lightblue',
+      color: 'steelblue',
       title: 'Drizzle',
       icon: 'weather-hail'
     },
     Haze: {
-      color: 'powderblue',
+      color: 'steelblue',
       title: 'Haze',
       icon: 'weather-hail'
     },
     Mist: {
-      color: 'lightblue',
+      color: 'steelblue',
       title: 'Mist',
       icon: 'weather-fog'
     },
     Fog: {
-      color: 'lightblue',
+      color: 'steelblue',
       title: 'Fog',
       icon: 'weather-fog'
     }
