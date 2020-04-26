@@ -3,29 +3,106 @@ import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { Appbar, Menu, Card, FAB, Paragraph } from 'react-native-paper';
 import { Calendar,CalendarList,Agenda } from 'react-native-calendars';
 
+
+
+import Weather from '../Weather';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
 import firebase from "../../Firebase.js";
+
+const API_KEY = "197e39b5b7deb39fe1e512c297a198d9";
+var counter = 0;
 
 export default class CalendarPage extends React.Component{
 
     state ={
         days: [],
         startDay: this.props.trip.startDate,
-        endDay: this.props.trip.endDate
-
+        endDay: this.props.trip.endDate,
+        selectedDay: this.props.trip.startDate,
+        options : { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' },
+        error: null,
+        weatherCondition: null,
+        temperature: 0,
+        city: null,
+        latitude: null,
+        longitude: null,
+        locationResult: null,
+        hasLocationPermissions: null
     }
+    async getLocationAsync() {
+      let { status } = await Permissions.askAsync(Permissions.LOCATION);
+
+      if (status !== 'granted') {
+          this.setState({locationResult: 'Permission to access location was denied'});
+          return;
+      }
+      else this.setState({hasLocationPermissions: true});
+
+      let location = await Location.getCurrentPositionAsync({});
+      this.setState({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude
+      })
+      this.setState({ locationResult: JSON.stringify(location) });
+  }
 
     componentDidMount() {
         let user = firebase.auth().currentUser;
+        this.getLocationAsync();
+        counter = 0;
+      }
     
+    fetchWeather() {
+      /* console.log(this.state.latitude);
+       console.log(this.state.longitude);
+       console.log(counter);*/
+       
+    let lat = this.state.latitude;
+    let lon = this.state.longitude;
+    
+        
+            if(this.state.latitude == null || this.state.longitude == null){
+                return;
+            }
+            fetch(
+                `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=${API_KEY}&units=imperial`
+              )
+                .then(res => res.json())
+                .then(json => {
+                 // console.log(json);
+                  this.setState({
+                    temperature: json.main.temp,
+                    weatherCondition: json.weather[0].main,
+                    city: json.name,
+                    isLoading: false
+                  });
+              });
+              
+            
+    }
+
+      updateSelectedDay(day){
+          let tempDate = new Date(day.year, (day.month-1), day.day);
+          counter = 0;
+         this.setState({selectedDay: tempDate});
       }
     
     render() {
+        if(counter < 3){
+            this.fetchWeather();
+            counter++;
+        }
+        console.log(this.state.weatherCondition);
+        console.log(this.state.temperature);
+
         return(
             <View style={styles.container}>
             <Appbar.Header>
             <Appbar.BackAction onPress={() => this.props.navigation.navigate("home")} />
             <Appbar.Content title="Calendar" />
             </Appbar.Header>
+            <ScrollView>
             <CalendarList
                 testID = 'Calendar Date' //integration test
                 //recieves start and end date for calendar from trip object
@@ -39,21 +116,30 @@ export default class CalendarPage extends React.Component{
                 //sets scroll range to selected months
                 futureScrollRange={(this.props.trip.endDate.getMonth()-this.props.trip.startDate.getMonth())}
                 
-                onDayPress={(day) => console.log('selected day', day)}//just outputs day info to console for now
+                onDayPress={(day) => this.updateSelectedDay(day)}//just outputs day info to console for now
                 theme={{
                     textMonthFontSize: 20,
                     textMonthFontFamily: 'Arial',
                     textDayFontFamily: 'Arial',
                     calendarBackground:'aliceblue',
                 }}
+                showScrollIndicator={true}
             />
-            <Card>
+             <Card style={styles.card}>
                 <Card.Title
-                    title = "Daily Summary"
+                    title = {"Today's Weather"}
+                     />
+            </Card>
+            
+                <Weather  weather={this.state.weatherCondition} temperature={this.state.temperature} name={this.state.city} />
+            
+            <Card style={styles.card}>
+                <Card.Title style={styles.cardText}
+                    title = {this.state.selectedDay.toLocaleDateString("en-US", this.state.options)}
 
                 />
             </Card>
-            <ScrollView>
+            
             <Card>
                 <Card.Title
                     title = "Photos"
@@ -84,13 +170,28 @@ export default class CalendarPage extends React.Component{
                 />
             </Card>
             </ScrollView>
-            </View>
+        </View>
 
          );
     }
 }
+
 const styles = StyleSheet.create({
     container: {
       flex: 1
     },
+    card: {
+        flex: 20,
+        padding: 5,
+        shadowOpacity: 20,
+        shadowRadius: 5,
+        
+    },
+    cardText:{
+        fontSize: 20,
+        fontFamily: 'Arial',
+        fontWeight: 'bold',
+        padding: 5,
+        alignContent: 'center'
+    }
   });

@@ -1,13 +1,15 @@
 
-import React, {Component} from 'react';
-import {View, StyleSheet, ScrollView, Alert} from 'react-native';
-import {Appbar, FAB} from 'react-native-paper';
+import React, { Component } from 'react';
+import { View, StyleSheet, ScrollView, Alert, Platform } from 'react-native';
+import { Appbar, FAB } from 'react-native-paper';
 import { Card } from 'galio-framework';
+import { AppleHeader } from "@freakycoder/react-native-header-view";
 
 import firebase from "../../Firebase.js";
 import {fetchJournals, deleteJournal} from '../model/Journal.js';
 
 class PressOptions extends React.Component {
+    
     static defaultProps = {
       onPress: () => null,
       numberOfTouches: 1,
@@ -104,25 +106,38 @@ export default class JournalPage extends Component{
         return(today);
     }
 
+    getHeaderDate () {
+        var now = new Date();
+        var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+        var day = days[ now.getDay() ];
+        var month = months[ now.getMonth() ];
+
+        return (day + ', ' + month + ' ' + now.getDate()).toLocaleUpperCase()
+    }
+
     render() {
         let arr = this.state.journals;
         return (
             <View style={styles.container}>
-                <Appbar.Header>
-                    <Appbar.BackAction onPress={() => this.props.navigation.navigate('home')} />
-                    <Appbar.Content title="Journal" />
-                    <Appbar.Action icon="plus" onPress={() => this.props.navigation.navigate('addJournal', {
-                            title: '',
-                            note: '',
-                            editJournal: false,
-                            tripId: this.props.trip.id,
-                        })}
-                    />
-                </Appbar.Header>
+
+                {Platform.OS === 'ios' ? <AppleHeader
+                    dateTitle= {this.getHeaderDate()}
+                    largeTitle="Journal"
+                    imageSource= {require('../pin.png')}
+                    onPress={()=> this.props.navigation.navigate('home')}
+                    borderColor='#D5D8D8'
+                    backgroundColor='white'
+                /> : <Appbar.Header>
+                        <Appbar.BackAction onPress={() => this.props.navigation.navigate("home")} />
+                        <Appbar.Content title="Journal" />
+                    </Appbar.Header>
+                }
+
                 <ScrollView>
                     {arr.map((item) => {
-                        
-                        console.log(this.arrayToObjects(item.locations));
+
                         return (
                             <PressOptions 
                                 dbId = {item.id}
@@ -148,14 +163,26 @@ export default class JournalPage extends Component{
                                     title={item.title}
                                     caption={this.getDate()}
                                     location={item.locations[0]}
-                                    avatar="http://i.pravatar.cc/100?id=skater"
+                                    avatar={firebase.auth().currentUser.photoURL}
                                     imageStyle={styles.cardImageRadius}
-                                    image="https://images.unsplash.com/photo-1497802176320-541c8e8de98d?&w=1600&h=900&fit=crop&crop=entropy&q=300"
+                                    image={item.url[0]}
                                 >
                             </Card>
                         </PressOptions>);
                     })}
                 </ScrollView>
+
+                <FAB
+                    style={styles.fab}
+                    small
+                    icon="plus"
+                    onPress={() => this.props.navigation.navigate('addJournal', {
+                        title: '',
+                        note: '',
+                        editJournal: false,
+                        tripId: this.props.trip.id,
+                    })}
+                />
 
             </View>
         );
@@ -165,6 +192,8 @@ export default class JournalPage extends Component{
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        marginTop: 60,
+        //backgroundColor: '#dce1e6'
     },
     margin: {
         marginTop: 20,
@@ -176,5 +205,6 @@ const styles = StyleSheet.create({
         margin: 16,
         right: 0,
         bottom: 0,
+        backgroundColor: 'pink'
       }
 });

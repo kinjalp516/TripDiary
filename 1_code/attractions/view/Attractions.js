@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
+import { Appbar } from 'react-native-paper';
 import {addSavedItems, getSavedItems} from '../Model/Retrieve'
 import { Card, Title, Paragraph, Button } from 'react-native-paper'
 import {getSavedState} from '../Model/Retrieve';
@@ -33,6 +34,7 @@ export default class Attractions extends React.Component{
             a.saved = true;
             a.buttonText = 'Saved';
             addSavedItems(item);
+            a.storeAttraction();
           }
         });
 
@@ -51,7 +53,10 @@ export default class Attractions extends React.Component{
         
         return(
           <View>
-               
+              <Appbar.Header>
+                  <Appbar.BackAction onPress={() => this.props.navigation.goBack()} />
+                  <Appbar.Content title="Attractions" />
+              </Appbar.Header>
               <FlatList 
               keyExtractor={(item) => item.id}
               style={styles.listContainer}

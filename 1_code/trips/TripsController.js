@@ -12,6 +12,8 @@ import AddPinPage from '../map/AddPinPage';
 import AddBudgetItem from '../budget/view/AddBudgetItem';
 import BudgetPage from '../budget/view/BudgetPage';
 import Category from '../attractions/view/Category';
+import Attractions from '../attractions/view/Attractions';
+import SavedAttractions from '../attractions/view/SavedAttractions';
 
 const TripsController = createStackNavigator(
     {
@@ -24,7 +26,9 @@ const TripsController = createStackNavigator(
         addPin: AddPinPage,
         viewBudget: BudgetPage,
         addBudgetItem: AddBudgetItem,
-        category: Category
+        category: Category,
+        Items: Attractions,
+        Saved: SavedAttractions
     },
     {
         initialRouteName: 'home',

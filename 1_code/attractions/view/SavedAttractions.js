@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { Appbar } from 'react-native-paper';
 import { Card, Title, Paragraph, Button } from 'react-native-paper';
-import {getSavedItems, setSavedItems, setSavedState, getSavedState} from '../Model/Retrieve';
+import {getSavedItems, setSavedItems, setSavedState, getSavedState, fetchAttractions} from '../Model/Retrieve';
 
 //quick prototype still needs improvements
 export default class SavedAttractions extends React.Component {
@@ -18,7 +19,17 @@ export default class SavedAttractions extends React.Component {
     //Load in saved items from retrieve model
     componentDidMount(){
 
-      this.setState({attractions: getSavedItems()});
+      console.log('HERE:');
+      console.log(this.props.navigation.getParam('tripId'));
+
+      fetchAttractions(this.props.navigation.getParam('tripId')).then((attractions) => {
+        this.setState({ attractions })
+      });
+      this.props.navigation.addListener('didFocus', () => {
+        fetchAttractions(this.props.navigation.getParam('tripId')).then((attractions) => {
+          this.setState({ attractions })
+        });
+      });
       
     }
 
@@ -59,20 +70,28 @@ export default class SavedAttractions extends React.Component {
    
     render(){
         return(
+          <View>
+            <Appbar.Header>
+              <Appbar.BackAction onPress={() => this.props.navigation.goBack()} />
+              <Appbar.Content title="Saved Items" />
+            </Appbar.Header>
             <FlatList 
               keyExtractor={(item) => item.id}
               style={styles.listContainer}
               vertical
               showsVerticalScrollIndicator={false}
               data={this.state.attractions}
-                renderItem={ ({item}) => (
+                renderItem={ ({item}) => {
+                  console.log("ATRACTION:");
+                  console.log(item);
+                  return (
                     <TouchableOpacity onLongPress={() => this.alertHandler(item)}>
                         <Card style={styles.cardContainer}>
                           <Card.Title title={item.name}/>
                           <Card.Content>
                             <Title>{item.rating}</Title>
                             <Paragraph>
-                              Price: {item.price} | {' '} 
+                              Price: {item.price} | {' '}
                               Open: {item.opening_hours.open_now.toString()} | {' '}
                               Address: {item.address}
                             </Paragraph>
@@ -85,8 +104,9 @@ export default class SavedAttractions extends React.Component {
                         
                     </TouchableOpacity>
                        
-                )}
+                )}}
             />
+          </View>
         );
     }
 }
