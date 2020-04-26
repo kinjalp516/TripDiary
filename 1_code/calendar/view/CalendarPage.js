@@ -111,10 +111,8 @@ export default class CalendarPage extends React.Component{
           this.setState({selectedDay: {
               day: tempDate
           }});
-         // let timeStampStart = toTimestamp(day.year,(day.month - 1), day.day, 0, 0, 0);
-         // let timeStampEnd = toTimestamp(day.year, (day.month-1), day.day, 23,59,59);
 
-          this.fetchJournals(this.props.trip.id).then((journals) => this.setState({journals}));
+          this.fetchJournals(this.props.trip.id, day).then((journals) => this.setState({journals}));
 
 
           this.fetchPhotos(day).then(
@@ -127,12 +125,19 @@ export default class CalendarPage extends React.Component{
           
       }
 
-       async fetchJournals(tripId) {
+       async fetchJournals(tripId, day) {
+        let timeStampStart = toTimestamp(day.year,(day.month), day.day, 0, 0, 0);
+        let timeStampEnd = toTimestamp(day.year, (day.month), day.day, 23,59,59);
+        console.log(timeStampStart);
+        console.log(timeStampEnd);
         let query = firebase.firestore().collection("journals")
-        .where("tripId", "==", tripId);
+        .where("tripId", "==", this.props.trip.id)
+        .where('dateCreated','>', timeStampStart)
+        .where('dateCreated','<', timeStampEnd);
+
         let result = await query.get(); // This returns a result of type QuerySnapshot
         return result.docs.map(
-            (snapshot) => new Journal(snapshot.data(), true)   // Within each QuerySnapshot, there is an array of
+            (snapshot) => new Journal(snapshot.data())   // Within each QuerySnapshot, there is an array of
                                                                 // documents of type DocumentSnapshot. We are taking
                                                                 // these json objects from DocumentSnapshot and assigning
                                                                 // them to our Journals class so that we can use them easily
