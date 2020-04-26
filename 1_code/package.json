@@ -65,7 +65,6 @@
     "react-navigation-tabs": "^2.8.4",
     "react-open-weather": "^0.6.2",
     "react-native-svg": "9.13.3"
-    "react-navigation-tabs": "^2.8.4"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

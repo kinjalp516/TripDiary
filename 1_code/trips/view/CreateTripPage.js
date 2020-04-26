@@ -86,7 +86,6 @@ export default class CreateTripPage extends React.Component {
                         Select Start Date
                     </Button>
                     <Divider />
-                    {this.state.showStart && (
                     {this.state.showStart && !this.state.showEnd && (
                         <DateTimePicker
                             value={this.state.start ?? Date.now()}
