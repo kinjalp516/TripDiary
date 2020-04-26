@@ -1,10 +1,9 @@
 
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView, Alert, Platform, Dimensions } from 'react-native';
+import { View, StyleSheet, ScrollView, Alert, Platform } from 'react-native';
 import { Appbar, FAB } from 'react-native-paper';
 import { Card } from 'galio-framework';
 import { AppleHeader } from "@freakycoder/react-native-header-view";
-import {ContributionGraph} from "react-native-chart-kit";
 
 import firebase from "../../Firebase.js";
 import {fetchJournals, deleteJournal} from '../model/Journal.js';
@@ -67,8 +66,7 @@ class PressOptions extends React.Component {
 export default class JournalPage extends Component{
 
     state = {
-        journals: [],
-        count: null
+        journals: []
     }
 
     componentDidMount() {
@@ -98,6 +96,16 @@ export default class JournalPage extends Component{
         return locations;
     }
 
+    getDate () {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var yyyy = today.getFullYear();
+
+        today = mm + '/' + dd + '/' + yyyy;
+        return(today);
+    }
+
     getHeaderDate () {
         var now = new Date();
         var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -109,62 +117,8 @@ export default class JournalPage extends Component{
         return (day + ', ' + month + ' ' + now.getDate()).toLocaleUpperCase()
     }
 
-    async getDateAmount (date) {
-
-        var db = firebase.firestore().collection("journals").where("tripId", "==", this.props.trip.id).where("date", "==", date);
-        let count = await db.get().then(snap => {
-            return snap.size // will return the collection size
-        });
-        
-        //console.log(size);
-        return count;
-    }
-
-    getChartData () {
-        let arr = this.state.journals;
-
-        var data = arr.map((item) => {
-            return {date: item.date, count: this.getCount(item.date)}; 
-        })
-
-        return data;
-    }
-
-    getCount (date) {
-
-        var arr =  this.state.journals.filter(function(item) {
-            return item.date == date;
-        });
-
-        //console.log('hi' +arr.length);
-        return arr.length;
-    }
-
     render() {
-
-        //this.getDateAmount().then((count) => this.setState({count}));
-        const commitsData2 = this.getChartData();
-        //console.log(dateData);
-
-        const chartConfig = {
-            backgroundGradientFromOpacity: 0,
-            backgroundGradientToOpacity: 0.5,
-            color: (opacity = 1) => `rgba(57, 55, 121, ${opacity})`,
-            strokeWidth: 2, // optional, default 3
-            barPercentage: 0.5,
-            useShadowColorFromDataset: false // optional
-          };
-
-        const commitsData1 = [
-            { count: 0, date: "2020-01-02"}
-          ];
-
-        const commitsData = commitsData1.concat(commitsData2)
-
-          console.log(commitsData);
-
         let arr = this.state.journals;
-        
         return (
             <View style={styles.container}>
 
@@ -173,22 +127,13 @@ export default class JournalPage extends Component{
                     largeTitle="Journal"
                     imageSource= {require('../pin.png')}
                     onPress={()=> this.props.navigation.navigate('home')}
-                    //backgroundColor='white'
+                    borderColor='#D5D8D8'
+                    backgroundColor='white'
                 /> : <Appbar.Header>
                         <Appbar.BackAction onPress={() => this.props.navigation.navigate("home")} />
                         <Appbar.Content title="Journal" />
                     </Appbar.Header>
                 }
-
-                <ContributionGraph
-                    values={commitsData}
-                    startDate={new Date(this.props.trip.startDate)}
-                    numDays={100}
-                    width={Dimensions.get("window").width}
-                    height={220}
-                    chartConfig={chartConfig}
-                    onDayPress =  {(value) => console.log(value)}
-                />
 
                 <ScrollView>
                     {arr.map((item) => {
@@ -213,10 +158,10 @@ export default class JournalPage extends Component{
                             >
                                 <Card 
                                     flex
-                                    borderless
+                                    shadow
                                     style={styles.card, styles.margin}
                                     title={item.title}
-                                    caption={item.date}
+                                    caption={this.getDate()}
                                     location={item.locations[0]}
                                     avatar={firebase.auth().currentUser.photoURL}
                                     imageStyle={styles.cardImageRadius}
@@ -247,7 +192,7 @@ export default class JournalPage extends Component{
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 80,
+        marginTop: 60,
         //backgroundColor: '#dce1e6'
     },
     margin: {

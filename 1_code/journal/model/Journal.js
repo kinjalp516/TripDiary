@@ -32,7 +32,7 @@ export async function updateJournal(docId, newTitle, newNote, newLocations, newU
 }
 
 export class Journal {
-    constructor({id, tripId, userId, title, note, locations, url, date}, fromFirestore=false) {
+    constructor({id, tripId, userId, title, note, locations, url}, fromFirestore=false) {
         this.id = id;
         this.tripId = tripId;
         this.userId = userId;
@@ -40,7 +40,6 @@ export class Journal {
         this.note = note;
         this.locations = locations;
         this.url = url;
-        this.date = date;
     }
 
     toJSON() {
@@ -51,8 +50,7 @@ export class Journal {
             title: this.title,
             note: this.note,
             locations: this.locations,  
-            url: this.url,
-            date: this.date
+            url: this.url     
         }
     }
 

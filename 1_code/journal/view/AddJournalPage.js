@@ -81,8 +81,7 @@ export default class AddJournalPage extends Component{
                 title: title,
                 note: note,
                 locations: locations,
-                url: url,
-                date: this.journalDate()
+                url: url
             });
 
             await journal.storeJournal();
@@ -139,21 +138,11 @@ export default class AddJournalPage extends Component{
         this.handleAddition(locations);
       };
 
-    journalDate () {
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0');
-        var yyyy = today.getFullYear();
-
-        today = yyyy + '-' + mm + '-' + dd;
-        return(today);
-    }
-
     render() {
 
         return (
             //will allow keyboard to be dismissed + multiline text to be inputted in entries
-            
+
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                 <View style={[ styles.container, this.props.style ]}>
 
