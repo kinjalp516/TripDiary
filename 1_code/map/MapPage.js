@@ -1,3 +1,4 @@
+
 import React from 'react';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
@@ -38,7 +39,7 @@ export default class MapPage extends React.Component {
             let pins = attrToPin(attr);
             this.setState({numAutoPins: pins.length});
             this.setState({ pins });
-            this.map.fitToElements(false);
+            if (this.state.pins.length > 0) this.map.fitToElements(false);
 
             // fetch user pins from the database
             fetchPins(this.props.trip.id).then((userPins) => this.setState({ pins: this.state.pins.concat(userPins) }));
@@ -49,7 +50,7 @@ export default class MapPage extends React.Component {
                         let autoPins = attrToPin(attr1);
                         this.setState({numAutoPins: autoPins.length});
                         this.setState({pins: autoPins});
-                        this.map.fitToElements(false);
+                        if (this.state.pins.length > 0) this.map.fitToElements(false);
                         
                         fetchPins(this.props.trip.id).then((userPins) => this.setState({ pins: this.state.pins.concat(userPins) }));
                         fetchPhotos(this.props.trip.id).then((photos) => this.setState({ photos }));
@@ -91,12 +92,12 @@ export default class MapPage extends React.Component {
             'Would you like to delete this pin?',
             [
                 {text: 'Yes', onPress: () => {
-                    let userPins = this.userPins.pins;
+                    let pins = this.state.pins;
                     let coords = this.state.selectedMarker;
-                    this.setState({userPins: userPins.filter((currVal, index) => {
+                    this.setState({pins: pins.filter((currVal, index) => {
                         let isPinToDelete = currVal.coords.latitude === coords.latitude && 
                             currVal.coords.longitude === coords.longitude;
-                        if (isPinToDelete) firebase.firestore().collection("pins").doc(userPins[index].id).delete();
+                        if (isPinToDelete) firebase.firestore().collection("pins").doc(pins[index].id).delete();
                         return !isPinToDelete;
                     })});
                 }},
@@ -178,7 +179,7 @@ export default class MapPage extends React.Component {
                                 longitude: this.state.mapRegion.longitude
                             },
                             trip: this.props.trip,
-                            pins: this.state.userPins
+                            pins: this.state.pins
                         })}
                     />
                 }
