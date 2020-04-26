@@ -2,7 +2,6 @@ import firebase from '../../Firebase.js';
 
 export async function fetchPhotos(tripId) {
     let query = firebase.firestore().collection("photos").where("tripId", "==", tripId);
-        // .orderBy("dateTaken", "asc");   // Returns the result from earliest date to latest date. 
     let result = await query.get();
     return result.docs.map(
         (snapshot) => new Photo(snapshot.data())
@@ -10,23 +9,31 @@ export async function fetchPhotos(tripId) {
 }
 
 export class Photo {
-    constructor({id, photoUrl, tripId, userId, location, dateTaken}) {
+    constructor({id, deviceId, uri, tripId, userId, location, city, state, creationTime, tags}) {
         this.id = id;
-        this.photoUrl = photoUrl;
+        this.deviceId = deviceId;
+        this.uri = uri;
         this.tripId = tripId;
         this.userId = userId;
         this.location = location;
-        this.dateTaken = dateTaken;
+        this.city = city;
+        this.state = state;
+        this.creationTime = creationTime;
+        this.tags = tags;
     }
 
     toJSON() {
         return {
             id: this.id,
-            photoUrl: this.photoUrl,
+            deviceId: this.deviceId,
+            uri: this.uri,
             tripId: this.tripId,
             userId: this.userId,
             location: this.location,
-            dateTaken: this.dateTaken
+            city: this.city,
+            state: this.state,
+            creationTime: this.creationTime,
+            tags: this.tags
         };
     }
 
