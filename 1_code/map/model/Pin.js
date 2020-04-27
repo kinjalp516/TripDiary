@@ -8,6 +8,19 @@ export async function fetchPins(tripId) {
     );
 }
 
+export function attrToPin(arr) {
+
+    return arr.map((attr) => new Pin({
+        id: attr.id,
+        tripId: attr.tripId,
+        userId: firebase.auth().currentUser.uid,
+        coords: attr.coords,
+        title: attr.name,
+        description: `This attraction has a rating of ${attr.rating}`,
+        photoUrl: attr.photoRef
+    }));
+}
+
 export class Pin {
     constructor({id, tripId, userId, coords, title, description, photoUrl}) {
         this.id = id;
