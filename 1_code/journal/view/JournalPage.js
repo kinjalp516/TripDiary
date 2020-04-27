@@ -3,10 +3,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView, Alert, Platform, Dimensions } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import { Card } from 'galio-framework';
-<<<<<<< HEAD
-//import { AppleHeader } from "@freakycoder/react-native-header-view";
-=======
->>>>>>> be866fb961acd3eb4f923a094b5b1a7d788f3f4e
+import { AppleHeader } from "@freakycoder/react-native-header-view";
 import {ContributionGraph} from "react-native-chart-kit";
 
 import firebase from "../../Firebase.js";
