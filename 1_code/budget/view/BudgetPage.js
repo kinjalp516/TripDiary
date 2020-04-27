@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { Appbar, Card, FAB } from 'react-native-paper';
 import firebase from '../../Firebase.js';
 import {fetchBudgetItems} from '../model/BudgetItem.js';
@@ -9,9 +9,10 @@ import { fetchBudget } from '../model/Budget.js';
 export default class BudgetPage extends React.Component{
     state = {
         budgetitems: [],
-        budget: 0,
-        perDay: 0,
-        showButton: true
+        budget: '',
+        perDay: '',
+        showBudgetButton: true,
+        showItemButton: false
     }
 
     
@@ -34,17 +35,29 @@ export default class BudgetPage extends React.Component{
     }
 
     async checkBudgetPerDay(){
-        //startDate = Date.now();
-        //endDate = trip.state.endDate;
-        //diff = endDate.toTime() - startDate.toTime();
-        //days = Math.floor(diff/(1000 * 60 * 60 * 24));
-        //x = this.state.budget/days;
-        //this.setState({perDay: x})
+        startDate = Date.now();
+        endDate = trip.state.endDate;
+        diff = endDate.toTime() - startDate.toTime();
+        days = Math.floor(diff/(1000 * 60 * 60 * 24));
+        x = this.state.budget/days;
+        this.setState({perDay: x})
     }
 
     async checkBudgetItem(){
-        this.props.navigation.navigate('addBudgetItem')
-        //this.setState({showButton: false})
+        this.props.navigation.navigate('addBudgetItem');
+        if (this.budgetitems[budgetitems.length-1] > 0){
+            this.setState({budget: budget - budgetitems[budgetitems.length-1]})
+        }
+
+        //need to keep track of date of purchase in budget item, need to adjust spending per day based on that
+    }
+
+    async checkBudget(){
+        this.props.navigation.navigate('addBudget')
+        if (!isNaN(this.state.budget)){
+            this.setState({showBudgetButton: false});
+            this.setState({showItemButton: true});
+        }
     }
 
     render(){
@@ -57,32 +70,54 @@ export default class BudgetPage extends React.Component{
                         subtitle= {this.state.budget} 
                     />
                 </Appbar.Header>
-
                 
                     { this.state.budgetitems.map((item, index) => {
                         return (<Card 
-                            key={`budgetitems-${index}`} style={styles.budgetCard}
-                            //goes to wherever you want after you press on the card, rn its set to null
+                            key={`budgetitems-${index}`} 
+                            style={styles.budgetCard}
+                            //needs to go to add budget item screen to edit budget items
                             onPress={() => null}
+
                         >
                             <Card.Title 
                                 title = {item.amount}
                                 subtitle={item.type}
-                                //you can add a subtitle if you'd like, but as of now there's only 1 thing to display
-
                             />
                         </Card>);
                     }) }
+                
+                {this.state.showItemButton &&
+                    <Text style={styles.budgetAndDay}>
+                        My Budget: {this.state.budget}
+                    </Text>
+                }
+
+                {this.state.showItemButton &&
+                    <Text style={styles.budgetAndDay}>
+                        Spending Goals: {this.state.perDay} /Day
+                    </Text>
+                }
             
-                { this.state.showButton && 
+                { this.state.showBudgetButton && 
+  
+                <FAB
+                    style={styles.fab}
+                    label = "Create New Budget"
+                    onPress={() => this.checkBudget()}
+                    
+                />
+                
+                }
+
+                { this.state.showItemButton && 
   
                 <FAB
                     style={styles.fab}
                     label = "Add New Purchase"
                     onPress={() => this.checkBudgetItem()}
-                    
+      
                 />
-                
+  
                 }
 
             </View>
@@ -96,10 +131,16 @@ const styles = StyleSheet.create({
     },
 
     budgetCard: {
-        marginTop: 24,
+        marginTop: 40,
         marginLeft: 24,
         marginRight: 24,
         backgroundColor: '#A4D7DF',
+    },
+
+    budgetAndDay: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        alignSelf: 'center',
     },
 
     fab: {

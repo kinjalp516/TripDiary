@@ -72,7 +72,7 @@ export default class AddBudgetItem extends React.Component{
             <View style={styles.container}>
                 <Appbar.Header>
                     <Appbar.BackAction onPress ={this.viewBudget} />
-                    <Appbar.Content title="Add New Budget"/>
+                    <Appbar.Content title="Log Finance"/>
                     <Appbar.Action icon="check" onPress = {this.createBudgetItem} />
                 </Appbar.Header>
 

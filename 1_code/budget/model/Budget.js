@@ -21,7 +21,6 @@ export class Budget{
         this.userId = userId;
         this.tripId = tripId;
         this.amount = amount;
-        //this.perDay = tripId
     }
 
     toJSON() {
