@@ -198,7 +198,6 @@ export default class JournalPage extends Component{
                         });
 
                         this.setState({journals: arr});
-                        //console.log(arr);
                     }
                     }
                 />
@@ -233,7 +232,7 @@ export default class JournalPage extends Component{
                                     location={item.locations[0]}
                                     avatar={firebase.auth().currentUser.photoURL}
                                     imageStyle={styles.cardImageRadius}
-                                    image={item.url[0]}
+                                    image={item.url}
                                 >
                             </Card>
                         </PressOptions>);

@@ -120,15 +120,37 @@ export default class AddJournalPage extends Component{
 
     extractUrl = (locations) => {
         
-        var url = this.state.pinsObjects.map(function(value){
-                if (locations.includes(value.title)) {
-                    return value.photoUrl;
-                } else {
-                    return 'https://images.unsplash.com/photo-1497802176320-541c8e8de98d?&w=1600&h=900&fit=crop&crop=entropy&q=300'
-                }
+        var url1 = this.state.pinsObjects.map(function(value){
+            if (locations.includes(value.title)) {
+                return value.photoUrl;
+            }
         })
 
-        return url;
+        console.log(url1);
+
+        var url2 = this.state.attractionsObjects.map(function(value){
+            if (locations.includes(value.name)) {
+                return value.photoRef;
+            }
+        })
+
+        for (var i = 0; i < url2.length; i++) {
+            if (url2[i] != undefined && url2[i].length > 0) {
+                url2[0] = url2[i];
+            }
+        }
+
+        if (url1 === null) {
+            console.log('1');
+            return url2[0];
+        } else if (url2 === null) {
+            console.log('2');
+            return url1[0];
+        } else {
+            console.log('3');
+            return 'https://images.unsplash.com/photo-1497802176320-541c8e8de98d?&w=1600&h=900&fit=crop&crop=entropy&q=300';
+        }
+        
     }
 
     onCustomTagCreated = userInput => {
