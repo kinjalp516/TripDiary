@@ -39,7 +39,7 @@ export default class MapPage extends React.Component {
             let pins = attrToPin(attr);
             this.setState({numAutoPins: pins.length});
             this.setState({ pins });
-            if (this.state.pins.length > 0) this.map.fitToElements(false);
+            this.map.fitToElements(false);
 
             // fetch user pins from the database
             fetchPins(this.props.trip.id).then((userPins) => this.setState({ pins: this.state.pins.concat(userPins) }));
@@ -50,7 +50,7 @@ export default class MapPage extends React.Component {
                         let autoPins = attrToPin(attr1);
                         this.setState({numAutoPins: autoPins.length});
                         this.setState({pins: autoPins});
-                        if (this.state.pins.length > 0) this.map.fitToElements(false);
+                        this.map.fitToElements(false);
                         
                         fetchPins(this.props.trip.id).then((userPins) => this.setState({ pins: this.state.pins.concat(userPins) }));
                         fetchPhotos(this.props.trip.id).then((photos) => this.setState({ photos }));
@@ -123,7 +123,7 @@ export default class MapPage extends React.Component {
                         </View> :
                         <MapView
                             style={styles.mapStyle}
-                            region={this.state.mapRegion}
+                            //region={this.state.mapRegion}
                             ref={ref => this.map = ref}
                             onPress={(coords) => this.setState({ mapRegion: {
                                 latitude: coords.nativeEvent.coordinate.latitude,

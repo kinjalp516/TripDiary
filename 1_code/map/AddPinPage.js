@@ -46,7 +46,7 @@ export default class AddPinPage extends React.Component {
         for (let i = 0; i < photos.length; i++) {
             let coords = photos[i].location;
             let distance = getDistance(this.state.coords, coords);
-            let photoUrl = photos[i].photoUrl;
+            let photoUrl = photos[i].uri;
             if (distance < 5) {
                 return photoUrl;
             } 

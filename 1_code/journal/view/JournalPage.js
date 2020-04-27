@@ -1,9 +1,7 @@
-
 import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView, Alert, Platform, Dimensions } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import { Card } from 'galio-framework';
-import { AppleHeader } from "@freakycoder/react-native-header-view";
 import {ContributionGraph} from "react-native-chart-kit";
 
 import firebase from "../../Firebase.js";
@@ -184,7 +182,6 @@ export default class JournalPage extends Component{
                                 })}
                         />
                     </Appbar.Header>
-
                 
 
                 <ContributionGraph
@@ -200,14 +197,13 @@ export default class JournalPage extends Component{
                         });
 
                         this.setState({journals: arr});
-                        //console.log(arr);
                     }
                     }
                 />
 
                 <ScrollView>
                     {arr.map((item) => {
-
+                        console.log(item.url);
                         return (
                             <PressOptions 
                                 dbId = {item.id}
@@ -235,7 +231,7 @@ export default class JournalPage extends Component{
                                     location={item.locations[0]}
                                     avatar={firebase.auth().currentUser.photoURL}
                                     imageStyle={styles.cardImageRadius}
-                                    image={item.url[0]}
+                                    image={item.url}
                                 >
                             </Card>
                         </PressOptions>);
