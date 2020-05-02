@@ -24,10 +24,10 @@ export default class CalendarPage extends React.Component{
 
     state ={
         tripID : this.props.trip.id,
-        startDay: this.props.trip.startDate,
-        endDay: this.props.trip.endDate,
+        startDay: new Date(this.props.trip.startDate),
+        endDay: new Date(this.props.trip.endDate),
         selectedDay:{
-         day: this.props.trip.startDate,
+         day: new Date(this.props.trip.startDate),
          selected: true
         },
         options : { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' },
@@ -100,13 +100,13 @@ export default class CalendarPage extends React.Component{
           this.setState({selectedDay: {
               day: tempDate
           }});
-          let timeStampStart = toTimestamp(day.year,(day.month - 1), day.day, 0, 0, 0);
-          let timeStampEnd = toTimestamp(day.year, (day.month-1), day.day, 23,59,59);
+          let timeStampStart = toTimestamp(day.year,(day.month), day.day, 0, 0, 0);
+          let timeStampEnd = toTimestamp(day.year, (day.month), day.day, 23,59,59);
 
-          this.fetchJournals(this.props.trip.id).then((journals) => this.setState({journals}));
+          this.fetchJournals(timeStampStart/1000,timeStampEnd/1000).then((journals) => this.setState({journals}));
 
 
-          this.fetchPhotos(day).then(
+          this.fetchPhotos(timeStampStart,timeStampEnd).then(
             (photos) => {
               this.setState({ photos: photos, loading: false })
             }
@@ -116,9 +116,13 @@ export default class CalendarPage extends React.Component{
           
       }
 
-       async fetchJournals(tripId) {
+       async fetchJournals(timeStampStart,timeStampEnd) {
+
         let query = firebase.firestore().collection("journals")
-        .where("tripId", "==", tripId);
+        .where('tripId', '==', this.props.trip.id)
+        .where('dateCreated', '>', timeStampStart)
+        .where('dateCreated', '<', timeStampEnd);
+
         let result = await query.get(); // This returns a result of type QuerySnapshot
         return result.docs.map(
             (snapshot) => new Journal(snapshot.data(), true)   // Within each QuerySnapshot, there is an array of
@@ -128,13 +132,13 @@ export default class CalendarPage extends React.Component{
                                                                 // in other components.
         );
     }
-      async fetchPhotos(day){
-          //timestamps for start and end of day
-        let timeStampStart = toTimestamp(day.year,(day.month), day.day, 0, 0, 0);
-        let timeStampEnd = toTimestamp(day.year, (day.month), day.day, 23,59,59);
+      async fetchPhotos(timeStampStart, timeStampEnd){
 
+
+       /* debugging
         console.log("Date 1: ", timeStampStart);
         console.log("Date2: ", timeStampEnd);
+        */
         //fetch photos  from database
         let query = firebase.firestore().collection("photos")
         .where('tripId','==', this.props.trip.id)
@@ -165,15 +169,15 @@ export default class CalendarPage extends React.Component{
             <ScrollView>
             <CalendarList
                 //recieves start and end date for calendar from trip object
-                minDate={this.props.trip.startDate}
-                maxDate={this.props.trip.endDate}
-                current={this.props.trip.startDate}
+                minDate={this.state.startDay}
+                maxDate={this.state.endDay}
+                current={this.state.startDay}
                 hideExtraDays={true}
                 pagingEnabled={true}
                 pastScrollRange={0}
                 horizontal={true}
                 //sets scroll range to selected months
-                futureScrollRange={(this.props.trip.endDate.getMonth()-this.props.trip.startDate.getMonth())}
+                futureScrollRange={(this.state.endDay.getMonth()-this.state.startDay.getMonth())}
                 markedDates={
                     {[this.state.selectedDay.day.toISOString().slice(0,10)]: { selected: true },
                     }}
@@ -207,39 +211,33 @@ export default class CalendarPage extends React.Component{
                 />
             </Card>
             
-            <Card>
+            <Card style={styles.card, {backgroundColor: 'mediumslateblue'}}>
                 <Card.Title
                     title = "Photos"
                    // subtitle = "[# of photos]"
                     //left={(props) => <Avatar rounded reverse size="small" icon= "md-photos" onPress={() => console.log("This will bring you to all photos for this day!")}/>} 
                 />
-                <Card.Content>
-                    <View style={{flex: 1, flexDirection: 'row'}}>
-                        <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
-                        <View style={{width: 50, height: 50, backgroundColor: 'skyblue'}} />
-                        <View style={{width: 50, height: 50, backgroundColor: 'steelblue'}} />
-                    </View>
-                </Card.Content>
             </Card>
             {this.state.photos.map((item) => {
                 return( 
                     console.log(item),
-                    <View style={styles.photoComp}>
+                    <View style={styles.card}>
                         <CachedImage
                           style={styles.photo} 
-                          source={{ uri: item.photoUrl }} 
+                          source={{ uri: item.uri }} 
                         />
                     </View>
                 );
             })
             }
-            <Card>
+            <Card style={styles.card, {backgroundColor: 'mediumslateblue'}}>
                 <Card.Title
                     title = "Journals"
                 />
             </Card>
             {this.state.journals.map((item) => {
                 return(
+                    console.log(item),
                     <Card style={styles.card}>
                         <Card.Title title = {item.title} />
                         <Card.Content>
@@ -251,12 +249,7 @@ export default class CalendarPage extends React.Component{
                 );})
 
             }
-            <Card>
-                <Card.Title
-                    title = "Budget"
-                />
-            </Card>
-            <Card>
+            <Card style={styles.card, {backgroundColor: 'mediumslateblue'}}>
                 <Card.Title
                     title = "Attractions"
                 />
@@ -279,7 +272,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 20,
         shadowRadius: 5,
         marginHorizontal:10,
-        marginVertical: 5
+        marginVertical: 5,
         
     },
     cardText:{
@@ -300,5 +293,5 @@ const styles = StyleSheet.create({
 
   function toTimestamp(year,month,day,hour,minute,second){
     var datum = new Date(Date.UTC(year,month-1,day,hour,minute,second));
-    return datum.getTime()/1000;
+    return datum.getTime();
    }

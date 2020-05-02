@@ -82,7 +82,8 @@ export default class AddJournalPage extends Component{
                 note: note,
                 locations: locations,
                 url: url,
-                date: this.journalDate()
+                date: this.journalDate(),
+                dateCreated: Math.round(new Date(Date.now()).getTime()/1000)
             });
 
             await journal.storeJournal();
