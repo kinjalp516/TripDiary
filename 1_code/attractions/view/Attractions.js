@@ -1,26 +1,30 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
-import { Appbar } from 'react-native-paper';
-import {addSavedItems, getSavedItems} from '../Model/Retrieve'
+import { Appbar, Chip } from 'react-native-paper';
+import {addSavedItems, getSavedItems, getDetails} from '../Model/Retrieve'
 import { Card, Title, Paragraph, Button } from 'react-native-paper'
 import {getSavedState} from '../Model/Retrieve';
+import { StackNavigator } from 'react-navigation';
+import InformationWindow from './InformationWindow';
 
 export default class Attractions extends React.Component{
 
     constructor(props){
         super(props);
-
+      
         this.state = { 
           attractions: [
           
-          ]
+          ],
+          
+          sortP: 0,
+
+          sortR: 0
           
       };
     }
     componentDidMount(){
-
       this.setState({attractions: getSavedState()});
-     
     }
 
     //change 'saved' field upon clicking 'save', send item to SavedAttractions
@@ -33,7 +37,7 @@ export default class Attractions extends React.Component{
           if(a.id === item.id){
             a.saved = true;
             a.buttonText = 'Saved';
-            addSavedItems(item);
+            addSavedItems(item); 
             a.storeAttraction();
           }
         });
@@ -49,6 +53,110 @@ export default class Attractions extends React.Component{
     return getSavedItems();
   }
 
+  sortPrice = () => {
+    var state = this.state.attractions;
+    var filteredPrice = state.filter(a => a.price !== "N/A");
+    var noPrice = state.filter(a => a.price == "N/A");
+  if(this.state.sortP == 0){
+    filteredPrice.sort(this.priceCompare);
+    this.setState({sortP: 1});
+  } else {
+    filteredPrice.sort(this.revPriceCompare);  
+    this.setState({sortP: 0});
+  }
+    noPrice.map(a => filteredPrice.push(a));
+    this.setState({attractions: filteredPrice});
+  }
+
+  sortRating = () => {
+    var state = this.state.attractions;
+    if(this.state.sortR == 0){
+      state.sort(this.ratingCompare);
+      this.setState({sortR: 1});
+    } else {
+      state.sort(this.revRatingCompare);  
+      this.setState({sortR: 0});
+    }
+    this.setState({attractions: state});
+  }
+
+  priceCompare = (a,b) => {
+    var p1 = a.price;
+    var p2 = b.price;
+    let comparison = 0;
+    if(p1>p2){
+      comparison=1;
+    } else if(p1 < p2){
+      comparison=-1;
+    } 
+    return comparison;
+  }
+  revPriceCompare = (a,b) => {
+    var p1 = a.price;
+    var p2 = b.price;
+    let comparison = 0;
+    if(p1>p2){
+      comparison=1;
+    } else if(p1 < p2){
+      comparison=-1;
+    } 
+    return -comparison;
+  }
+  ratingCompare = (a,b) => {
+    var p1 = a.rating;
+    var p2 = b.rating;
+    let comparison = 0;
+    if(p1>p2){
+      comparison=1;
+    } else if(p1 < p2){
+      comparison=-1;
+    } 
+    return comparison;
+  }
+  revRatingCompare = (a,b) => {
+
+    var p1 = a.rating;
+    var p2 = b.rating;
+    let comparison = 0;
+    if(p1>p2){
+      comparison=1;
+    } else if(p1 < p2){
+      comparison=-1;
+    } 
+    return -comparison;
+
+  }
+
+  convertToDollars = (price) =>{
+    var temp; 
+    switch(price) {
+      case 1:
+        temp = "$";
+        break;
+      case 2:
+        temp = "$$"; 
+        break;
+      case 3:
+        temp = "$$$";
+        break;
+      case 4:
+        temp = "$$$$";
+        break;
+      case 5:
+        temp = "$$$$$";
+        break;
+      default: temp="N/A";
+  }
+      return temp;
+}
+
+toInformationWindow = (item) => {
+
+  console.log("Im Trying Here");
+  this.props.navigation.navigate('Info', {Details: getDetails(item.id), name: item.name, price: item.price, rating: item.rating, address: item.address, id:item.id});
+
+}
+
     render(){ 
         
         return(
@@ -57,6 +165,9 @@ export default class Attractions extends React.Component{
                   <Appbar.BackAction onPress={() => this.props.navigation.goBack()} />
                   <Appbar.Content title="Attractions" />
               </Appbar.Header>
+
+              <Chip mode="flat" icon="cash-multiple" style={styles.chip} selectedColor='#3498db' onPress={this.sortPrice}>Price</Chip>
+              <Chip mode="flat" icon="heart-box" style={styles.chip} selectedColor='#3498db' onPress={this.sortRating}>Rating</Chip>
               <FlatList 
               keyExtractor={(item) => item.id}
               style={styles.listContainer}
@@ -64,14 +175,13 @@ export default class Attractions extends React.Component{
               showsVerticalScrollIndicator={false}
               data={this.state.attractions}
                 renderItem={ ({item}) => (
-                    <TouchableOpacity onPress={() => console.log(item.id)}>
-                    
+                  <TouchableOpacity onPress={() => this.props.navigation.navigate('Info', {Details: getDetails(item.id), name: item.name, price: item.price, rating: item.rating, address: item.address, id:item.id})}> 
                         <Card style={styles.cardContainer}>
                           <Card.Title title={item.name}/>
                           <Card.Content>
                             <Title>{item.rating}</Title>
                             <Paragraph>
-                              Price: {item.price} | {' '} 
+                              Price: {this.convertToDollars(item.price)} | {' '} 
                               Open: {item.opening_hours.open_now.toString()} | {' '}
                               Address: {item.address}
                             

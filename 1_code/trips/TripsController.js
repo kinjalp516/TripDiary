@@ -15,6 +15,7 @@ import Category from '../attractions/view/Category';
 import Attractions from '../attractions/view/Attractions';
 import SavedAttractions from '../attractions/view/SavedAttractions';
 import AddBudget from '../budget/view/AddBudget';
+import InformationWindow from '../attractions/view/InformationWindow';
 
 const TripsController = createStackNavigator(
     {
@@ -30,7 +31,8 @@ const TripsController = createStackNavigator(
         addBudget: AddBudget,
         category: Category,
         Items: Attractions,
-        Saved: SavedAttractions
+        Saved: SavedAttractions,
+        Info: InformationWindow
     },
     {
         initialRouteName: 'home',

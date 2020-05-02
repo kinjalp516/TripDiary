@@ -2,9 +2,7 @@ import React from 'react';
 import { StyleSheet, View, FlatList, TouchableOpacity, Button } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import CategoryCard from './CategoryCard';
-import {getInformation, setSavedState} from '../Model/Retrieve';
-
-import firebase from '../../Firebase.js'; 
+import {getInformation, setSavedState, getSavedState, setSavedItems} from '../Model/Retrieve';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
@@ -12,26 +10,25 @@ export default class Category extends React.Component{
 
   constructor(props){
     super(props);
+  
     this.state= {categories: [
         {name: 'Restaurants', key: '1'},
         {name: 'Museums', key: '2'},
         {name: 'Parks', key: '3'},
         {name: 'Bars', key: '4'},
-      ]};
+        ],
+        attractions: [
+
+        ]
+      };
   }
 
   componentDidMount(){
 
     console.log("dollars burning");
-    console.log(this.props.trip);
-
     this.getLocation().then(loc => getInformation(loc, this.props.trip.id).then((item) => setSavedState(item)));
-
-  //   getInformation().then((item) => {
-
-  //     setSavedState(item);
-      
-  // })
+   
+  
   }
 
   async getLocation() {
@@ -44,8 +41,31 @@ export default class Category extends React.Component{
   }
 
   pressHandler = () => {
-
+    
     this.props.navigation.navigate('Items');
+    
+  }
+
+  deleteHandler = (item) => {
+    var currentItemsArr = this.state.attractions;
+
+    var filteredArr = currentItemsArr.filter(a => a.id != item.id);
+
+    var currentStateArr = getSavedState();
+
+    currentStateArr.map((a) => {
+
+      if(a.id === item.id){
+        a.saved = false;
+        a.buttonText = 'Save';
+      }
+
+    });
+
+    this.setState({attractions: filteredArr});
+    setSavedState(currentStateArr);
+    setSavedItems(filteredArr);
+
   }
 
   toSavedAttractions= () => {
