@@ -79,8 +79,8 @@ export default class MapPage extends React.Component {
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421
         };
-        this.setState({ initialRegion });
-        this.setState({ locationResult: JSON.stringify(location) });
+        //this.setState({ initialRegion });
+        //this.setState({ locationResult: JSON.stringify(location) });
 
         // center the map on the location that we just received
         this.setState({mapRegion: initialRegion});
