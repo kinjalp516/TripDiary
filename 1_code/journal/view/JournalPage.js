@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView, Alert, Platform, Dimensions } from 'react-native';
-import { Appbar } from 'react-native-paper';
-import { Card } from 'galio-framework';
+import { Appbar, Card, Paragraph } from 'react-native-paper';
+//import { Card } from 'galio-framework';
 import {ContributionGraph} from "react-native-chart-kit";
 
 import firebase from "../../Firebase.js";
@@ -222,18 +222,29 @@ export default class JournalPage extends Component{
                                 })
                                 })}
                             >
-                                <Card 
-                                    flex
-                                    borderless
-                                    style={styles.card, styles.margin}
+                            <Card style={styles.margin}>
+                                <Card.Cover source={{ uri: item.url }} />
+                                <Card.Title 
                                     title={item.title}
-                                    caption={item.date}
-                                    location={item.locations[0]}
-                                    avatar={firebase.auth().currentUser.photoURL}
-                                    imageStyle={styles.cardImageRadius}
-                                    image={item.url}
-                                >
+                                    subtitle={item.date}
+                                />
+                                <Card.Content>
+                                    <Paragraph>{item.locations[0]}</Paragraph>
+                                </Card.Content>
                             </Card>
+                            
+                            {/*<Card 
+                                flex
+                                borderless
+                                style={styles.card, styles.margin}
+                                title={item.title}
+                                caption={item.date}
+                                location={item.locations[0]}
+                                avatar={firebase.auth().currentUser.photoURL}
+                                imageStyle={styles.cardImageRadius}
+                                image={item.url}
+                            >
+                            </Card>*/}
                         </PressOptions>);
                     })}
                 </ScrollView>
@@ -259,5 +270,5 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         backgroundColor: 'pink'
-      }
+      },
 });
