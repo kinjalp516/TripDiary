@@ -50,7 +50,6 @@ export default class MapPage extends React.Component {
                         let autoPins = attrToPin(attr1);
                         this.setState({numAutoPins: autoPins.length});
                         this.setState({pins: autoPins});
-                        this.map.fitToElements(false);
                         
                         fetchPins(this.props.trip.id).then((userPins) => this.setState({ pins: this.state.pins.concat(userPins) }));
                         fetchPhotos(this.props.trip.id).then((photos) => this.setState({ photos }));
