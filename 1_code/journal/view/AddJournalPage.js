@@ -7,7 +7,11 @@ import {fetchPins} from "../../map/model/Pin"
 import {fetchAttractions} from "../../attractions/Model/Retrieve"
 import {Journal, updateJournal} from '../model/Journal.js';
 import AutoTags from '../AutoComplete.js';
-  
+
+// written by: Kinjal Patel
+// tested by: Sam Zahner
+// debugged by: Kinjal Patel
+
 export default class AddJournalPage extends Component{
     
     constructor (props) {
@@ -121,32 +125,50 @@ export default class AddJournalPage extends Component{
 
     extractUrl = (locations) => {
         
+<<<<<<< HEAD
         var url1 = this.state.pinsObjects.filter(function(value){
-            console.log("PHTOURL");
-            console.log(value);
             return (locations.includes(value.title) && value.photoUrl != null);
         }).map(pin => pin.photoUrl);
-
-        console.log(url1);
 
         var url2 = this.state.attractionsObjects.filter(function(value){
             return locations.includes(value.name);
         }).map(attr => attr.photoRef);
 
-        // for (var i = 0; i < url2.length; i++) {
-        //     if (url2[i] != undefined && url2[i].length > 0) {
-        //         url2[0] = url2[i];
-        //     }
-        // }
-
         if (url1.length > 0) {
-            console.log('1');
             return url1[0];
         } else if (url2.length > 0) {
-            console.log('2');
             return url2[0];
         } else {
+=======
+        var url1 = this.state.pinsObjects.map(function(value){
+            if (locations.includes(value.title)) {
+                return value.photoUrl;
+            }
+        })
+
+        console.log(url1);
+
+        var url2 = this.state.attractionsObjects.map(function(value){
+            if (locations.includes(value.name)) {
+                return value.photoRef;
+            }
+        })
+
+        for (var i = 0; i < url2.length; i++) {
+            if (url2[i] != undefined && url2[i].length > 0) {
+                url2[0] = url2[i];
+            }
+        }
+
+        if (url1 === null) {
+            console.log('1');
+            return url2[0];
+        } else if (url2 === null) {
+            console.log('2');
+            return url1[0];
+        } else {
             console.log('3');
+>>>>>>> d1c370e9c1efb847aedf0a55de4e6f0a9e5c0844
             return 'https://images.unsplash.com/photo-1497802176320-541c8e8de98d?&w=1600&h=900&fit=crop&crop=entropy&q=300';
         }
         
@@ -216,7 +238,6 @@ export default class AddJournalPage extends Component{
                         <AutoTags
                             suggestions={this.extractTitle()}
                             tagsSelected={this.state.tagsSelected}
-                            //placeholder="Add a Location Tag"
                             handleAddition={this.handleAddition}
                             handleDelete={this.handleDelete}
                             onCustomTagCreated={this.onCustomTagCreated}
@@ -246,7 +267,6 @@ export default class AddJournalPage extends Component{
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-
     },
     label: {
         marginLeft: 15,

@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView, Alert, Platform, Dimensions } from 'react-native';
+import { View, StyleSheet, ScrollView, Alert, Text, Dimensions } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import { Card } from 'galio-framework';
 import {ContributionGraph} from "react-native-chart-kit";
 
 import firebase from "../../Firebase.js";
 import {fetchJournals, deleteJournal} from '../model/Journal.js';
+
+// written by: Kinjal Patel
+// tested by: Sam Zahner
+// debugged by: Kinjal Patel
 
 class PressOptions extends React.Component {
     
@@ -117,7 +121,6 @@ export default class JournalPage extends Component{
             return snap.size // will return the collection size
         });
         
-        //console.log(size);
         return count;
     }
 
@@ -142,10 +145,6 @@ export default class JournalPage extends Component{
 
     render() {
 
-        //this.getDateAmount().then((count) => this.setState({count}));
-        const commitsData2 = this.getChartData();
-        //console.log(dateData);
-
         const chartConfig = {
             backgroundGradientFromOpacity: 0,
             backgroundGradientToOpacity: 0.5,
@@ -155,20 +154,16 @@ export default class JournalPage extends Component{
             useShadowColorFromDataset: false // optional
           };
 
+        //grabbing chart data
         const commitsData1 = [
-            { count: 0, date: "2020-01-02"}
-          ];
-
+            { count: 0, date: "2020-01-02"},
+        ];
+        const commitsData2 = this.getChartData();
         const commitsData = commitsData1.concat(commitsData2)
-
-          //console.log(commitsData);
-
         let arr = this.state.journals;
         
         return (
             <View style={styles.container}>
-
-                
 
                 <Appbar.Header>
                         <Appbar.BackAction onPress={() => this.props.navigation.navigate("home")} />
@@ -201,9 +196,15 @@ export default class JournalPage extends Component{
                     }
                 />
 
+                <Text 
+                    style={styles.text} 
+                    onPress = {() => this.setState({journals: this.state.journalsOrig})}
+                >
+                    All Journals
+                </Text>
+
                 <ScrollView>
                     {arr.map((item) => {
-                        console.log(item.url);
                         return (
                             <PressOptions 
                                 dbId = {item.id}
@@ -216,7 +217,7 @@ export default class JournalPage extends Component{
                                         locations: this.arrayToObjects(item.locations),
                                         editJournal: true
                                     })}}
-                                onDelete={() => this.setState({journals: this.state.journals.filter((val, index) => {
+                                onDelete={() => this.setState({journals: this.state.journals.filter((val) => {
                                     if (item.id === val.id) return false;
                                     return true;
                                 })
@@ -245,8 +246,6 @@ export default class JournalPage extends Component{
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        //marginTop: 80,
-        //backgroundColor: '#dce1e6'
     },
     margin: {
         marginTop: 20,
@@ -259,5 +258,12 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         backgroundColor: 'pink'
-      }
+      },
+    text: {
+        marginTop: 20,
+        marginLeft: 20,
+        marginRight: 20,
+        marginBottom: 20,
+        textAlign: 'right'
+    }
 });
