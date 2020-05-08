@@ -1,3 +1,7 @@
+// written by: Samuel Minkin, Gaurav Sethi, Yash Shah
+// tested by: Samuel Minkin, Gaurav Sethi, Yash Shah
+// debugged by: Samuel Minkin, Gaurav Sethi, Yash Shah
+
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Appbar, TextInput, Button } from 'react-native-paper';
