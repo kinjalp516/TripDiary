@@ -1,3 +1,7 @@
+// written by: Yash Shah
+// tested by: Yash Shah
+// debugged by: Yash Shah
+
 import React from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native'
 import firebase from 'firebase';

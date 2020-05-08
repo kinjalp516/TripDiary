@@ -1,3 +1,7 @@
+// written by: Yash Shah
+// tested by: Yash Shah
+// debugged by: Yash Shah
+
 import React from 'react';
 import { StyleSheet, View, Text, SafeAreaView } from 'react-native';
 import { Appbar, List, Banner, Divider} from 'react-native-paper';

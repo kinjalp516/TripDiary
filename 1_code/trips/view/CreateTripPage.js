@@ -1,3 +1,7 @@
+// written by: Yash Shah
+// tested by: Yash Shah
+// debugged by: Yash Shah
+
 import React from "react";
 import { StyleSheet, View, Platform, ScrollView } from 'react-native';
 import { Appbar, TextInput, Subheading, Button, Divider } from 'react-native-paper';

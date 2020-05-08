@@ -1,3 +1,7 @@
+// written by: Yash Shah
+// tested by: Yash Shah
+// debugged by: Yash Shah
+
 import * as React from 'react';
 import { BottomNavigation, Text } from 'react-native-paper';
 

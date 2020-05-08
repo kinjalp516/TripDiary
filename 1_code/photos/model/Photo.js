@@ -1,3 +1,7 @@
+// written by: Yash Shah
+// tested by: Yash Shah
+// debugged by: Yash Shah
+
 import firebase from '../../Firebase.js';
 
 export async function fetchPhotos(tripId) {

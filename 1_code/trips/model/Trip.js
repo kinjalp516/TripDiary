@@ -1,3 +1,7 @@
+// written by: Yash Shah
+// tested by: Yash Shah
+// debugged by: Yash Shah
+
 import firebase from "../../Firebase.js";
 
 // This function is an example of how to build a query in firestore and execute it.

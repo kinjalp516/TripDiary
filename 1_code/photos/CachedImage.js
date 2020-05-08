@@ -1,3 +1,5 @@
+// Source taken from Github Snippet
+
 import React, { Component } from 'react';
 import { View, Image, ImageBackground } from 'react-native';
 import * as FileSystem from 'expo-file-system';
