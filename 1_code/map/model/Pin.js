@@ -1,3 +1,7 @@
+// written by: Samuel Minkin, Gaurav Sethi, Yash Shah
+// tested by: Samuel Minkin, Gaurav Sethi, Yash Shah
+// debugged by: Samuel Minkin, Gaurav Sethi, Yash Shah
+
 import firebase from '../../Firebase.js';
 
 export async function fetchPins(tripId) {
