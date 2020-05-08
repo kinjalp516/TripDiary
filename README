@@ -1,0 +1,78 @@
+Trip Diary (SE Group 5)
+
+----------------------------------------------------------------------------------
+BUILDING:
+----------------------------------------------------------------------------------
+In order to run our application, you should start by installing all
+of the required dependencies listed in package.json. You can do this
+by running the following command in terminal:
+
+> npm install
+
+Once your dependencies are installed, we can start our project with
+relative easy by using the following predefined script:
+
+> npm start
+
+This script asks expo to initalize it's bundler service, which should
+open it's web portal in your browser. From this web portal, expo provides
+logs for our application along with the option to open the app on 
+various platforms. Since we have focused our efforts on creating a moble
+friendly user interface, please only select either the iOS emulator or
+Android emulator.
+
+If you'd like to run this application on your physical device, simply
+download the expo client from the Google Play Store or the Apple App store
+and scan the barcode that's present on the expo web portal.
+
+Additionally, in order to execute any backend operations, our firebase project
+configuration files are included as part of this repo, and this allows you to
+run the application yourself without having to create a new firebase project.
+
+----------------------------------------------------------------------------------
+CODE STRUCTURE:
+----------------------------------------------------------------------------------
+The business logic for our application is built entirely into the
+front-end piece of our application. We make use of react-native and
+expo's tools (https://expo.io) to ease packaging of our application.
+
+Our code is structured in an MVC approach such that we have a top level
+app controller which serves as our access control layer. This controller
+exists in the root of our codebase in the file App.js, and loads the three
+main pages of our application - (1) the loading page, (2) the login page,
+and (3) the My Trip page.
+
+It starts off by directing the user to the loading page (LoadingPage.js)
+on app startup. This file renders a progress indicator while it attempts
+to authenticate the user if the user has previously logged in. If it finds
+that the user has been authenticated, it redirects itself to the My Trips
+Page (trips/TripsController.js), otherwise, it redirects to the Login Page
+(LoginPage.js). 
+
+You'll find that while Login and Loading are in the root directory, that
+the My Trips Page exists within it's own trips/ directory. This is because
+unlike Login and Loading, the trips controller needs it's own model and views
+as it's a more complex component of our application. Following the layered
+approach offered by the MVC model, we were able to use the model directory
+to store our trip class definitions of the Trip object along with our database
+calls which help us fetch the data. The trips/views/ directory holds the
+different views of the My Trips page, which are called from root level
+navigation that is set up within trips/TripsController.js
+
+As you explore the rest of the application, you'll find that we have the
+following directories which employ a similar approach in creating their 
+independent views, models, and controller for each subfeature of our app
+and they are all tied together through the controllers which ensure that
+navigation is being handed off appropriately as the user uses different
+parts of our application.
+
+----------------------------------------------------------------------------------
+Module            | Description
+----------------------------------------------------------------------------------
+trips/trip_detail | module which acts as top level controller for single trip view
+attractions/      | module for loading attractions for a trip using the Places API
+budget/           | module for creating a budget and logging expenses for a trip
+calendar/         | module used for managing data by days specified for a trip
+journal/          | module for journaling for a trip
+map/              | module for viewing pinned locations, photos in a map for a single trip
+photos/           | module for importing, viewing, and organizing photos for a single trip
