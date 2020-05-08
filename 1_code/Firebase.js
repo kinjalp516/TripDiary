@@ -1,3 +1,7 @@
+// written by: Yash Shah
+// tested by: Yash Shah
+// debugged by: Yash Shah
+
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 import 'firebase/storage';

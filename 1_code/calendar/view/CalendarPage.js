@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, View, Text, ScrollView, FlatList } from 'react-native';
 import { Appbar, Menu, Card, FAB, Paragraph } from 'react-native-paper';
 import { Calendar,CalendarList,Agenda, CalendarProvider, ExpendableCalendar } from 'react-native-calendars';
-import CalendarStrip from 'react-native-calendar-strip';
 
 
 
@@ -10,8 +9,6 @@ import Weather from '../Weather';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import firebase from "../../Firebase.js";
-import { firestore } from 'firebase';
-import { SafeAreaView } from 'react-navigation';
 import { Journal } from '../../journal/model/Journal';
 import { Photo } from '../../photos/model/Photo';
 import CachedImage from '../../photos/CachedImage'
@@ -20,6 +17,8 @@ import CachedImage from '../../photos/CachedImage'
 const API_KEY = "197e39b5b7deb39fe1e512c297a198d9";
 var counter = 0;
 
+//coded by: Samuel Zahner
+//debugged by: Samuel Zahner
 export default class CalendarPage extends React.Component{
 
     state ={
@@ -42,6 +41,8 @@ export default class CalendarPage extends React.Component{
         loading: false,
         journals: []
     }
+
+    /*asks permission to use te user's location and then gets the latitude and longitude */
     async getLocationAsync() {
       let { status } = await Permissions.askAsync(Permissions.LOCATION);
 
@@ -66,15 +67,15 @@ export default class CalendarPage extends React.Component{
       }
     
     fetchWeather() {
-      /* console.log(this.state.latitude);
+       /* debug
+       console.log(this.state.latitude);
        console.log(this.state.longitude);
        console.log(counter);*/
        
-    let lat = this.state.latitude;
-    let lon = this.state.longitude;
+         let lat = this.state.latitude;
+         let lon = this.state.longitude;
     
-        
-            if(this.state.latitude == null || this.state.longitude == null){
+         if(this.state.latitude == null || this.state.longitude == null){
                 return;
             }
             fetch(
@@ -82,30 +83,37 @@ export default class CalendarPage extends React.Component{
               )
                 .then(res => res.json())
                 .then(json => {
-                 // console.log(json);
+                 // debug - console.log(json);
                   this.setState({
                     temperature: json.main.temp,
                     weatherCondition: json.weather[0].main,
                     city: json.name,
-                    isLoading: false
                   });
               });
               
             
     }
 
+    /*updates the currently selected day
+    Also fetches the journals and photos that were
+    taken on this day from the database*/
       updateSelectedDay(day){
+          //updating selected day
           let tempDate = new Date(day.year, (day.month-1), day.day);
           counter = 0;
           this.setState({selectedDay: {
               day: tempDate
           }});
+
+          //calculated timestamps for start and end of day to filter database
           let timeStampStart = toTimestamp(day.year,(day.month), day.day, 0, 0, 0);
           let timeStampEnd = toTimestamp(day.year, (day.month), day.day, 23,59,59);
 
+          //fetches journals on selected date
           this.fetchJournals(timeStampStart/1000,timeStampEnd/1000).then((journals) => this.setState({journals}));
 
 
+          //fetches photos on selected date
           this.fetchPhotos(timeStampStart,timeStampEnd).then(
             (photos) => {
               this.setState({ photos: photos, loading: false })
@@ -116,6 +124,9 @@ export default class CalendarPage extends React.Component{
           
       }
 
+      /* fetches journals within the constraints of 
+      tripID - the current trip, timeStampStart - the start of the day,
+      and timeSTampEnd - the end of the day */
        async fetchJournals(timeStampStart,timeStampEnd) {
 
         let query = firebase.firestore().collection("journals")
@@ -132,6 +143,10 @@ export default class CalendarPage extends React.Component{
                                                                 // in other components.
         );
     }
+    
+    /* fetches photos from the constraints of 
+      tripID - the current trip, timeStampStart - the start of the day,
+      and timeSTampEnd - the end of the day */
       async fetchPhotos(timeStampStart, timeStampEnd){
 
 
@@ -157,8 +172,8 @@ export default class CalendarPage extends React.Component{
             this.fetchWeather();
             counter++;
         }
-       // console.log(this.state.weatherCondition);
-       // console.log(this.state.temperature);
+       // debug - console.log(this.state.weatherCondition);
+       // debug - console.log(this.state.temperature);
 
         return(
             <View style={styles.container}>
@@ -181,7 +196,7 @@ export default class CalendarPage extends React.Component{
                 markedDates={
                     {[this.state.selectedDay.day.toISOString().slice(0,10)]: { selected: true },
                     }}
-                onDayPress={(day) => this.updateSelectedDay(day)}//just outputs day info to console for now
+                onDayPress={(day) => this.updateSelectedDay(day)}//updates day on daypress
                 theme={{
                     textMonthFontSize: 25,
                     textMonthFontFamily: 'Kailasa',
@@ -214,8 +229,6 @@ export default class CalendarPage extends React.Component{
             <Card style={styles.card, {backgroundColor: 'mediumslateblue'}}>
                 <Card.Title
                     title = "Photos"
-                   // subtitle = "[# of photos]"
-                    //left={(props) => <Avatar rounded reverse size="small" icon= "md-photos" onPress={() => console.log("This will bring you to all photos for this day!")}/>} 
                 />
             </Card>
             {this.state.photos.map((item) => {
@@ -291,6 +304,7 @@ const styles = StyleSheet.create({
       },
   });
 
+  //returns a timestamp in milliseconds 
   function toTimestamp(year,month,day,hour,minute,second){
     var datum = new Date(Date.UTC(year,month-1,day,hour,minute,second));
     return datum.getTime();

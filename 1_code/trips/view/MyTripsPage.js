@@ -1,3 +1,7 @@
+// written by: Yash Shah
+// tested by: Yash Shah
+// debugged by: Yash Shah
+
 import React from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import { Appbar, Menu, Card, FAB, Paragraph, ActivityIndicator } from 'react-native-paper';

@@ -1,3 +1,7 @@
+// written by: Yash Shah
+// tested by: Yash Shah
+// debugged by: Yash Shah
+
 import React from 'react';
 import { StyleSheet, View, FlatList, Alert, TouchableHighlight, Dimensions, SafeAreaView, ImageBackground } from 'react-native';
 import { Appbar, Text, ActivityIndicator } from 'react-native-paper';
