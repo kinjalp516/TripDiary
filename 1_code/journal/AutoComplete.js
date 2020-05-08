@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import {StyleSheet, Text, TouchableHighlight, TouchableOpacity, View, Dimensions} from "react-native";
 import Autocomplete from "react-native-autocomplete-input";
 
+// edited by: Kinjal Patel
+// debugged by: Kinjal Patel
+
 export default class AutoTags extends Component {
   state = {
     query: ""
