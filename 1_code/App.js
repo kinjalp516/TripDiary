@@ -1,3 +1,7 @@
+// written by: Samuel Minkin, Gaurav Sethi, Yash Shah
+// tested by: Samuel Minkin, Gaurav Sethi, Yash Shah
+// debugged by: Samuel Minkin, Gaurav Sethi, Yash Shah
+
 import React from 'react';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation'; 
 import { Provider as PaperProvider } from 'react-native-paper';

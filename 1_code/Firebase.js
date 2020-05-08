@@ -1,6 +1,6 @@
-// written by: Yash Shah
-// tested by: Yash Shah
-// debugged by: Yash Shah
+// written by: Samuel Minkin, Gaurav Sethi, Yash Shah
+// tested by: Samuel Minkin, Gaurav Sethi, Yash Shah
+// debugged by: Samuel Minkin, Gaurav Sethi, Yash Shah
 
 import * as firebase from 'firebase';
 import 'firebase/firestore';
